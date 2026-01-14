@@ -12,7 +12,7 @@
 #include "Math/GenVector/Rotation3D.h"
 #include "Math/Math.h"
 
-// Utility function to generate fourvector objects for thigs that pass selections
+#include <limits>
 
 FourVectorVec gen4vec(floats &pt, floats &eta, floats &phi, floats &mass)
 {
@@ -119,16 +119,10 @@ ints good_idx(ints good)
 }
 
 
-floats chi2(float smtop_mass, float smw_mass, float lfvtop_mass)
+floats chi2(float smtop_mass, float smw_mass, float lfvtop_mass, float MT_SM, float MW, float WT_SM, float WW, float MT_LFV, float WT_LFV)
 {
 	floats out;
-        // Theory values
-        const float MT_LFV = 172.5;
-        const float MT_SM = 172.5;
-        const float MW = 80.4;
-        const float WT_LFV = 1.41;
-        const float WT_SM = 1.41;
-        const float WW = 2.085;
+        // The values are now passed as arguments
 
         // Resolution applied values
 //        const float MT_LFV = 150.5;
@@ -152,19 +146,18 @@ floats chi2(float smtop_mass, float smw_mass, float lfvtop_mass)
 }
 
 
-floats top_reconstruction_whad(FourVectorVec &jets, FourVectorVec &bjets, FourVectorVec &muons, FourVectorVec &taus){
+floats top_reconstruction_whad(FourVectorVec &jets, FourVectorVec &bjets, FourVectorVec &muons, FourVectorVec &taus, float MT, float MW, float WT, float WW){
         
         floats out;
 
-        float LFVtop_mass, SMW_mass, SMtop_mass;
-        float X_LFVtop, X_SMW, X_SMtop;
-        float X_min=9999999999, X_min_LFVtop_mass=-1, X_min_SMW_mass=-1, X_min_SMtop_mass=-1;
-        float X_min_LFVtop=999999999, X_min_SMW=999999999, X_min_SMtop=999999999;
+        float SMW_mass, SMtop_mass;
+        float X_SMW, X_SMtop;
+        float X_min = std::numeric_limits<float>::max();
+        float X_min_SMW_mass = -1, X_min_SMtop_mass = -1;
+        float X_min_SMW = std::numeric_limits<float>::max();
+        float X_min_SMtop = std::numeric_limits<float>::max();
         float wj1_idx=-1, wj2_idx=-1;
-        const float MT = 165.2;
-        const float MW = 80.8;
-        const float WT = 21.3;
-        const float WW = 11.71;	
+        // The values are now passed as arguments
         
         // Jets from W-1
         for(unsigned int j1 = 0; j1<jets.size(); j1++){
@@ -236,12 +229,12 @@ float calculate_invMass( FourVector &p1, FourVector &p2){
 float calculate_MT( FourVectorVec &muons, float met, float metphi){
         FourVector muon;
         muon = muons[0];
-        float dphi = muon.Phi() - metphi;
-        if ( dphi > M_PI ) {
-            dphi -= 2.0*M_PI;
-        } else if ( dphi <= -M_PI ) {
-            dphi += 2.0*M_PI;
-        }
+        FourVector metvec;
+        metvec.SetPt(met);
+        metvec.SetEta(0);
+        metvec.SetPhi(metphi);
+        metvec.SetM(0);
+        float dphi = ROOT::Math::VectorUtil::DeltaPhi(muon, metvec);
         float out = sqrt(2*muon.Pt()*met*(1-cos(dphi)));
         return out;
 }
@@ -323,10 +316,10 @@ int lastgenpart_idx(int target_i, ints GenPart_pdgId, ints GenPart_genPartIdxMot
 
 ints FinalGenPart_idx( ints GenPart_pdgId, ints GenPart_genPartIdxMother ){
     ints out;
-    int LFVtop_idx = -1, SMtop_idx=-1;
+    int LFVtop_idx = -1, SMtop_idx = -1;
     int up_idx = -1, muon_idx = -1, tau_idx = -1;
     int b_idx = -1, W_idx = -1;
-    int Wq1_idx=-1, Wq2_idx=-1;
+    int Wq1_idx = -1, Wq2_idx = -1;
     ints Wds_i;
     ints LastTop_idx = LastGenPart_idx(6, GenPart_pdgId, GenPart_genPartIdxMother);
     for( int i : LastTop_idx ){

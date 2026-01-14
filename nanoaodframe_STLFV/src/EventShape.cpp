@@ -14,8 +14,7 @@
 Int_t EventShape::m_maxpart = 1000;
 
 EventShape::EventShape():
-  m_dSphMomPower(2.0),m_dDeltaThPower(0), m_dOblateness(0.0),
-  m_iFast(4),m_dConv(0.0001),m_iGood(2), Q(3)
+  m_dSphMomPower(2.0), m_dDeltaThPower(0.0), m_iFast(4), m_dConv(0.0001), m_iGood(2), Q(3), m_dOblateness(0.0)
 {
   m_dAxes.ResizeTo(4,4);
   m_NormMomTensor.ResizeTo(3,3);

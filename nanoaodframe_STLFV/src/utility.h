@@ -61,9 +61,11 @@ double foxwolframmoment(int l, FourVectorVec &p, int minj=0, int maxj=-1);
 
 ints good_idx(ints good);
 
+floats chi2(float smtop_mass, float smw_mass, float lfvtop_mass, float MT_SM=172.5, float MW=80.4, float WT_SM=1.41, float WW=2.085, float MT_LFV=172.5, float WT_LFV=1.41);
+
 floats lqtop_reconstruction( FourVectorVec &cjet, FourVectorVec &mu, FourVectorVec &tau);
 
-floats top_reconstruction_whad(FourVectorVec &jets, FourVectorVec &bjets, FourVectorVec &muons, FourVectorVec &taus);
+floats top_reconstruction_whad(FourVectorVec &jets, FourVectorVec &bjets, FourVectorVec &muons, FourVectorVec &taus, float MT=165.2, float MW=80.8, float WT=21.3, float WW=11.71);
 
 floats top_reco_products(FourVectorVec &jets, FourVectorVec &muons, FourVectorVec &taus, floats topreco);
 

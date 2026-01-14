@@ -80,7 +80,9 @@ void LQtopAnalyzer::defineMoreVars()
         addVar({"Sel2_bjet1eta", "Sel2_bjeteta[0]", ""});
         addVar({"Sel2_bjet1mass", "Sel2_bjetmass[0]", ""});
 
-        defineVar("top_reco_whad", ::top_reconstruction_whad, {"cleanjet4vecs","cleanbjet4vecs","muon4vecs","cleantau4vecs"});
+        defineVar("top_reco_whad", [](FourVectorVec &jets, FourVectorVec &bjets, FourVectorVec &muons, FourVectorVec &taus){
+            return ::top_reconstruction_whad(jets, bjets, muons, taus);
+        }, {"cleanjet4vecs","cleanbjet4vecs","muon4vecs","cleantau4vecs"});
         addVar({"chi2","top_reco_whad[0]",""});
         addVar({"chi2_SMW_mass","top_reco_whad[1]",""});
         addVar({"chi2_SMTop_mass","top_reco_whad[2]",""});

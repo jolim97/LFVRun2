@@ -1,4 +1,4 @@
-#!/bin/basou
+#!/bin/bash
 #### SETTINGS ####
 version=skim_LFVv7
 njobs=50

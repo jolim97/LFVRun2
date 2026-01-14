@@ -19,6 +19,7 @@
 #include "WeightCalculatorFromHistogram.h"
 
 #include <string>
+#include <memory>
 #include "json/json.h"
 
 #include "utility.h" // floats, etc are defined here
@@ -56,6 +57,9 @@ public:
 
 	void addVar(varinfo v);
 
+	// helper for object selection to reduce boilerplate
+	void storeObject(const std::string& name, const std::string& mask, const std::map<std::string, std::string>& varMap);
+
 	template <typename T, typename std::enable_if<!std::is_convertible<T, std::string>::value, int>::type = 0>
 	void defineVar(std::string varname, T function,  const RDFDetail::ColumnNames_t &columns = {})
 	{
@@ -73,6 +77,9 @@ public:
 	void run(bool saveAll=true, std::string outtreename="outputTree");
 	void setTree(TTree *t, std::string outfilename);
 	void setupTree();
+
+protected:
+    void loadScaleFactors();
 
 private:
 	ROOT::RDataFrame _rd;
@@ -122,30 +129,36 @@ private:
 	TH1D *_hpudata;
 	TH1D *_hpudata_plus;
 	TH1D *_hpudata_minus;
-	WeightCalculatorFromHistogram *_puweightcalc;
-	WeightCalculatorFromHistogram *_puweightcalc_plus;
-	WeightCalculatorFromHistogram *_puweightcalc_minus;
+	std::unique_ptr<WeightCalculatorFromHistogram> _puweightcalc;
+	std::unique_ptr<WeightCalculatorFromHistogram> _puweightcalc_plus;
+	std::unique_ptr<WeightCalculatorFromHistogram> _puweightcalc_minus;
 	RNodeTree _rnt;
 	RNodeTree *currentnode;
 	bool isDefined(string v);
 
 	// Jet MET corrections
 	void setupJetMETCorrection(std::string globaltag, std::string jetalgo="AK4PFchs");
-	FactorizedJetCorrector *_jetCorrector;
-	JetCorrectionUncertainty *_jetCorrectionUncertainty;
+	std::unique_ptr<FactorizedJetCorrector> _jetCorrector;
+	std::unique_ptr<JetCorrectionUncertainty> _jetCorrectionUncertainty;
 
         TH2F* _hmuontrg;
         TH2F* _hmuonid;
         TH2F* _hmuoniso;
-        WeightCalculatorFromHistogram* _muontrg;
-        WeightCalculatorFromHistogram* _muonid;
-        WeightCalculatorFromHistogram* _muoniso;
+        std::unique_ptr<WeightCalculatorFromHistogram> _muontrg;
+        std::unique_ptr<WeightCalculatorFromHistogram> _muonid;
+        std::unique_ptr<WeightCalculatorFromHistogram> _muoniso;
 
-        TauIDSFTool* _tauidSFjet;
-        TauIDSFTool* _tauidSFele;
-        TauIDSFTool* _tauidSFmu;
-        TauESTool* _testool;
-        TauFESTool* _festool;
+        std::unique_ptr<TauIDSFTool> _tauidSFjet;
+        std::unique_ptr<TauIDSFTool> _tauidSFele;
+        std::unique_ptr<TauIDSFTool> _tauidSFmu;
+        std::unique_ptr<TauESTool> _testool;
+        std::unique_ptr<TauFESTool> _festool;
+
+        // SF calculation helpers
+        float getBtagCut();
+        float getBtagWeight(floats &pts, floats &etas, ints &hadflav, floats &btags);
+        float getMuonSF(floats &pt, floats &eta);
+        float getTauSF(floats &pt, floats &eta, uchars &genid);
 };
 
 #endif /* NANOAODANALYZERRDFRAME_H_ */

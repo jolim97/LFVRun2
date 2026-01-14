@@ -34,3 +34,5 @@ nanoaodframe_*TLFV/src/*.o
 *.exe
 *.out
 *.app
+*.swp
+*.root

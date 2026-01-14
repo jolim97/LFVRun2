@@ -1,18 +1,25 @@
-#!/bin/basou
+#!/bin/bash
 #### SETTINGS ####
 version=skim_LFVv8
 njobs=25
 
 #### PATHs ####
-mcdir20ul16pre=/data1/common/NanoAOD/v8_UL/mc/RunIISummer20UL16NanoAODAPVv2
-mcdir20ul16post=/data1/common/NanoAOD/v8_UL/mc/RunIISummer20UL16NanoAODv2
-mcdir20ul17=/data1/common/NanoAOD/v8_UL/mc/RunIISummer20UL17NanoAODv2
-mcdir20ul18=/data1/common/NanoAOD/v8_UL/mc/RunIISummer20UL18NanoAODv2
-tgdir16pre=/data1/common/skimmed_NanoAOD/${version}/mc/16pre
-tgdir16post=/data1/common/skimmed_NanoAOD/${version}/mc/16post
-logdir=/data1/common/skimmed_NanoAOD/${version}/log
+# mcdir20ul16pre=/data1/common/NanoAOD/v8_UL/mc/RunIISummer20UL16NanoAODAPVv2
+# mcdir20ul16post=/data1/common/NanoAOD/v8_UL/mc/RunIISummer20UL16NanoAODv2
+# mcdir20ul17=/data1/common/NanoAOD/v8_UL/mc/RunIISummer20UL17NanoAODv2
+# mcdir20ul18=/data1/common/NanoAOD/v8_UL/mc/RunIISummer20UL18NanoAODv2
+# tgdir16pre=/data1/common/skimmed_NanoAOD/${version}/mc/16pre
+# tgdir16post=/data1/common/skimmed_NanoAOD/${version}/mc/16post
+# logdir=/data1/common/skimmed_NanoAOD/${version}/log
+#mkdir -p ${tgdir}
+#mkdir -p ${logdir}
+mcdir=/Users/subin/projects/HEPanalyzer/rootfiles
+tgdir=/Users/subin/projects/HEPanalyzer/skimmed
+logdir=${tgdir}/log
 mkdir -p ${tgdir}
 mkdir -p ${logdir}
+
+./skimnanoaod.py -F --split 10 -Y skim16post ${mcdir}/GluGluHToTauTau_M125_13TeV ${tgdir}/GluGluHToTauTau_M125_13TeV &> ${logdir}/GluGluHToTauTau_M125_13TeV_skim16post.out 
 # 16pre
 #./skimnanoaod.py -F --split ${njobs} -Y skim16pre ${mcdir20ul16pre}/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8 ${tgdir16pre}/DYJetsToLL_M-10to50 &> ${logdir}/DYJetsToLL_M-10to50_skim16pre.out
 #./skimnanoaod.py -F --split ${njobs} -Y skim16pre ${mcdir20ul16pre}/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8 ${tgdir16pre}/DYJetsToLL_M-50_amcatnlo  &> ${logdir}/DYJetsToLL_M-50_amcatnlo_skim16pre.out
@@ -67,15 +74,15 @@ mkdir -p ${logdir}
 #./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/WZ_TuneCP5_13TeV-pythia8 ${tgdir16post}/WZ &> ${logdir}/WZ_skim16post.out
 #./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ZZ_TuneCP5_13TeV-pythia8 ${tgdir16post}/ZZ &> ${logdir}/ZZ_skim16post.out
 
-./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ST_LFV_TCMuTau_Scalar_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/ST_LFV_TCMuTau_Scalar &> ${logdir}/ST_LFV_TCMuTau_Scalar_skim16post.out
-./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ST_LFV_TCMuTau_Vector_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/ST_LFV_TCMuTau_Vector &> ${logdir}/ST_LFV_TCMuTau_Vector_skim16post.out
-./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ST_LFV_TCMuTau_Tensor_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/ST_LFV_TCMuTau_Tensor &> ${logdir}/ST_LFV_TCMuTau_Tensor_skim16post.out
-./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ST_LFV_TUMuTau_Scalar_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/ST_LFV_TUMuTau_Scalar &> ${logdir}/ST_LFV_TUMuTau_Scalar_skim16post.out
-./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ST_LFV_TUMuTau_Vector_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/ST_LFV_TUMuTau_Vector &> ${logdir}/ST_LFV_TUMuTau_Vector_skim16post.out
-./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ST_LFV_TUMuTau_Tensor_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/ST_LFV_TUMuTau_Tensor &> ${logdir}/ST_LFV_TUMuTau_Tensor_skim16post.out
-./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/TT_LFV_TToCMuTau_Scalar_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/TT_LFV_TToCMuTau_Scalar &> ${logdir}/TT_LFV_TToCMuTau_Scalar_skim16post.out
-./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/TT_LFV_TToCMuTau_Vector_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/TT_LFV_TToCMuTau_Vector &> ${logdir}/TT_LFV_TToCMuTau_Vector_skim16post.out
-./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/TT_LFV_TToCMuTau_Tensor_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/TT_LFV_TToCMuTau_Tensor &> ${logdir}/TT_LFV_TToCMuTau_Tensor_skim16post.out
-./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/TT_LFV_TToUMuTau_Scalar_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/TT_LFV_TToUMuTau_Scalar &> ${logdir}/TT_LFV_TToUMuTau_Scalar_skim16post.out
-./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/TT_LFV_TToUMuTau_Vector_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/TT_LFV_TToUMuTau_Vector &> ${logdir}/TT_LFV_TToUMuTau_Vector_skim16post.out
-./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/TT_LFV_TToUMuTau_Tensor_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/TT_LFV_TToUMuTau_Tensor &> ${logdir}/TT_LFV_TToUMuTau_Tensor_skim16post.out
+# ./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ST_LFV_TCMuTau_Scalar_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/ST_LFV_TCMuTau_Scalar &> ${logdir}/ST_LFV_TCMuTau_Scalar_skim16post.out
+# ./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ST_LFV_TCMuTau_Vector_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/ST_LFV_TCMuTau_Vector &> ${logdir}/ST_LFV_TCMuTau_Vector_skim16post.out
+# ./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ST_LFV_TCMuTau_Tensor_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/ST_LFV_TCMuTau_Tensor &> ${logdir}/ST_LFV_TCMuTau_Tensor_skim16post.out
+# ./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ST_LFV_TUMuTau_Scalar_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/ST_LFV_TUMuTau_Scalar &> ${logdir}/ST_LFV_TUMuTau_Scalar_skim16post.out
+# ./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ST_LFV_TUMuTau_Vector_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/ST_LFV_TUMuTau_Vector &> ${logdir}/ST_LFV_TUMuTau_Vector_skim16post.out
+# ./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/ST_LFV_TUMuTau_Tensor_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/ST_LFV_TUMuTau_Tensor &> ${logdir}/ST_LFV_TUMuTau_Tensor_skim16post.out
+# ./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/TT_LFV_TToCMuTau_Scalar_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/TT_LFV_TToCMuTau_Scalar &> ${logdir}/TT_LFV_TToCMuTau_Scalar_skim16post.out
+# ./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/TT_LFV_TToCMuTau_Vector_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/TT_LFV_TToCMuTau_Vector &> ${logdir}/TT_LFV_TToCMuTau_Vector_skim16post.out
+# ./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/TT_LFV_TToCMuTau_Tensor_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/TT_LFV_TToCMuTau_Tensor &> ${logdir}/TT_LFV_TToCMuTau_Tensor_skim16post.out
+# ./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/TT_LFV_TToUMuTau_Scalar_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/TT_LFV_TToUMuTau_Scalar &> ${logdir}/TT_LFV_TToUMuTau_Scalar_skim16post.out
+# ./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/TT_LFV_TToUMuTau_Vector_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/TT_LFV_TToUMuTau_Vector &> ${logdir}/TT_LFV_TToUMuTau_Vector_skim16post.out
+# ./skimnanoaod.py -F --split ${njobs} -Y skim16post ${mcdir20ul16post}/TT_LFV_TToUMuTau_Tensor_TuneCP5_13TeV-madgraph-pythia8 ${tgdir16post}/TT_LFV_TToUMuTau_Tensor &> ${logdir}/TT_LFV_TToUMuTau_Tensor_skim16post.out

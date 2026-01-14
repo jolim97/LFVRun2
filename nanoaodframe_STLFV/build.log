@@ -1,0 +1,143 @@
+c++ -c -o src/BTagCalibrationStandalone.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/BTagCalibrationStandalone.cpp
+src/BTagCalibrationStandalone.cpp:139:5: warning: 'sprintf' is deprecated: This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead. [-Wdeprecated-declarations]
+  139 |     sprintf(tmp_buff,
+      |     ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:278:1: note: 'sprintf' has been explicitly marked deprecated here
+  278 | __deprecated_msg("This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead.")
+      | ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h:227:48: note: expanded from macro '__deprecated_msg'
+  227 |         #define __deprecated_msg(_msg) __attribute__((__deprecated__(_msg)))
+      |                                                       ^
+src/BTagCalibrationStandalone.cpp:165:5: warning: 'sprintf' is deprecated: This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead. [-Wdeprecated-declarations]
+  165 |     sprintf(tmp_buff, "%g", hist->GetBinContent(start));
+      |     ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:278:1: note: 'sprintf' has been explicitly marked deprecated here
+  278 | __deprecated_msg("This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead.")
+      | ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h:227:48: note: expanded from macro '__deprecated_msg'
+  227 |         #define __deprecated_msg(_msg) __attribute__((__deprecated__(_msg)))
+      |                                                       ^
+src/BTagCalibrationStandalone.cpp:170:5: warning: 'sprintf' is deprecated: This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead. [-Wdeprecated-declarations]
+  170 |     sprintf(tmp_buff,
+      |     ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:278:1: note: 'sprintf' has been explicitly marked deprecated here
+  278 | __deprecated_msg("This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead.")
+      | ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h:227:48: note: expanded from macro '__deprecated_msg'
+  227 |         #define __deprecated_msg(_msg) __attribute__((__deprecated__(_msg)))
+      |                                                       ^
+src/BTagCalibrationStandalone.cpp:182:3: warning: 'sprintf' is deprecated: This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead. [-Wdeprecated-declarations]
+  182 |   sprintf(tmp_buff,
+      |   ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:278:1: note: 'sprintf' has been explicitly marked deprecated here
+  278 | __deprecated_msg("This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead.")
+      | ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h:227:48: note: expanded from macro '__deprecated_msg'
+  227 |         #define __deprecated_msg(_msg) __attribute__((__deprecated__(_msg)))
+      |                                                       ^
+4 warnings generated.
+c++ -c -o src/EventShape.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/EventShape.cpp
+src/EventShape.cpp:17:43: warning: field 'm_dOblateness' will be initialized after field 'm_iFast' [-Wreorder-ctor]
+   17 |   m_dSphMomPower(2.0),m_dDeltaThPower(0), m_dOblateness(0.0),
+      |                                           ^~~~~~~~~~~~~~~~~~
+      |                                           m_iFast(4)
+   18 |   m_iFast(4),m_dConv(0.0001),m_iGood(2), Q(3)
+      |   ~~~~~~~~~~ ~~~~~~~~~~~~~~~ ~~~~~~~~~~  ~~~~
+      |   m_dConv(0.0001) m_iGood(2) Q(3)        m_dOblateness(0.0)
+In file included from src/EventShape.cpp:10:
+src/EventShape.h:57:11: warning: private field 'm_dSphMomPower' is not used [-Wunused-private-field]
+   57 |         Double_t m_dSphMomPower; 
+      |                  ^
+2 warnings generated.
+c++ -c -o src/FactorizedJetCorrector.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/FactorizedJetCorrector.cpp
+In file included from src/FactorizedJetCorrector.cpp:9:
+src/Utilities.cpp:21:9: warning: unused function 'getFloat' [-Wunused-function]
+   21 |   float getFloat(const std::string& token) 
+      |         ^~~~~~~~
+src/Utilities.cpp:34:12: warning: unused function 'getUnsigned' [-Wunused-function]
+   34 |   unsigned getUnsigned(const std::string& token) 
+      |            ^~~~~~~~~~~
+src/Utilities.cpp:47:15: warning: unused function 'getSection' [-Wunused-function]
+   47 |   std::string getSection(const std::string& token) 
+      |               ^~~~~~~~~~
+src/Utilities.cpp:56:28: warning: unused function 'getTokens' [-Wunused-function]
+   56 |   std::vector<std::string> getTokens(const std::string& fLine)
+      |                            ^~~~~~~~~
+src/Utilities.cpp:79:15: warning: unused function 'getDefinitions' [-Wunused-function]
+   79 |   std::string getDefinitions(const std::string& token) 
+      |               ^~~~~~~~~~~~~~
+src/Utilities.cpp:99:9: warning: unused function 'quadraticInterpolation' [-Wunused-function]
+   99 |   float quadraticInterpolation(float fZ, const float fX[3], const float fY[3])
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+6 warnings generated.
+c++ -c -o src/FFTJetCorrectorParameters.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/FFTJetCorrectorParameters.cpp
+c++ -c -o src/FourtopAnalyzer.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/FourtopAnalyzer.cpp
+c++ -c -o src/JetCorrectionUncertainty.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/JetCorrectionUncertainty.cpp
+In file included from src/JetCorrectionUncertainty.cpp:10:
+src/Utilities.cpp:21:9: warning: unused function 'getFloat' [-Wunused-function]
+   21 |   float getFloat(const std::string& token) 
+      |         ^~~~~~~~
+src/Utilities.cpp:34:12: warning: unused function 'getUnsigned' [-Wunused-function]
+   34 |   unsigned getUnsigned(const std::string& token) 
+      |            ^~~~~~~~~~~
+src/Utilities.cpp:47:15: warning: unused function 'getSection' [-Wunused-function]
+   47 |   std::string getSection(const std::string& token) 
+      |               ^~~~~~~~~~
+src/Utilities.cpp:56:28: warning: unused function 'getTokens' [-Wunused-function]
+   56 |   std::vector<std::string> getTokens(const std::string& fLine)
+      |                            ^~~~~~~~~
+src/Utilities.cpp:79:15: warning: unused function 'getDefinitions' [-Wunused-function]
+   79 |   std::string getDefinitions(const std::string& token) 
+      |               ^~~~~~~~~~~~~~
+src/Utilities.cpp:99:9: warning: unused function 'quadraticInterpolation' [-Wunused-function]
+   99 |   float quadraticInterpolation(float fZ, const float fX[3], const float fY[3])
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+6 warnings generated.
+c++ -c -o src/JetCorrectorParameters.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/JetCorrectorParameters.cpp
+In file included from src/JetCorrectorParameters.cpp:8:
+src/Utilities.cpp:99:9: warning: unused function 'quadraticInterpolation' [-Wunused-function]
+   99 |   float quadraticInterpolation(float fZ, const float fX[3], const float fY[3])
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+1 warning generated.
+c++ -c -o src/JetResolution.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/JetResolution.cpp
+c++ -c -o src/jsoncpp.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/jsoncpp.cpp
+src/jsoncpp.cpp:4224:3: warning: 'sprintf' is deprecated: This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead. [-Wdeprecated-declarations]
+ 4224 |   sprintf(formatString, "%%.%dg", precision);
+      |   ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:278:1: note: 'sprintf' has been explicitly marked deprecated here
+  278 | __deprecated_msg("This function is provided for compatibility reasons only.  Due to security concerns inherent in the design of sprintf(3), it is highly recommended that you use snprintf(3) instead.")
+      | ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h:227:48: note: expanded from macro '__deprecated_msg'
+  227 |         #define __deprecated_msg(_msg) __attribute__((__deprecated__(_msg)))
+      |                                                       ^
+1 warning generated.
+c++ -c -o src/LQtopAnalyzer.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/LQtopAnalyzer.cpp
+c++ -c -o src/NanoAODAnalyzerrdframe.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/NanoAODAnalyzerrdframe.cpp
+c++ -c -o src/nanoaodrdataframe.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/nanoaodrdataframe.cpp
+c++ -c -o src/RNodeTree.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/RNodeTree.cpp
+c++ -c -o src/SimpleJetCorrectionUncertainty.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/SimpleJetCorrectionUncertainty.cpp
+c++ -c -o src/SimpleJetCorrector.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/SimpleJetCorrector.cpp
+In file included from src/SimpleJetCorrector.cpp:3:
+src/Utilities.cpp:21:9: warning: unused function 'getFloat' [-Wunused-function]
+   21 |   float getFloat(const std::string& token) 
+      |         ^~~~~~~~
+src/Utilities.cpp:34:12: warning: unused function 'getUnsigned' [-Wunused-function]
+   34 |   unsigned getUnsigned(const std::string& token) 
+      |            ^~~~~~~~~~~
+src/Utilities.cpp:47:15: warning: unused function 'getSection' [-Wunused-function]
+   47 |   std::string getSection(const std::string& token) 
+      |               ^~~~~~~~~~
+src/Utilities.cpp:56:28: warning: unused function 'getTokens' [-Wunused-function]
+   56 |   std::vector<std::string> getTokens(const std::string& fLine)
+      |                            ^~~~~~~~~
+src/Utilities.cpp:79:15: warning: unused function 'getDefinitions' [-Wunused-function]
+   79 |   std::string getDefinitions(const std::string& token) 
+      |               ^~~~~~~~~~~~~~
+5 warnings generated.
+c++ -c -o src/SkimEvents.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/SkimEvents.cpp
+c++ -c -o src/TauSFTool.o -O2 -g -Wall -fmessage-length=0 -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.36.06/include/root -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17 src/TauSFTool.cpp
+src/TauSFTool.cpp:300:19: error: incompatible pointer types assigning to 'TGraphAsymmErrors *' from 'TObject *'
+  300 |     graph = file->Get("fes");
+      |             ~~~~~~^~~~~~~~~~
+1 error generated.
+make: *** [src/TauSFTool.o] Error 1

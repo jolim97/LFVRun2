@@ -30,13 +30,14 @@ void SkimEvents::defineCuts()
                         addCuts("Flag_filter && HLT_IsoMu24 && nmuonpass == 1","00");
                 }
         }else{ 
-                if(_year.find("16") != std::string::npos){
-                        addCuts("Flag_filter && (HLT_IsoMu24 || HLT_IsoTkMu24) && nmuonpass == 1","0");
-                }else if(_year.find("17") != std::string::npos){
-                        addCuts("Flag_filter && HLT_IsoMu27 && nmuonpass == 1","0");
-                }else if(_year.find("18") != std::string::npos){
-                        addCuts("Flag_filter && HLT_IsoMu24 && nmuonpass == 1","0");
-                }
+                // if(_year.find("16") != std::string::npos){
+                //         addCuts("Flag_filter && (HLT_IsoMu24 || HLT_IsoTkMu24) && nmuonpass == 1","0");
+                // }else if(_year.find("17") != std::string::npos){
+                //         addCuts("Flag_filter && HLT_IsoMu27 && nmuonpass == 1","0");
+                // }else if(_year.find("18") != std::string::npos){
+                //         addCuts("Flag_filter && HLT_IsoMu24 && nmuonpass == 1","0");
+                // }
+                addCuts("Flag_filter","0");
         }
 }
 
@@ -76,11 +77,11 @@ void SkimEvents::defineMoreVars()
         addVartoStore("Jet_p.*");
         addVartoStore("Jet_rawFactor");
         addVartoStore("nTau");
+        addVartoStore("Tau_decayMode");
         addVartoStore("Tau_charge");
         addVartoStore("Tau_d.*");
         addVartoStore("Tau_eta");
         addVartoStore("Tau_gen.*");
-        addVartoStore("Tau_idDecayModeNewDMs");
         addVartoStore("Tau_idDeepTau.*");
         addVartoStore("Tau_jetIdx");
         addVartoStore("Tau_mass");

@@ -136,7 +136,7 @@ std::string th1ToFormulaLin(const TH1* hist) {
   buff << "x<" << axis->GetBinLowEdge(1) << " ? 0. : ";  // default value
   for (int i=1; i<nbins+1; ++i) {
     char tmp_buff[50];
-    sprintf(tmp_buff,
+    snprintf(tmp_buff, sizeof(tmp_buff),
             "x<%g ? %g : ",  // %g is the smaller one of %e or %f
             axis->GetBinUpEdge(i),
             hist->GetBinContent(i));
@@ -162,12 +162,12 @@ std::string th1ToFormulaBinTree(const TH1* hist, int start=0, int end=-1) {
   }
   if (start == end) {                   // leave is reached
     char tmp_buff[20];
-    sprintf(tmp_buff, "%g", hist->GetBinContent(start));
+    snprintf(tmp_buff, sizeof(tmp_buff), "%g", hist->GetBinContent(start));
     return std::string(tmp_buff);
   }
   if (start == end - 1) {               // no parenthesis for neighbors
     char tmp_buff[70];
-    sprintf(tmp_buff,
+    snprintf(tmp_buff, sizeof(tmp_buff),
             "x<%g ? %g:%g",
             hist->GetXaxis()->GetBinUpEdge(start),
             hist->GetBinContent(start),
@@ -179,7 +179,7 @@ std::string th1ToFormulaBinTree(const TH1* hist, int start=0, int end=-1) {
   std::stringstream buff;
   int mid = (end-start)/2 + start;
   char tmp_buff[25];
-  sprintf(tmp_buff,
+  snprintf(tmp_buff, sizeof(tmp_buff),
           "x<%g ? (",
           hist->GetXaxis()->GetBinUpEdge(mid));
   buff << tmp_buff
@@ -432,7 +432,7 @@ std::cerr << "ERROR in BTagCalibration: "
             << ost;
 throw std::exception();
     }
-    otherSysTypeReaders_[ost] = std::auto_ptr<BTagCalibrationReaderImpl>(
+    otherSysTypeReaders_[ost] = std::unique_ptr<BTagCalibrationReaderImpl>(
         new BTagCalibrationReaderImpl(op, ost)
     );
   }

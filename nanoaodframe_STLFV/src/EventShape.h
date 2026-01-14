@@ -54,7 +54,7 @@ private:
 	
 	Int_t iPow(Int_t man, Int_t exp);
 	
-	Double_t m_dSphMomPower; 
+	[[maybe_unused]] Double_t m_dSphMomPower; 
 	// PARU(41): Power of momentum dependence in sphericity finder.
 
 	Double_t m_dDeltaThPower;

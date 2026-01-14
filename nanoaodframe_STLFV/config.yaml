@@ -1,0 +1,38 @@
+# nanoaodframe_STLFV Configuration
+
+analysis:
+  intree: "outputTree"
+  outtree: "outputTree2"
+  default_year: "2018"
+  default_syst: ""
+
+skim:
+  intree: "Events"
+  outtree: "outputTree"
+  default_year: "2018"
+  default_syst: ""
+
+paths:
+  lib_path: "libnanoadrdframe.so"
+  xrootd_prefix: "root://cms-t2-se01.sdfarm.kr:1096/"
+
+multiprocessing:
+  default_split: 1
+
+# Analysis constants
+constants:
+  mt_sm: 172.5
+  mw: 80.4
+  wt_sm: 1.41
+  ww: 2.085
+  mt_lfv: 172.5
+  wt_lfv: 1.41
+
+# Selection thresholds
+thresholds:
+  muon_pt: 30.0
+  muon_eta: 2.4
+  jet_pt: 40.0
+  jet_eta: 2.4
+  tau_pt: 30.0
+  tau_eta: 2.3

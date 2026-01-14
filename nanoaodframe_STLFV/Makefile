@@ -1,18 +1,19 @@
 rootlibs:=$(shell root-config --libs)
 rootflags:=$(shell root-config --cflags)
+rootinc:=$(shell root-config --incdir)
 
 SOFLAGS       = -shared
 
 LD = g++ -g -Wall
 
-CXXFLAGS = -O2 -g -Wall -fmessage-length=0 $(rootflags) -fpermissive -fPIC -pthread -DSTANDALONE -I.
+CXXFLAGS = -O2 -g -Wall -fmessage-length=0 $(rootflags) -fpermissive -fPIC -pthread -DSTANDALONE -I. -std=c++17
 
 OBJDIR=src
 SRCDIR=src
 SRCS := $(wildcard $(SRCDIR)/*.cpp)
 OBJS := $(patsubst %.cpp,%.o,$(SRCS)) $(SRCDIR)/JetMETObjects_dict.o $(SRCDIR)/rootdict.o 
 
-LIBS = $(rootlibs) -lMathMore -lGenVector -ljsoncpp
+LIBS = $(rootlibs) -lMathMore -lGenVector
 
 TARGET =	nanoaodrdataframe
 
@@ -23,7 +24,7 @@ clean:
 
 $(SRCDIR)/rootdict.C: $(SRCDIR)/NanoAODAnalyzerrdframe.h $(SRCDIR)/LQtopAnalyzer.h $(SRCDIR)/SkimEvents.h $(SRCDIR)/Linkdef.h
 	rm -f $@
-	rootcint -v $@ -c $(rootflags) $^
+	rootcint -v $@ -c -I. -I$(rootinc) $^
 	ln -s $(SRCDIR)/rootdict_rdict.pcm .
 
 	
@@ -33,7 +34,7 @@ libnanoadrdframe.so: $(OBJS)
 
 $(SRCDIR)/JetMETObjects_dict.C: $(SRCDIR)/JetCorrectorParameters.h $(SRCDIR)/SimpleJetCorrector.h $(SRCDIR)/FactorizedJetCorrector.h $(SRCDIR)/LinkdefJetmet.h
 	rm -f $@
-	$(ROOTSYS)/bin/rootcint -f $@ -c $(rootflags) $^ 
+	rootcint -f $@ -c -I. -I$(rootinc) $^
 	ln -s $(SRCDIR)/JetMETObjects_dict_rdict.pcm .
 
 $(SRCDIR)/rootdict.o: $(SRCDIR)/rootdict.C
