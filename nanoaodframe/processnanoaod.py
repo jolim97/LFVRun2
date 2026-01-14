@@ -24,18 +24,18 @@ def main():
     outtree = "outputTree2"
 
     processor = AnalysisProcessor(
-        outdir=args.outdir,
-        indir=args.indir,
-        outtree=outtree,
-        intree=intree,
-        year=args.year,
-        syst=args.syst,
-        json=args.json,
-        split=args.split,
-        skipold=args.skipold,
-        recursive=args.recursive,
-        saveallbranches=args.saveallbranches,
-        globaltag=args.globaltag
+    outdir=args.outdir,
+    indir=args.indir,
+    outtree=outtree,
+    intree=intree,
+    year=args.year,
+    syst=args.syst,
+    json=args.json,
+    split=args.split,
+    skipold=args.skipold,
+    recursive=args.recursive,
+    saveallbranches=args.saveallbranches,
+    globaltag=args.globaltag
     )
 
     processor.process(allinone=args.allinone)

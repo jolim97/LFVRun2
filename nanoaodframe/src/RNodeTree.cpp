@@ -23,7 +23,7 @@ RNodeTree *RNodeTree::addDaughter(RNode *rn, string asidx)
     RNodeTree *rootnode=this;
     while(rootnode->parenttree!=NULL)
     {
-        rootnode = parenttree;
+    rootnode = parenttree;
     }
     RNodeTree *parentnode = rootnode->getRNodeTree(asidx.substr(0, asidx.length()-1));
     */
@@ -33,15 +33,15 @@ RNodeTree *RNodeTree::addDaughter(RNode *rn, string asidx)
     RNodeTree *rnt = NULL;
     if (parentnode != NULL)
     {
-        if (parentnode->daughters.size() == std::stoi(asidx.substr(asidx.length()-1, 1)))
-        rnt = new RNodeTree(rn);
-        rnt->setParent(parentnode);
-        rnt->_idx = asidx;
-        parentnode->daughters.push_back(rnt);
+    if (parentnode->daughters.size() == std::stoi(asidx.substr(asidx.length()-1, 1)))
+    rnt = new RNodeTree(rn);
+    rnt->setParent(parentnode);
+    rnt->_idx = asidx;
+    parentnode->daughters.push_back(rnt);
     }
     else
     {
-        std::cout << "Problem adding node "+asidx << std::endl;
+    std::cout << "Problem adding node "+asidx << std::endl;
     }
     return rnt;
 }
@@ -51,7 +51,7 @@ RNodeTree *RNodeTree::getParent(string asidx)
     RNodeTree *rootnode=this;
     while(rootnode->parenttree!=NULL)
     {
-        rootnode = parenttree;
+    rootnode = parenttree;
     }
     RNodeTree *parentnode = rootnode->getRNodeTree(asidx.substr(0, asidx.length()-1));
 
@@ -70,17 +70,17 @@ RNodeTree *RNodeTree::getRNodeTree(int d)
     RNodeTree *rootnode=this;
     while(rootnode->parenttree!=NULL)
     {
-        rootnode = parenttree;
+    rootnode = parenttree;
     }
 
     if (d==0) result = rootnode;
     else {
-        string idx = "";
-        for (auto i=0; i<d; i++)
-        {
-            idx += "0";
-        }
-        result = rootnode->getRNodeTree(idx);
+    string idx = "";
+    for (auto i=0; i<d; i++)
+    {
+    idx += "0";
+    }
+    result = rootnode->getRNodeTree(idx);
     }
 
     return result;
@@ -94,9 +94,9 @@ RNodeTree *RNodeTree::getRNodeTree(string idx)
     if (idx.size()==0) result = this;
     else
     {
-        int nodenumber=std::stoi(idx.substr(0, 1));
-        RNodeTree *daughter = daughters[nodenumber];
-        result = daughter->getRNodeTree(idx.substr(1));
+    int nodenumber=std::stoi(idx.substr(0, 1));
+    RNodeTree *daughter = daughters[nodenumber];
+    result = daughter->getRNodeTree(idx.substr(1));
     }
 
     return result;
@@ -151,14 +151,14 @@ void RNodeTree::getRNodeLeafs(vector<RNodeTree *> &rntv)
     // dive into the daughters until leaf is met
     if (this->isLeaf())
     {
-        rntv.push_back(this);
+    rntv.push_back(this);
     }
     else
     {
-        for (auto adaughter: daughters)
-        {
-            adaughter->getRNodeLeafs(rntv);
-        }
+    for (auto adaughter: daughters)
+    {
+    adaughter->getRNodeLeafs(rntv);
+    }
     }
 
 }
@@ -168,7 +168,7 @@ void RNodeTree::Print()
     cout << this->_idx << endl;
     for (auto ad : daughters)
     {
-        ad->Print();
+    ad->Print();
     }
 }
 

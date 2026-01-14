@@ -23,8 +23,8 @@ if __name__=='__main__':
     (options, args) = parser.parse_args()
 
     if len(args) < 1:
-        parser.print_help()
-        sys.exit(1)
+    parser.print_help()
+    sys.exit(1)
     infile = args[0]
     outfile = args[1]
     intreename = args[2]

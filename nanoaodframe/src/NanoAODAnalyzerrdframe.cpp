@@ -1,9 +1,9 @@
 /*
- * NanoAODAnalyzerrdframe.cpp
- *
- *  Created on: Sep 30, 2018
- *      Author: suyong
- */
+* NanoAODAnalyzerrdframe.cpp
+*
+*  Created on: Sep 30, 2018
+*      Author: suyong
+*/
 
 #include "NanoAODAnalyzerrdframe.h"
 #include <iostream>
@@ -22,57 +22,56 @@
 using namespace std;
 
 NanoAODAnalyzerrdframe::NanoAODAnalyzerrdframe(TTree *atree, std::string outfilename, std::string year, std::string syst, std::string jsonfname, std::string globaltag, int nthreads)
-:_rd(*atree),_jsonOK(false), _outfilename(outfilename), _year(year), _syst(syst), _jsonfname(jsonfname), _globaltag(globaltag), _inrootfile(0),_outrootfile(0), _rlm(_rd)
-    , _btagcalibreader(BTagEntry::OP_RESHAPING, "central", {"up_jes", "down_jes", "up_hf","down_hf","up_lf","down_lf","up_hfstats1","down_hfstats1","up_hfstats2","down_hfstats2","up_lfstats1","down_lfstats1","up_lfstats2","down_lfstats2"})
+    : _rd(*atree), _jsonOK(false), _outfilename(outfilename), _year(year), _syst(syst), _jsonfname(jsonfname), _globaltag(globaltag), _inrootfile(0), _outrootfile(0), _rlm(_rd)
+    , _btagcalibreader(BTagEntry::OP_RESHAPING, "central", {"up_jes", "down_jes", "up_hf", "down_hf", "up_lf", "down_lf", "up_hfstats1", "down_hfstats1", "up_hfstats2", "down_hfstats2", "up_lfstats1", "down_lfstats1", "up_lfstats2", "down_lfstats2"})
     , _rnt(&_rlm), currentnode(0)
 {
-        // Skim switch
-        if(_year.find("skim") != std::string::npos){
-                _isSkim = true;
-                cout << "<< Start Skim NanoAOD >>" << endl;
-        }else{
-                _isSkim = false;
-                cout << "<< Start Process NanoAOD >>" << endl;
-        }
+    // Skim switch
+    if (_year.find("skim") != std::string::npos) {
+        _isSkim = true;
+        cout << "<< Start Skim NanoAOD >>" << endl;
+    } else {
+        _isSkim = false;
+        cout << "<< Start Process NanoAOD >>" << endl;
+    }
 
-        // Year switch
-        if(_year.find("16pre") != std::string::npos){
-                _isRun16pre = true;
-                cout << "Run 16 pre (16 APV)" << endl;
-        }else if(_year.find("16post") != std::string::npos){
-                _isRun16post = true;
-                cout << "Run 16 post" << endl;
-        }else if(_year.find("17") != std::string::npos){
-                _isRun17 = true;
-                cout << "Run 17" << endl;
-        }else if(_year.find("18") != std::string::npos){
-                _isRun18 = true;
-                cout << "Run 18" << endl;
-        }
-        _isRun16 = _isRun16pre || _isRun16post;
+    // Year switch
+    if (_year.find("16pre") != std::string::npos) {
+        _isRun16pre = true;
+        cout << "Run 16 pre (16 APV)" << endl;
+    } else if (_year.find("16post") != std::string::npos) {
+        _isRun16post = true;
+        cout << "Run 16 post" << endl;
+    } else if (_year.find("17") != std::string::npos) {
+        _isRun17 = true;
+        cout << "Run 17" << endl;
+    } else if (_year.find("18") != std::string::npos) {
+        _isRun18 = true;
+        cout << "Run 18" << endl;
+    }
+    _isRun16 = _isRun16pre || _isRun16post;
 
     // Data/mc switch
-    if(atree->GetBranch("genWeight") == nullptr){
+    if (atree->GetBranch("genWeight") == nullptr) {
         _isData = true;
         cout << "input file is data" <<endl;
-    }else{
+    } else {
         _isData = false;
         cout << "input file is MC" <<endl;
     }
     TObjArray *allbranches = atree->GetListOfBranches();
-    for (int i =0; i<allbranches->GetSize(); i++)
-    {
+    for (int i = 0; i < allbranches->GetSize(); i++) {
         TBranch *abranch = dynamic_cast<TBranch *>(allbranches->At(i));
-        if (abranch!= nullptr){
+        if (abranch != nullptr) {
             cout << abranch->GetName() << ", ";
             _originalvars.push_back(abranch->GetName());
         }
     }
-        cout<<endl;
+    cout<<endl;
 
-        if(!_isSkim){
-            loadScaleFactors();
-        }
+    if (!_isSkim) {
+        loadScaleFactors();
+    }
 }
 
 void NanoAODAnalyzerrdframe::loadScaleFactors()
@@ -87,20 +86,20 @@ void NanoAODAnalyzerrdframe::loadScaleFactors()
 
     if (_isRun16pre) {
         paths = {"data/Pileup/PileupMC_UL16.root", "data/Pileup/PileupDATA_UL16pre.root", "data/btagSF/skimmed_reshaping_deepJet_106XUL16preVFP_v2.csv",
-                 "data/MuonSF/UL2016_preVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_SingleMuonTriggers.root", "NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt",
-                 "data/MuonSF/UL2016_preVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ID.root", "data/MuonSF/UL2016_preVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ISO.root", "UL2016_preVFP"};
+            "data/MuonSF/UL2016_preVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_SingleMuonTriggers.root", "NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt",
+            "data/MuonSF/UL2016_preVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ID.root", "data/MuonSF/UL2016_preVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ISO.root", "UL2016_preVFP"};
     } else if (_isRun16post) {
         paths = {"data/Pileup/PileupMC_UL16.root", "data/Pileup/PileupDATA_UL16post.root", "data/btagSF/skimmed_reshaping_deepJet_106XUL16postVFP_v3.csv",
-                 "data/MuonSF/UL2016_postVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_SingleMuonTriggers.root", "NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt",
-                 "data/MuonSF/UL2016_postVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_ID.root", "data/MuonSF/UL2016_postVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_ISO.root", "UL2016_postVFP"};
+            "data/MuonSF/UL2016_postVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_SingleMuonTriggers.root", "NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt",
+            "data/MuonSF/UL2016_postVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_ID.root", "data/MuonSF/UL2016_postVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_ISO.root", "UL2016_postVFP"};
     } else if (_isRun17) {
         paths = {"data/Pileup/PileupMC_UL17.root", "data/Pileup/PileupDATA_UL17.root", "data/btagSF/skimmed_reshaping_deepJet_106XUL17_v3.csv",
-                 "data/MuonSF/UL2017/Efficiencies_muon_generalTracks_Z_Run2017_UL_SingleMuonTriggers.root", "NUM_IsoMu27_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt",
-                 "data/MuonSF/UL2017/Efficiencies_muon_generalTracks_Z_Run2017_UL_ID.root", "data/MuonSF/UL2017/Efficiencies_muon_generalTracks_Z_Run2017_UL_ISO.root", "UL2017"};
+            "data/MuonSF/UL2017/Efficiencies_muon_generalTracks_Z_Run2017_UL_SingleMuonTriggers.root", "NUM_IsoMu27_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt",
+            "data/MuonSF/UL2017/Efficiencies_muon_generalTracks_Z_Run2017_UL_ID.root", "data/MuonSF/UL2017/Efficiencies_muon_generalTracks_Z_Run2017_UL_ISO.root", "UL2017"};
     } else if (_isRun18) {
         paths = {"data/Pileup/PileupMC_UL18.root", "data/Pileup/PileupDATA_UL18.root", "data/btagSF/skimmed_reshaping_deepJet_106XUL18_v2.csv",
-                 "data/MuonSF/UL2018/Efficiencies_muon_generalTracks_Z_Run2018_UL_SingleMuonTriggers.root", "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt",
-                 "data/MuonSF/UL2018/Efficiencies_muon_generalTracks_Z_Run2018_UL_ID.root", "data/MuonSF/UL2018/Efficiencies_muon_generalTracks_Z_Run2018_UL_ISO.root", "UL2018"};
+            "data/MuonSF/UL2018/Efficiencies_muon_generalTracks_Z_Run2018_UL_SingleMuonTriggers.root", "NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight_abseta_pt",
+            "data/MuonSF/UL2018/Efficiencies_muon_generalTracks_Z_Run2018_UL_ID.root", "data/MuonSF/UL2018/Efficiencies_muon_generalTracks_Z_Run2018_UL_ISO.root", "UL2018"};
     }
 
     // Pileup
@@ -153,16 +152,14 @@ void NanoAODAnalyzerrdframe::loadScaleFactors()
 NanoAODAnalyzerrdframe::~NanoAODAnalyzerrdframe() {
     // smart pointers handle deletion
     cout << "writing histograms" << endl;
-        for (auto afile:_outrootfilenames)
-        {
-                unique_ptr<TFile> outf(TFile::Open(afile.c_str(), "UPDATE"));
-                for (auto &h : _th1dhistos)
-                {
-                        if (h.second.GetPtr() != nullptr) h.second->Write();
-                }
-                outf->Write(0, TObject::kOverwrite);
-                outf->Close();
+    for (auto afile : _outrootfilenames) {
+        unique_ptr<TFile> outf(TFile::Open(afile.c_str(), "UPDATE"));
+        for (auto &h : _th1dhistos) {
+            if (h.second.GetPtr() != nullptr) h.second->Write();
         }
+        outf->Write(0, TObject::kOverwrite);
+        outf->Close();
+    }
 }
 
 bool NanoAODAnalyzerrdframe::isDefined(string v)
@@ -175,8 +172,7 @@ bool NanoAODAnalyzerrdframe::isDefined(string v)
 void NanoAODAnalyzerrdframe::storeObject(const std::string& name, const std::string& mask, const std::map<std::string, std::string>& varMap)
 {
     std::string ptVar = "";
-    for (auto const& [newName, oldName] : varMap)
-    {
+    for (auto const& [newName, oldName] : varMap) {
         _rlm = _rlm.Define(newName, oldName + "[" + mask + "]");
         if (newName.find("pt") != std::string::npos && ptVar == "") ptVar = newName;
     }
@@ -261,58 +257,58 @@ void NanoAODAnalyzerrdframe::setTree(TTree *t, std::string outfilename)
 void NanoAODAnalyzerrdframe::setupAnalysis()
 {
     /* Must sequentially define objects.
-     *
-     */
+    *
+    */
 
     if (_isData) _jsonOK = readjson();
     // Event weight for data it's always one. For MC, it depends on the sign
 
     _rlm = _rlm.Define("one", "1.0");
-        if (_isData) {
-            if (isDefined("unitGenWeight")) _rlm = _rlm.Redefine("unitGenWeight", "one");
-            else _rlm = _rlm.Define("unitGenWeight", "one");
+    if (_isData) {
+        if (isDefined("unitGenWeight")) _rlm = _rlm.Redefine("unitGenWeight", "one");
+        else _rlm = _rlm.Define("unitGenWeight", "one");
 
-            if (isDefined("re_pugenWeight")) _rlm = _rlm.Redefine("re_pugenWeight", "one");
-            else _rlm = _rlm.Define("re_pugenWeight", "one");
-            if (!_isSkim) {
-                _rlm = _rlm.Define("evWeight_tauSF", "one")
-                           .Define("evWeight_muonSF", "one")
-                           .Define("evWeight_leptonSF", "one")
-                           .Define("btagWeight_DeepFlavBrecalc", "one");
+        if (isDefined("re_pugenWeight")) _rlm = _rlm.Redefine("re_pugenWeight", "one");
+        else _rlm = _rlm.Define("re_pugenWeight", "one");
+        if (!_isSkim) {
+            _rlm = _rlm.Define("evWeight_tauSF", "one")
+            .Define("evWeight_muonSF", "one")
+            .Define("evWeight_leptonSF", "one")
+            .Define("btagWeight_DeepFlavBrecalc", "one");
+        }
+    } else {
+        if (!_isSkim) {
+            if (_syst == "puup") {
+                _rlm = _rlm.Define("re_puWeight", [this](float x) {return _puweightcalc_plus->getWeight(x);}, {"Pileup_nTrueInt"});
+            } else if (_syst == "pudown") {
+                _rlm = _rlm.Define("re_puWeight", [this](float x) {return _puweightcalc_minus->getWeight(x);}, {"Pileup_nTrueInt"});
+            } else {
+                _rlm = _rlm.Define("re_puWeight", [this](float x) {return _puweightcalc->getWeight(x);}, {"Pileup_nTrueInt"});
             }
         } else {
-            if (!_isSkim) {
-                if (_syst == "puup") {
-                    _rlm = _rlm.Define("re_puWeight", [this](float x) {return _puweightcalc_plus->getWeight(x);}, {"Pileup_nTrueInt"});
-                } else if (_syst == "pudown") {
-                    _rlm = _rlm.Define("re_puWeight", [this](float x) {return _puweightcalc_minus->getWeight(x);}, {"Pileup_nTrueInt"});
-                } else {
-                    _rlm = _rlm.Define("re_puWeight", [this](float x) {return _puweightcalc->getWeight(x);}, {"Pileup_nTrueInt"});
-                }
-            } else {
-                _rlm = _rlm.Define("re_puWeight", "one");
-            }
-            if (isDefined("unitGenWeight")) _rlm = _rlm.Redefine("unitGenWeight", "one");
-            else _rlm = _rlm.Define("unitGenWeight", "one");
-
-            if (isDefined("re_pugenWeight")) _rlm = _rlm.Redefine("re_pugenWeight", "unitGenWeight * re_puWeight");
-            else _rlm = _rlm.Define("re_pugenWeight", "unitGenWeight * re_puWeight");
+            _rlm = _rlm.Define("re_puWeight", "one");
         }
+        if (isDefined("unitGenWeight")) _rlm = _rlm.Redefine("unitGenWeight", "one");
+        else _rlm = _rlm.Define("unitGenWeight", "one");
+
+        if (isDefined("re_pugenWeight")) _rlm = _rlm.Redefine("re_pugenWeight", "unitGenWeight * re_puWeight");
+        else _rlm = _rlm.Define("re_pugenWeight", "unitGenWeight * re_puWeight");
+    }
 
     // Object selection will be defined in sequence.
     // Selected objects will be stored in new vectors.
     selectElectrons();
     selectMuons();
-        applyJetMETCorrections();
-        //selectMET();
-        selectJets();
-        selectTaus();
-        removeOverlaps();
-        //selectFatJets();
-        if(!_isData && !_isSkim){
-            //matchGenReco();
-            calculateEvWeight();
-        }
+    applyJetMETCorrections();
+    //selectMET();
+    selectJets();
+    selectTaus();
+    removeOverlaps();
+    //selectFatJets();
+    if(!_isData && !_isSkim){
+        //matchGenReco();
+        calculateEvWeight();
+    }
     defineMoreVars();
     defineCuts();
     bookHists();
@@ -323,28 +319,28 @@ void NanoAODAnalyzerrdframe::setupAnalysis()
 bool NanoAODAnalyzerrdframe::readjson()
 {
     auto isgoodjsonevent = [this](unsigned int runnumber, unsigned int lumisection)
+    {
+        auto key = std::to_string(runnumber);
+
+        bool goodeventflag = false;
+
+        if (jsonroot.isMember(key))
         {
-            auto key = std::to_string(runnumber);
-
-            bool goodeventflag = false;
-
-            if (jsonroot.isMember(key))
+            Json::Value runlumiblocks = jsonroot[key];
+            for (unsigned int i=0; i<runlumiblocks.size() && !goodeventflag; i++)
             {
-                Json::Value runlumiblocks = jsonroot[key];
-                for (unsigned int i=0; i<runlumiblocks.size() && !goodeventflag; i++)
-                {
-                    auto lumirange = runlumiblocks[i];
-                    if (lumisection >= lumirange[0].asUInt() && lumisection <= lumirange[1].asUInt()) goodeventflag = true;
-                }
-                return goodeventflag;
+                auto lumirange = runlumiblocks[i];
+                if (lumisection >= lumirange[0].asUInt() && lumisection <= lumirange[1].asUInt()) goodeventflag = true;
             }
-            else
-            {
-                //cout << "Run not in json " << runnumber << endl;
-                return false;
-            }
+            return goodeventflag;
+        }
+        else
+        {
+            //cout << "Run not in json " << runnumber << endl;
+            return false;
+        }
 
-        };
+    };
 
     if (_jsonfname != "")
     {
@@ -398,29 +394,29 @@ void NanoAODAnalyzerrdframe::setupJetMETCorrection(string globaltag, string jeta
 
         JetCorrectorParameters *L1JetCorrPar = new JetCorrectorParameters(dbfilenamel1);
 
-                if (!L1JetCorrPar->isValid())
-                {
-                    std::cerr << "L1FastJet correction parameters not read" << std::endl;
-                    exit(1);
-                }
-                        JetCorrectorParameters *L2JetCorrPar = new JetCorrectorParameters(dbfilenamel2);
-                if (!L2JetCorrPar->isValid())
-                {
-                    std::cerr << "L2Relative correction parameters not read" << std::endl;
-                    exit(1);
-                }
-                        JetCorrectorParameters *L3JetCorrPar = new JetCorrectorParameters(dbfilenamel3);
-                if (!L3JetCorrPar->isValid())
-                {
-                    std::cerr << "L3Absolute correction parameters not read" << std::endl;
-                    exit(1);
-                }
-                        JetCorrectorParameters *L2L3JetCorrPar = new JetCorrectorParameters(dbfilenamel2l3);
-                if (!L2L3JetCorrPar->isValid())
-                {
-                    std::cerr << "L2L3Residual correction parameters not read" << std::endl;
-                    exit(1);
-                }
+        if (!L1JetCorrPar->isValid())
+        {
+            std::cerr << "L1FastJet correction parameters not read" << std::endl;
+            exit(1);
+        }
+        JetCorrectorParameters *L2JetCorrPar = new JetCorrectorParameters(dbfilenamel2);
+        if (!L2JetCorrPar->isValid())
+        {
+            std::cerr << "L2Relative correction parameters not read" << std::endl;
+            exit(1);
+        }
+        JetCorrectorParameters *L3JetCorrPar = new JetCorrectorParameters(dbfilenamel3);
+        if (!L3JetCorrPar->isValid())
+        {
+            std::cerr << "L3Absolute correction parameters not read" << std::endl;
+            exit(1);
+        }
+        JetCorrectorParameters *L2L3JetCorrPar = new JetCorrectorParameters(dbfilenamel2l3);
+        if (!L2L3JetCorrPar->isValid())
+        {
+            std::cerr << "L2L3Residual correction parameters not read" << std::endl;
+            exit(1);
+        }
 
         // to apply all the corrections, first collect them into a vector
         std::vector<JetCorrectorParameters> jetc;
@@ -445,7 +441,7 @@ void NanoAODAnalyzerrdframe::setupJetMETCorrection(string globaltag, string jeta
 void NanoAODAnalyzerrdframe::selectElectrons()
 {
     _rlm = _rlm.Define("elecuts", "Electron_pt>15.0 && abs(Electron_eta)<2.4 && Electron_cutBased == 1 && ((abs(Electron_deltaEtaSC<=1.479) && abs(Electron_dxy) < 0.05 && abs(Electron_dz) < 0.10 ) || (abs(Electron_deltaEtaSC>1.479) && abs(Electron_dxy) < 0.10 && abs(Electron_dz) < 0.20))")
-               .Define("vetoelecuts", "Electron_pt>15.0 && abs(Electron_eta)<2.4 && Electron_cutBased == 1");
+    .Define("vetoelecuts", "Electron_pt>15.0 && abs(Electron_eta)<2.4 && Electron_cutBased == 1");
 
     storeObject("ele", "elecuts", {
         {"Sel_elept", "Electron_pt"},
@@ -470,7 +466,7 @@ void NanoAODAnalyzerrdframe::selectMuons()
     });
 
     _rlm = _rlm.Define("vetomuoncuts", "!muoncuts && Muon_pt>15.0 && abs(Muon_eta)<2.4 && Muon_looseId && Muon_pfRelIso04_all<0.25")
-               .Define("nvetomuons","Sum(vetomuoncuts)");
+    .Define("nvetomuons","Sum(vetomuoncuts)");
 
     _rlm = _rlm.Define("muon4vecs", ::gen4vec, {"Sel_muonpt", "Sel_muoneta", "Sel_muonphi", "Sel_muonmass"});
 }
@@ -478,7 +474,7 @@ void NanoAODAnalyzerrdframe::selectMuons()
 /*
 void NanoAODAnalyzerrdframe::selectMET()
 {
-        _rlm = _rlm.Define("met4vec", ::genmet4vec, {"MET_pt","MET_phi"});
+    _rlm = _rlm.Define("met4vec", ::genmet4vec, {"MET_pt","MET_phi"});
 
 }*/
 
@@ -504,26 +500,26 @@ void NanoAODAnalyzerrdframe::applyJetMETCorrections()
         return corrfactors;
     };
 
-    auto jecuncertaintylambdaf= [this](floats jetpts, floats jetetas, floats jetAreas, floats jetrawf, float rho)->floats
+    auto jecuncertaintylambdaf = [this](floats jetpts, floats jetetas, floats jetAreas, floats jetrawf, float rho)->floats
+    {
+        floats uncertainties;
+        uncertainties.reserve(jetpts.size());
+        for (unsigned int i =0; i<jetpts.size(); i++)
         {
-            floats uncertainties;
-            uncertainties.reserve(jetpts.size());
-            for (unsigned int i =0; i<jetpts.size(); i++)
-            {
-                float rawjetpt = jetpts[i]*(1.0-jetrawf[i]);
-                _jetCorrector->setJetPt(rawjetpt);
-                _jetCorrector->setJetEta(jetetas[i]);
-                _jetCorrector->setJetA(jetAreas[i]);
-                _jetCorrector->setRho(rho);
-                float corrfactor = _jetCorrector->getCorrection();
-                _jetCorrectionUncertainty->setJetPt(corrfactor*rawjetpt);
-                _jetCorrectionUncertainty->setJetEta(jetetas[i]);
-                float unc = _jetCorrectionUncertainty->getUncertainty(true);
-                uncertainties.emplace_back(unc);
+            float rawjetpt = jetpts[i]*(1.0-jetrawf[i]);
+            _jetCorrector->setJetPt(rawjetpt);
+            _jetCorrector->setJetEta(jetetas[i]);
+            _jetCorrector->setJetA(jetAreas[i]);
+            _jetCorrector->setRho(rho);
+            float corrfactor = _jetCorrector->getCorrection();
+            _jetCorrectionUncertainty->setJetPt(corrfactor*rawjetpt);
+            _jetCorrectionUncertainty->setJetEta(jetetas[i]);
+            float unc = _jetCorrectionUncertainty->getUncertainty(true);
+            uncertainties.emplace_back(unc);
 
-            }
-            return uncertainties;
-        };
+        }
+        return uncertainties;
+    };
 
     auto metcorrlambdaf = [](float met, float metphi, floats jetptsbefore, floats jetptsafter, floats jetphis)->float
     {
@@ -607,58 +603,58 @@ void NanoAODAnalyzerrdframe::selectJets()
 
 void NanoAODAnalyzerrdframe::selectTaus()
 {
-        // Tau SF
-        cout<<"Applying TauES on Genuine taus"<<endl;
-        auto tauES = [this](floats &pt, floats &eta, ints &dm, uchars &genid, floats &x)->floats{
-                floats xout;
-                for(unsigned int i=0; i<pt.size(); i++){
-                        float es = 1.0;
-                        if(genid[i]==5){
-                                es = _testool->getTES(pt[i],dm[i],genid[i]);
-                        }else if(genid[i]==1 || genid[i]==3){
-                                es = _festool->getFES(eta[i],dm[i],genid[i]);
-                        }
-                        xout.emplace_back(x[i]*es);
-                }
-                return xout;
-        };
-        if (!_isData) {
-                _rlm = _rlm.Define("Scaled_taupt",tauES,{"Tau_pt","Tau_eta","Tau_decayMode","Tau_genPartFlav","Tau_pt"})
-                           .Define("Scaled_taumass",tauES,{"Tau_pt","Tau_eta","Tau_decayMode","Tau_genPartFlav","Tau_mass"});
-        }else{
-                _rlm = _rlm.Define("Scaled_taupt","Tau_pt")
-                           .Define("Scaled_taumass","Tau_mass");
+    // Tau SF
+    cout<<"Applying TauES on Genuine taus"<<endl;
+    auto tauES = [this](floats &pt, floats &eta, ints &dm, uchars &genid, floats &x)->floats{
+        floats xout;
+        for(unsigned int i=0; i<pt.size(); i++){
+            float es = 1.0;
+            if(genid[i]==5){
+                es = _testool->getTES(pt[i],dm[i],genid[i]);
+            }else if(genid[i]==1 || genid[i]==3){
+                es = _festool->getFES(eta[i],dm[i],genid[i]);
+            }
+            xout.emplace_back(x[i]*es);
         }
+        return xout;
+    };
+    if (!_isData) {
+        _rlm = _rlm.Define("Scaled_taupt",tauES,{"Tau_pt","Tau_eta","Tau_decayMode","Tau_genPartFlav","Tau_pt"})
+        .Define("Scaled_taumass",tauES,{"Tau_pt","Tau_eta","Tau_decayMode","Tau_genPartFlav","Tau_mass"});
+    }else{
+        _rlm = _rlm.Define("Scaled_taupt","Tau_pt")
+        .Define("Scaled_taumass","Tau_mass");
+    }
 
-        auto overlap_removal_mutau = [](FourVectorVec &muon4vecs, FourVectorVec &tau4vecs){
-                ints out;
-                for (auto tau: tau4vecs){
-                        int check = 0;
-                        for (auto mu: muon4vecs){
-                                auto dR = ROOT::Math::VectorUtil::DeltaR(mu, tau);
-                                if( dR >= 0.4 ) check = 1;
-                        }
-                        out.emplace_back(check);
-                }
-                return out;
-        };
-        _rlm = _rlm.Define("tau4vecs", ::gen4vec, {"Scaled_taupt", "Tau_eta", "Tau_phi", "Scaled_taumass"})
-                   .Define("mutauoverlap", overlap_removal_mutau, {"muon4vecs","tau4vecs"});
+    auto overlap_removal_mutau = [](FourVectorVec &muon4vecs, FourVectorVec &tau4vecs){
+        ints out;
+        for (auto tau: tau4vecs){
+            int check = 0;
+            for (auto mu: muon4vecs){
+                auto dR = ROOT::Math::VectorUtil::DeltaR(mu, tau);
+                if( dR >= 0.4 ) check = 1;
+            }
+            out.emplace_back(check);
+        }
+        return out;
+    };
+    _rlm = _rlm.Define("tau4vecs", ::gen4vec, {"Scaled_taupt", "Tau_eta", "Tau_phi", "Scaled_taumass"})
+    .Define("mutauoverlap", overlap_removal_mutau, {"muon4vecs","tau4vecs"});
 
-        // Hadronic Tau Object Selections
-        _rlm = _rlm.Define("taucuts", "Scaled_taupt>40.0 && abs(Tau_eta)<2.3 && Tau_decayMode")
-                   .Define("deeptauidcuts","Tau_idDeepTau2017v2p1VSmu & 8 && Tau_idDeepTau2017v2p1VSe & 4 && Tau_idDeepTau2017v2p1VSjet & 64")
-                   .Define("seltaucuts","taucuts && deeptauidcuts && mutauoverlap");
+    // Hadronic Tau Object Selections
+    _rlm = _rlm.Define("taucuts", "Scaled_taupt>40.0 && abs(Tau_eta)<2.3 && Tau_decayMode")
+    .Define("deeptauidcuts","Tau_idDeepTau2017v2p1VSmu & 8 && Tau_idDeepTau2017v2p1VSe & 4 && Tau_idDeepTau2017v2p1VSjet & 64")
+    .Define("seltaucuts","taucuts && deeptauidcuts && mutauoverlap");
 
-        // Hadronic Tau Selection
-        _rlm = _rlm.Define("Sel_taupt", "Scaled_taupt[seltaucuts]")
-                   .Define("Sel_taueta", "Tau_eta[seltaucuts]")
-                   .Define("Sel_tauphi", "Tau_phi[seltaucuts]")
-                   .Define("Sel_taumass", "Scaled_taumass[seltaucuts]")
-                   .Define("Sel_taucharge", "Tau_charge[seltaucuts]")
-                   .Define("Sel_taujetidx", "Tau_jetIdx[seltaucuts]")
-                   .Define("ncleantaupass", "int(Sel_taupt.size())")
-                   .Define("cleantau4vecs", ::gen4vec, {"Sel_taupt", "Sel_taueta", "Sel_tauphi", "Sel_taumass"});
+    // Hadronic Tau Selection
+    _rlm = _rlm.Define("Sel_taupt", "Scaled_taupt[seltaucuts]")
+    .Define("Sel_taueta", "Tau_eta[seltaucuts]")
+    .Define("Sel_tauphi", "Tau_phi[seltaucuts]")
+    .Define("Sel_taumass", "Scaled_taumass[seltaucuts]")
+    .Define("Sel_taucharge", "Tau_charge[seltaucuts]")
+    .Define("Sel_taujetidx", "Tau_jetIdx[seltaucuts]")
+    .Define("ncleantaupass", "int(Sel_taupt.size())")
+    .Define("cleantau4vecs", ::gen4vec, {"Sel_taupt", "Sel_taueta", "Sel_tauphi", "Sel_taumass"});
 
 }
 
@@ -684,8 +680,8 @@ void NanoAODAnalyzerrdframe::removeOverlaps()
 
     // Overlap removal with muon (used for btagging SF)
     _rlm = _rlm.Define("muonjetoverlap", checkoverlap, {"jet4vecs","muon4vecs"})
-               .Define("taujetoverlap", checkoverlap, {"jet4vecs","cleantau4vecs"})
-               .Define("jetoverlap","muonjetoverlap && taujetoverlap");
+    .Define("taujetoverlap", checkoverlap, {"jet4vecs","cleantau4vecs"})
+    .Define("jetoverlap","muonjetoverlap && taujetoverlap");
 
     storeObject("cleanjets", "jetoverlap", {
         {"Sel2_jetpt", "Sel_jetpt"},
@@ -696,7 +692,7 @@ void NanoAODAnalyzerrdframe::removeOverlaps()
     });
 
     _rlm = _rlm.Define("cleanjet4vecs", ::gen4vec, {"Sel2_jetpt", "Sel2_jeteta", "Sel2_jetphi", "Sel2_jetmass"})
-               .Define("Sel2_jetHT", "Sum(Sel2_jetpt)");
+    .Define("Sel2_jetHT", "Sum(Sel2_jetpt)");
 
     // Define b-tagging cut using helper
     _rlm = _rlm.Define("btagcuts", [this](floats &btags){
@@ -715,59 +711,59 @@ void NanoAODAnalyzerrdframe::removeOverlaps()
     });
 
     _rlm = _rlm.Define("Sel2_bjetHT", "Sum(Sel2_bjetpt)")
-               .Define("cleanbjet4vecs", ::gen4vec, {"Sel2_bjetpt", "Sel2_bjeteta", "Sel2_bjetphi", "Sel2_bjetmass"});
+    .Define("cleanbjet4vecs", ::gen4vec, {"Sel2_bjetpt", "Sel2_bjeteta", "Sel2_bjetphi", "Sel2_bjetmass"});
 }
 
 void NanoAODAnalyzerrdframe::matchGenReco()
 {
-        _rlm = _rlm.Define("FinalGenPart_idx", ::FinalGenPart_idx, {"GenPart_pdgId", "GenPart_genPartIdxMother"})
-                   .Define("GenPart_LFVup_idx", "FinalGenPart_idx[0]")
-                   .Define("GenPart_LFVmuon_idx", "FinalGenPart_idx[1]")
-                   .Define("GenPart_LFVtau_idx", "FinalGenPart_idx[2]")
-                   .Define("GenPart_SMb_idx", "FinalGenPart_idx[3]")
-                   .Define("GenPart_SMW1_idx", "FinalGenPart_idx[4]")
-                   .Define("GenPart_SMW2_idx", "FinalGenPart_idx[5]")
-                   .Define("GenPart_LFVtop_idx", "FinalGenPart_idx[6]")
-                   .Define("GenPart_SMtop_idx", "FinalGenPart_idx[7]");
+    _rlm = _rlm.Define("FinalGenPart_idx", ::FinalGenPart_idx, {"GenPart_pdgId", "GenPart_genPartIdxMother"})
+    .Define("GenPart_LFVup_idx", "FinalGenPart_idx[0]")
+    .Define("GenPart_LFVmuon_idx", "FinalGenPart_idx[1]")
+    .Define("GenPart_LFVtau_idx", "FinalGenPart_idx[2]")
+    .Define("GenPart_SMb_idx", "FinalGenPart_idx[3]")
+    .Define("GenPart_SMW1_idx", "FinalGenPart_idx[4]")
+    .Define("GenPart_SMW2_idx", "FinalGenPart_idx[5]")
+    .Define("GenPart_LFVtop_idx", "FinalGenPart_idx[6]")
+    .Define("GenPart_SMtop_idx", "FinalGenPart_idx[7]");
 
-        _rlm = _rlm.Define("drmax1", "float(0.15)")
-                   .Define("drmax2", "float(0.4)")
-                   .Define("Muon_matched", ::dRmatching_binary,{"GenPart_LFVmuon_idx","drmax1","GenPart_pt","GenPart_eta","GenPart_phi","GenPart_mass","Muon_pt","Muon_eta","Muon_phi","Muon_mass"})
-                   .Define("Tau_matched",::dRmatching_binary,{"GenPart_LFVtau_idx","drmax2", "GenPart_pt","GenPart_eta","GenPart_phi","GenPart_mass","Tau_pt","Tau_eta","Tau_phi","Tau_mass"})
-                   .Define("Jet_LFVup_matched",::dRmatching_binary,{"GenPart_LFVup_idx","drmax2","GenPart_pt","GenPart_eta","GenPart_phi","GenPart_mass","Jet_pt","Jet_eta","Jet_phi","Jet_mass"})
-                   .Define("Jet_SMb_matched",::dRmatching_binary,{"GenPart_SMb_idx","drmax2","GenPart_pt","GenPart_eta","GenPart_phi","GenPart_mass","Jet_pt","Jet_eta","Jet_phi","Jet_mass"})
-                   .Define("Jet_SMW1_matched",::dRmatching_binary,{"GenPart_SMW1_idx","drmax2","GenPart_pt","GenPart_eta","GenPart_phi","GenPart_mass","Jet_pt","Jet_eta","Jet_phi","Jet_mass"})
-                   .Define("Jet_SMW2_matched",::dRmatching_binary,{"GenPart_SMW2_idx","drmax2", "GenPart_pt","GenPart_eta","GenPart_phi","GenPart_mass","Jet_pt","Jet_eta","Jet_phi","Jet_mass"})
-                   .Define("Sel_muon_matched","Muon_matched[muoncuts]")
-                   .Define("Sel_tau_matched","Tau_matched[seltaucuts]")
-                   .Define("Sel2_LFVupjet_matched","Jet_LFVup_matched[jetcuts][muonjetoverlap][taujetoverlap]")
-                   .Define("Sel2_SMbjet_matched","Jet_SMb_matched[jetcuts][muonjetoverlap][taujetoverlap]")
-                   .Define("Sel2_SMW1jet_matched","Jet_SMW1_matched[jetcuts][muonjetoverlap][taujetoverlap]")
-                   .Define("Sel2_SMW2jet_matched","Jet_SMW2_matched[jetcuts][muonjetoverlap][taujetoverlap]")
-                   .Define("Sel_muonmatched_idx","ArgMax(Sel_muon_matched)")
-                   .Define("Sel_taumatched_idx","ArgMax(Sel_tau_matched)")
-                   .Define("Sel2_LFVupjet_matched_idx","ArgMax(Sel2_LFVupjet_matched)")
-                   .Define("Sel2_SMbjet_matched_idx","ArgMax(Sel2_SMbjet_matched)")
-                   .Define("Sel2_SMW1jet_matched_idx","ArgMax(Sel2_SMW1jet_matched)")
-                   .Define("Sel2_SMW2jet_matched_idx","ArgMax(Sel2_SMW2jet_matched)")
-                   .Define("nmuonmatched", "Sum(Muon_matched)")
-                   .Define("ntaumatched", "Sum(Tau_matched)")
-                   .Define("nJet_LFVup_matched", "Sum(Jet_LFVup_matched)")
-                   .Define("nJet_SMb_matched", "Sum(Jet_SMb_matched)")
-                   .Define("nJet_SMW1_matched", "Sum(Jet_SMW1_matched)")
-                   .Define("nJet_SMW2_matched", "Sum(Jet_SMW2_matched)");
+    _rlm = _rlm.Define("drmax1", "float(0.15)")
+    .Define("drmax2", "float(0.4)")
+    .Define("Muon_matched", ::dRmatching_binary,{"GenPart_LFVmuon_idx","drmax1","GenPart_pt","GenPart_eta","GenPart_phi","GenPart_mass","Muon_pt","Muon_eta","Muon_phi","Muon_mass"})
+    .Define("Tau_matched",::dRmatching_binary,{"GenPart_LFVtau_idx","drmax2", "GenPart_pt","GenPart_eta","GenPart_phi","GenPart_mass","Tau_pt","Tau_eta","Tau_phi","Tau_mass"})
+    .Define("Jet_LFVup_matched",::dRmatching_binary,{"GenPart_LFVup_idx","drmax2","GenPart_pt","GenPart_eta","GenPart_phi","GenPart_mass","Jet_pt","Jet_eta","Jet_phi","Jet_mass"})
+    .Define("Jet_SMb_matched",::dRmatching_binary,{"GenPart_SMb_idx","drmax2","GenPart_pt","GenPart_eta","GenPart_phi","GenPart_mass","Jet_pt","Jet_eta","Jet_phi","Jet_mass"})
+    .Define("Jet_SMW1_matched",::dRmatching_binary,{"GenPart_SMW1_idx","drmax2","GenPart_pt","GenPart_eta","GenPart_phi","GenPart_mass","Jet_pt","Jet_eta","Jet_phi","Jet_mass"})
+    .Define("Jet_SMW2_matched",::dRmatching_binary,{"GenPart_SMW2_idx","drmax2", "GenPart_pt","GenPart_eta","GenPart_phi","GenPart_mass","Jet_pt","Jet_eta","Jet_phi","Jet_mass"})
+    .Define("Sel_muon_matched","Muon_matched[muoncuts]")
+    .Define("Sel_tau_matched","Tau_matched[seltaucuts]")
+    .Define("Sel2_LFVupjet_matched","Jet_LFVup_matched[jetcuts][muonjetoverlap][taujetoverlap]")
+    .Define("Sel2_SMbjet_matched","Jet_SMb_matched[jetcuts][muonjetoverlap][taujetoverlap]")
+    .Define("Sel2_SMW1jet_matched","Jet_SMW1_matched[jetcuts][muonjetoverlap][taujetoverlap]")
+    .Define("Sel2_SMW2jet_matched","Jet_SMW2_matched[jetcuts][muonjetoverlap][taujetoverlap]")
+    .Define("Sel_muonmatched_idx","ArgMax(Sel_muon_matched)")
+    .Define("Sel_taumatched_idx","ArgMax(Sel_tau_matched)")
+    .Define("Sel2_LFVupjet_matched_idx","ArgMax(Sel2_LFVupjet_matched)")
+    .Define("Sel2_SMbjet_matched_idx","ArgMax(Sel2_SMbjet_matched)")
+    .Define("Sel2_SMW1jet_matched_idx","ArgMax(Sel2_SMW1jet_matched)")
+    .Define("Sel2_SMW2jet_matched_idx","ArgMax(Sel2_SMW2jet_matched)")
+    .Define("nmuonmatched", "Sum(Muon_matched)")
+    .Define("ntaumatched", "Sum(Tau_matched)")
+    .Define("nJet_LFVup_matched", "Sum(Jet_LFVup_matched)")
+    .Define("nJet_SMb_matched", "Sum(Jet_SMb_matched)")
+    .Define("nJet_SMW1_matched", "Sum(Jet_SMW1_matched)")
+    .Define("nJet_SMW2_matched", "Sum(Jet_SMW2_matched)");
 }
 
 void NanoAODAnalyzerrdframe::selectFatJets()
 {
     _rlm = _rlm.Define("fatjetcuts", "FatJet_pt>400.0 && abs(FatJet_eta)<2.4 && FatJet_tau1>0.0 && FatJet_tau2>0.0 && FatJet_tau3>0.0 && FatJet_tau3/FatJet_tau2<0.5")
-                .Define("Sel_fatjetpt", "FatJet_pt[fatjetcuts]")
-                .Define("Sel_fatjeteta", "FatJet_eta[fatjetcuts]")
-                .Define("Sel_fatjetphi", "FatJet_phi[fatjetcuts]")
-                .Define("Sel_fatjetmass", "FatJet_mass[fatjetcuts]")
-                .Define("nfatjetspass", "int(Sel_fatjetpt.size())")
-                //.Define("Sel_fatjetweight", "std::vector<double>(nfatjetspass, evWeight)")
-                .Define("Sel_fatjet4vecs", ::gen4vec, {"Sel_fatjetpt", "Sel_fatjeteta", "Sel_fatjetphi", "Sel_fatjetmass"});
+    .Define("Sel_fatjetpt", "FatJet_pt[fatjetcuts]")
+    .Define("Sel_fatjeteta", "FatJet_eta[fatjetcuts]")
+    .Define("Sel_fatjetphi", "FatJet_phi[fatjetcuts]")
+    .Define("Sel_fatjetmass", "FatJet_mass[fatjetcuts]")
+    .Define("nfatjetspass", "int(Sel_fatjetpt.size())")
+    //.Define("Sel_fatjetweight", "std::vector<double>(nfatjetspass, evWeight)")
+    .Define("Sel_fatjet4vecs", ::gen4vec, {"Sel_fatjetpt", "Sel_fatjeteta", "Sel_fatjetphi", "Sel_fatjetmass"});
 }
 
 void NanoAODAnalyzerrdframe::calculateEvWeight()
@@ -777,11 +773,11 @@ void NanoAODAnalyzerrdframe::calculateEvWeight()
 
     cout << "Getting Tau ID Scale Factors" << endl;
     _rlm = _rlm.Define("Sel_tauflav", "Tau_genPartFlav[seltaucuts]")
-               .Define("evWeight_tauSF", [this](floats &pt, floats &eta, uchars &genid){ return getTauSF(pt, eta, genid); }, {"Sel_taupt", "Sel_taueta", "Sel_tauflav"})
-               .Define("evWeight_leptonSF", "evWeight_muonSF*evWeight_tauSF");
+    .Define("evWeight_tauSF", [this](floats &pt, floats &eta, uchars &genid){ return getTauSF(pt, eta, genid); }, {"Sel_taupt", "Sel_taueta", "Sel_tauflav"})
+    .Define("evWeight_leptonSF", "evWeight_muonSF*evWeight_tauSF");
 
     _rlm = _rlm.Define("Sel_jethadflav", "Jet_hadronFlavour[jetcuts]")
-               .Define("Sel2_jethadflav", "Sel_jethadflav[jetoverlap]");
+    .Define("Sel2_jethadflav", "Sel_jethadflav[jetoverlap]");
 
     cout << "Generate b-tagging weight" << endl;
     _rlm = _rlm.Define("btagWeight_DeepFlavBrecalc", [this](floats &pts, floats &etas, ints &hadflav, floats &btags){
@@ -948,6 +944,12 @@ void NanoAODAnalyzerrdframe::addCuts(string cut, string idx)
 
 void NanoAODAnalyzerrdframe::run(bool saveAll, string outtreename)
 {
+    // Close the output file that was opened in constructor to avoid conflict with Snapshot
+    if (_outrootfile != nullptr) {
+        _outrootfile->Close();
+        delete _outrootfile;
+        _outrootfile = nullptr;
+    }
     /*
     if (saveAll) {
         _rlm.Snapshot(outtreename, _outfilename);
@@ -961,7 +963,7 @@ void NanoAODAnalyzerrdframe::run(bool saveAll, string outtreename)
     vector<RNodeTree *> rntends;
     _rnt.getRNodeLeafs(rntends);
     _rnt.Print();
-        cout << rntends.size() << endl;
+    cout << rntends.size() << endl;
     // on master, regex_replace doesn't work somehow
     //std::regex rootextension("\\.root");
 
@@ -974,7 +976,7 @@ void NanoAODAnalyzerrdframe::run(bool saveAll, string outtreename)
         if (rntends.size()>1) outname.replace(outname.find(".root"), 5, "_"+nodename+".root");
         _outrootfilenames.push_back(outname);
         RNode *arnode = arnt->getRNode();
-                cout << arnt->getIndex();
+        cout << arnt->getIndex();
         //cout << ROOT::RDF::SaveGraph(_rlm) << endl;
         if (saveAll) {
             arnode->Snapshot(outtreename, outname);
@@ -987,7 +989,7 @@ void NanoAODAnalyzerrdframe::run(bool saveAll, string outtreename)
             {
                 cout << bname << ", ";
             }
-                        cout<<endl;
+            cout<<endl;
             arnode->Snapshot(outtreename, outname, _varstostorepertree[nodename]);
         }
     }

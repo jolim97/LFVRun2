@@ -26,20 +26,20 @@ def main():
     outtree = "outputTree"
 
     processor = SkimProcessor(
-        outdir=args.outdir,
-        indir=args.indir,
-        outtree=outtree,
-        intree=intree,
-        year=args.year,
-        syst=args.syst,
-        json=args.json,
-        split=args.split,
-        skipold=args.skipold,
-        recursive=args.recursive,
-        saveallbranches=args.saveallbranches,
-        globaltag=args.globaltag,
-        batch=args.batch,
-        flat=args.flat
+    outdir=args.outdir,
+    indir=args.indir,
+    outtree=outtree,
+    intree=intree,
+    year=args.year,
+    syst=args.syst,
+    json=args.json,
+    split=args.split,
+    skipold=args.skipold,
+    recursive=args.recursive,
+    saveallbranches=args.saveallbranches,
+    globaltag=args.globaltag,
+    batch=args.batch,
+    flat=args.flat
     )
 
     processor.process(allinone=args.allinone)

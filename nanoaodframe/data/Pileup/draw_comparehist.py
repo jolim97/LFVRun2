@@ -13,18 +13,18 @@ for run in runs:
     datarootfile = "PileupDATA_UL"+run+".root"
     mcrootfile = ""
     if "16" in run:
-        mcrootfile = "PileupMC_UL16.root"
+    mcrootfile = "PileupMC_UL16.root"
     else:
-        mcrootfile = "PileupMC_UL"+run+".root"
+    mcrootfile = "PileupMC_UL"+run+".root"
 
     if run == "16pre":
-        CMS_lumi.lumi_13TeV = "19.5 fb^{-1}"
+    CMS_lumi.lumi_13TeV = "19.5 fb^{-1}"
     if run == "16post":
-        CMS_lumi.lumi_13TeV = "16.8 fb^{-1}"
+    CMS_lumi.lumi_13TeV = "16.8 fb^{-1}"
     elif run == "17":
-        CMS_lumi.lumi_13TeV = "41.5 fb^{-1}"
+    CMS_lumi.lumi_13TeV = "41.5 fb^{-1}"
     elif run == "18":
-        CMS_lumi.lumi_13TeV = "59.8 fb^{-1}"
+    CMS_lumi.lumi_13TeV = "59.8 fb^{-1}"
 
     fdata = TFile(datarootfile)
     h_pu = fdata.Get("pileup")

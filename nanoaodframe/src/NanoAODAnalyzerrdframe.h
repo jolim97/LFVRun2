@@ -47,12 +47,12 @@ public:
     void selectMuons();
     void applyJetMETCorrections();
     void selectJets();
-        void selectTaus();
-        void selectMET();
+    void selectTaus();
+    void selectMET();
     void selectFatJets();
     void removeOverlaps();
-        void matchGenReco();
-        void calculateEvWeight();
+    void matchGenReco();
+    void calculateEvWeight();
     virtual void defineMoreVars() = 0; // define higher-level variables from basic ones, you must implement this in your subclassed analysis code
 
     void addVar(varinfo v);
@@ -63,7 +63,7 @@ public:
     template <typename T, typename std::enable_if<!std::is_convertible<T, std::string>::value, int>::type = 0>
     void defineVar(std::string varname, T function,  const RDFDetail::ColumnNames_t &columns = {})
     {
-        _rlm = _rlm.Define(varname, function, columns);
+    _rlm = _rlm.Define(varname, function, columns);
     };
 
     void addVartoStore(std::string varname);
@@ -84,17 +84,17 @@ protected:
 private:
     ROOT::RDataFrame _rd;
 
-        bool _isSkim;
+    bool _isSkim;
     bool _isData;
     bool _jsonOK;
     std::string _outfilename;
-        std::string _year;
-        bool _isRun16pre = false;
-        bool _isRun16post = false;
-        bool _isRun16 = false;
-        bool _isRun17 = false;
-        bool _isRun18 = false;
-        std::string _syst;
+    std::string _year;
+    bool _isRun16pre = false;
+    bool _isRun16post = false;
+    bool _isRun16 = false;
+    bool _isRun17 = false;
+    bool _isRun18 = false;
+    std::string _syst;
     std::string _jsonfname;
     std::string _globaltag;
     TFile *_inrootfile;
@@ -123,8 +123,8 @@ private:
     BTagCalibrationReader _btagcalibreader2;
 
     // pile up weights
-        const char * pumcfile;
-        const char * pudatafile;
+    const char * pumcfile;
+    const char * pudatafile;
     TH1D *_hpumc;
     TH1D *_hpudata;
     TH1D *_hpudata_plus;
@@ -141,24 +141,24 @@ private:
     std::unique_ptr<FactorizedJetCorrector> _jetCorrector;
     std::unique_ptr<JetCorrectionUncertainty> _jetCorrectionUncertainty;
 
-        TH2F* _hmuontrg;
-        TH2F* _hmuonid;
-        TH2F* _hmuoniso;
-        std::unique_ptr<WeightCalculatorFromHistogram> _muontrg;
-        std::unique_ptr<WeightCalculatorFromHistogram> _muonid;
-        std::unique_ptr<WeightCalculatorFromHistogram> _muoniso;
+    TH2F* _hmuontrg;
+    TH2F* _hmuonid;
+    TH2F* _hmuoniso;
+    std::unique_ptr<WeightCalculatorFromHistogram> _muontrg;
+    std::unique_ptr<WeightCalculatorFromHistogram> _muonid;
+    std::unique_ptr<WeightCalculatorFromHistogram> _muoniso;
 
-        std::unique_ptr<TauIDSFTool> _tauidSFjet;
-        std::unique_ptr<TauIDSFTool> _tauidSFele;
-        std::unique_ptr<TauIDSFTool> _tauidSFmu;
-        std::unique_ptr<TauESTool> _testool;
-        std::unique_ptr<TauFESTool> _festool;
+    std::unique_ptr<TauIDSFTool> _tauidSFjet;
+    std::unique_ptr<TauIDSFTool> _tauidSFele;
+    std::unique_ptr<TauIDSFTool> _tauidSFmu;
+    std::unique_ptr<TauESTool> _testool;
+    std::unique_ptr<TauFESTool> _festool;
 
-        // SF calculation helpers
-        float getBtagCut();
-        float getBtagWeight(floats &pts, floats &etas, ints &hadflav, floats &btags);
-        float getMuonSF(floats &pt, floats &eta);
-        float getTauSF(floats &pt, floats &eta, uchars &genid);
+    // SF calculation helpers
+    float getBtagCut();
+    float getBtagWeight(floats &pts, floats &etas, ints &hadflav, floats &btags);
+    float getMuonSF(floats &pt, floats &eta);
+    float getTauSF(floats &pt, floats &eta, uchars &genid);
 };
 
 #endif /* NANOAODANALYZERRDFRAME_H_ */

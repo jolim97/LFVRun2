@@ -8,7 +8,7 @@ class JetCorrectorParameters;
 
 class JetCorrectionUncertainty
 {
-  public:
+    public:
     JetCorrectionUncertainty();
     JetCorrectionUncertainty(const std::string& fDataFile);
     JetCorrectionUncertainty(const JetCorrectorParameters& fParameters);
@@ -27,29 +27,29 @@ class JetCorrectionUncertainty
     float getUncertainty(bool fDirection);
 
  private:
-  JetCorrectionUncertainty(const JetCorrectionUncertainty&);
-  JetCorrectionUncertainty& operator= (const JetCorrectionUncertainty&);
-  std::vector<float> fillVector(const std::vector<std::string>& fNames);
-  float getPtRel();
-  //---- Member Data ---------
-  float mJetE;
-  float mJetEta;
-  float mJetPt;
-  float mJetPhi;
-  float mJetEMF;
-  float mLepPx;
-  float mLepPy;
-  float mLepPz;
-  bool  mAddLepToJet;
-  bool  mIsJetEset;
-  bool  mIsJetPtset;
-  bool  mIsJetPhiset;
-  bool  mIsJetEtaset;
-  bool  mIsJetEMFset;
-  bool  mIsLepPxset;
-  bool  mIsLepPyset;
-  bool  mIsLepPzset;
-  SimpleJetCorrectionUncertainty* mUncertainty;
+    JetCorrectionUncertainty(const JetCorrectionUncertainty&);
+    JetCorrectionUncertainty& operator= (const JetCorrectionUncertainty&);
+    std::vector<float> fillVector(const std::vector<std::string>& fNames);
+    float getPtRel();
+    //---- Member Data ---------
+    float mJetE;
+    float mJetEta;
+    float mJetPt;
+    float mJetPhi;
+    float mJetEMF;
+    float mLepPx;
+    float mLepPy;
+    float mLepPz;
+    bool  mAddLepToJet;
+    bool  mIsJetEset;
+    bool  mIsJetPtset;
+    bool  mIsJetPhiset;
+    bool  mIsJetEtaset;
+    bool  mIsJetEMFset;
+    bool  mIsLepPxset;
+    bool  mIsLepPyset;
+    bool  mIsLepPzset;
+    SimpleJetCorrectionUncertainty* mUncertainty;
 };
 
 #endif

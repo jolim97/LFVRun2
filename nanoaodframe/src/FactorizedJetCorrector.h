@@ -15,7 +15,7 @@ class JetCorrectorParameters;
 
 class FactorizedJetCorrector
 {
-  public:
+    public:
     enum VarTypes   {kJetPt,kJetEta,kJetPhi,kJetE,kJetEMF,kRelLepPt,kPtRel,kNPV,kJetA,kRho,kJPTrawE,kJPTrawEt,kJPTrawPt,kJPTrawEta,kJPTrawOff};
     enum LevelTypes {kL1,kL2,kL3,kL4,kL5,kL6,kL7,kL1fj,kL1JPT};
     FactorizedJetCorrector();
@@ -40,8 +40,8 @@ class FactorizedJetCorrector
     std::vector<float> getSubCorrections();
 
 
-  private:
-  //---- Member Functions ----
+    private:
+    //---- Member Functions ----
     FactorizedJetCorrector(const FactorizedJetCorrector&);
     FactorizedJetCorrector& operator= (const FactorizedJetCorrector&);
     float getLepPt()    const;

@@ -56,9 +56,9 @@ CMS_lumi.extraText = ""
 # DATA
 if not isblind:
     if year=="run2":
-        s.addChannel("Run2"+syst+".root", "data", 999, isMC=False)
+    s.addChannel("Run2"+syst+".root", "data", 999, isMC=False)
     else:
-        s.addChannel(year+"/Run"+year+syst+".root", "data", 999, isMC=False)
+    s.addChannel(year+"/Run"+year+syst+".root", "data", 999, isMC=False)
 for run in runs:
     # LFV ( must be added before other MC )
     s.addChannel(run+"/ST_LFV_TCMuTau_Vector_"+run+syst+".root", "LFV STc", 10, isMC=True, xsec=rlumi[run]*36.8, counterhistogramroot=run+"/ST_LFV_TCMuTau_Vector_"+run+syst+".root")

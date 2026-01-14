@@ -31,13 +31,13 @@ using namespace std;
 
 class TauIDSFTool {
 
-  protected:
+    protected:
 
     std::map<const std::string,const TF1*> func;
     TH1* hist;
     [[noreturn]] void disabled() const;
 
-  public:
+    public:
 
     std::string ID;
     std::string WP;
@@ -48,7 +48,7 @@ class TauIDSFTool {
     bool isVsEta = false;
 
     TauIDSFTool(const std::string& year, const std::string& id="MVAoldDM2017v2", const std::string& wp="Tight",
-                const bool dm=false, const bool embedding=false);
+    const bool dm=false, const bool embedding=false);
     ~TauIDSFTool() { }
 
     float getSFvsPT( double pt,          int genmatch, const std::string& unc="");
@@ -63,44 +63,44 @@ class TauESTool {
 
     protected:
 
-        std::map<const std::string,const TF1*> func;
-        TH1* hist_lowpt;
-        TH1* hist_highpt;
-        float pt_low;
-        float pt_high;
-        [[noreturn]] void disabled() const;
+    std::map<const std::string,const TF1*> func;
+    TH1* hist_lowpt;
+    TH1* hist_highpt;
+    float pt_low;
+    float pt_high;
+    [[noreturn]] void disabled() const;
 
     public:
 
-        std::string ID;
-        std::vector<int> DMs;
+    std::string ID;
+    std::vector<int> DMs;
 
-        TauESTool(const std::string& year, const std::string& id="DeepTau2017v2p1VSjet");
-        ~TauESTool() { }
+    TauESTool(const std::string& year, const std::string& id="DeepTau2017v2p1VSjet");
+    ~TauESTool() { }
 
-        float getTES(double pt, int dm, int genmatch, const std::string& unc="");
+    float getTES(double pt, int dm, int genmatch, const std::string& unc="");
 };
 
 class TauFESTool {
 
     protected:
 
-        std::map<const std::string,const TF1*> func;
-        TGraphAsymmErrors* graph;
-        [[noreturn]] void disabled() const;
+    std::map<const std::string,const TF1*> func;
+    TGraphAsymmErrors* graph;
+    [[noreturn]] void disabled() const;
 
     public:
 
-        std::string ID;
-        std::vector<string> regions;
-        std::map<std::pair<string, int>, std::vector<float>> FESs;
-        std::vector<float> fes;
-        std::vector<int> DMs;
-        std::vector<int> genmatches;
+    std::string ID;
+    std::vector<string> regions;
+    std::map<std::pair<string, int>, std::vector<float>> FESs;
+    std::vector<float> fes;
+    std::vector<int> DMs;
+    std::vector<int> genmatches;
 
-        TauFESTool(const std::string& year, const std::string& id="DeepTau2017v2p1VSe");
-        ~TauFESTool() { }
+    TauFESTool(const std::string& year, const std::string& id="DeepTau2017v2p1VSe");
+    ~TauFESTool() { }
 
-        float getFES(double eta, int dm, int genmatch, const std::string& unc="");
+    float getFES(double eta, int dm, int genmatch, const std::string& unc="");
 };
 #endif // TauIDSFTool_h

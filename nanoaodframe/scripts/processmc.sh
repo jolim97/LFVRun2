@@ -1,4 +1,6 @@
 #!/bin/bash
+#nthreads=4
+nthreads=4
 # version=skim_LFVv8
 # mc16pre=/data1/common/skimmed_NanoAOD/$version/mc/16pre
 # mc16post=/data1/common/skimmed_NanoAOD/$version/mc/16post
