@@ -10,7 +10,7 @@
 #include "Utilities.cpp"
 
 /////////////////////////////////////////////////////////////////////////
-JetCorrectionUncertainty::JetCorrectionUncertainty () 
+JetCorrectionUncertainty::JetCorrectionUncertainty ()
 {
   mJetEta = -9999;
   mJetPt  = -9999;
@@ -32,7 +32,7 @@ JetCorrectionUncertainty::JetCorrectionUncertainty ()
   mUncertainty = new SimpleJetCorrectionUncertainty();
 }
 /////////////////////////////////////////////////////////////////////////
-JetCorrectionUncertainty::JetCorrectionUncertainty(const std::string& fDataFile)  
+JetCorrectionUncertainty::JetCorrectionUncertainty(const std::string& fDataFile)
 {
   mJetEta = -9999;
   mJetPt  = -9999;
@@ -54,7 +54,7 @@ JetCorrectionUncertainty::JetCorrectionUncertainty(const std::string& fDataFile)
   mUncertainty = new SimpleJetCorrectionUncertainty(fDataFile);
 }
 /////////////////////////////////////////////////////////////////////////
-JetCorrectionUncertainty::JetCorrectionUncertainty(const JetCorrectorParameters& fParameters)  
+JetCorrectionUncertainty::JetCorrectionUncertainty(const JetCorrectorParameters& fParameters)
 {
   mJetEta = -9999;
   mJetPt  = -9999;
@@ -76,19 +76,19 @@ JetCorrectionUncertainty::JetCorrectionUncertainty(const JetCorrectorParameters&
   mUncertainty = new SimpleJetCorrectionUncertainty(fParameters);
 }
 /////////////////////////////////////////////////////////////////////////
-JetCorrectionUncertainty::~JetCorrectionUncertainty () 
+JetCorrectionUncertainty::~JetCorrectionUncertainty ()
 {
   delete mUncertainty;
 }
 /////////////////////////////////////////////////////////////////////////
-void JetCorrectionUncertainty::setParameters(const std::string& fDataFile) 
+void JetCorrectionUncertainty::setParameters(const std::string& fDataFile)
 {
   //---- delete the mParameters pointer before setting the new address ---
-  delete mUncertainty; 
+  delete mUncertainty;
   mUncertainty = new SimpleJetCorrectionUncertainty(fDataFile);
 }
 /////////////////////////////////////////////////////////////////////////
-float JetCorrectionUncertainty::getUncertainty(bool fDirection) 
+float JetCorrectionUncertainty::getUncertainty(bool fDirection)
 {
   float result;
   std::vector<float> vx,vy;
@@ -105,7 +105,7 @@ float JetCorrectionUncertainty::getUncertainty(bool fDirection)
   mIsLepPzset  = false;
   return result;
 }
-//------------------------------------------------------------------------ 
+//------------------------------------------------------------------------
 //--- Reads the parameter names and fills a vector of floats -------------
 //------------------------------------------------------------------------
 std::vector<float> JetCorrectionUncertainty::fillVector(const std::vector<std::string>& fNames)
@@ -122,13 +122,13 @@ std::vector<float> JetCorrectionUncertainty::fillVector(const std::vector<std::s
       else if (fNames[i] == "JetPt")
         {
           if (!mIsJetPtset)
-            handleError("JetCorrectionUncertainty::", " jet pt is not set");  
+            handleError("JetCorrectionUncertainty::", " jet pt is not set");
           result.push_back(mJetPt);
         }
       else if (fNames[i] == "JetPhi")
         {
           if (!mIsJetPhiset)
-            handleError("JetCorrectionUncertainty::", " jet phi is not set");  
+            handleError("JetCorrectionUncertainty::", " jet phi is not set");
           result.push_back(mJetPt);
         }
       else if (fNames[i] == "JetE")
@@ -142,31 +142,31 @@ std::vector<float> JetCorrectionUncertainty::fillVector(const std::vector<std::s
           if (!mIsJetEMFset)
             handleError("JetCorrectionUncertainty::", " jet emf is not set");
           result.push_back(mJetEMF);
-        } 
+        }
       else if (fNames[i] == "LepPx")
         {
           if (!mIsLepPxset)
-            handleError("JetCorrectionUncertainty::", " lepton px is not set");  
+            handleError("JetCorrectionUncertainty::", " lepton px is not set");
           result.push_back(mLepPx);
         }
       else if (fNames[i] == "LepPy")
         {
           if (!mIsLepPyset)
-            handleError("JetCorrectionUncertainty::", " lepton py is not set");  
+            handleError("JetCorrectionUncertainty::", " lepton py is not set");
           result.push_back(mLepPy);
         }
       else if (fNames[i] == "LepPz")
         {
           if (!mIsLepPzset)
-            handleError("JetCorrectionUncertainty::", " lepton pz is not set");  
+            handleError("JetCorrectionUncertainty::", " lepton pz is not set");
           result.push_back(mLepPz);
         }
       else
         handleError("JetCorrectionUncertainty::", " unknown parameter "+fNames[i]);
-    }     
-  return result;      
+    }
+  return result;
 }
-//------------------------------------------------------------------------ 
+//------------------------------------------------------------------------
 //--- Calculate the PtRel (needed for the SLB) ---------------------------
 //------------------------------------------------------------------------
 float JetCorrectionUncertainty::getPtRel()
@@ -196,7 +196,7 @@ float JetCorrectionUncertainty::getPtRel()
   float pTrel2 = lep2-pLrel2;
   return (pTrel2 > 0) ? std::sqrt(pTrel2) : 0.0;
 }
-//------------------------------------------------------------------------ 
+//------------------------------------------------------------------------
 //--- Setters ------------------------------------------------------------
 //------------------------------------------------------------------------
 void JetCorrectionUncertainty::setJetEta(float fEta)

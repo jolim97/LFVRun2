@@ -61,7 +61,7 @@ TauIDSFTool::TauIDSFTool(const std::string& year, const std::string& id, const s
     std::cerr << std::endl;
     assert(0);
   }
-  
+
   std::string year_mu = "";
   if(year.find("2016") != std::string::npos){
       year_mu = "2016Legacy";

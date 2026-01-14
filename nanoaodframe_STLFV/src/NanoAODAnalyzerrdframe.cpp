@@ -23,8 +23,8 @@ using namespace std;
 
 NanoAODAnalyzerrdframe::NanoAODAnalyzerrdframe(TTree *atree, std::string outfilename, std::string year, std::string syst, std::string jsonfname, std::string globaltag, int nthreads)
 :_rd(*atree),_jsonOK(false), _outfilename(outfilename), _year(year), _syst(syst), _jsonfname(jsonfname), _globaltag(globaltag), _inrootfile(0),_outrootfile(0), _rlm(_rd)
-	, _btagcalibreader(BTagEntry::OP_RESHAPING, "central", {"up_jes", "down_jes", "up_hf","down_hf","up_lf","down_lf","up_hfstats1","down_hfstats1","up_hfstats2","down_hfstats2","up_lfstats1","down_lfstats1","up_lfstats2","down_lfstats2"})
-	, _rnt(&_rlm), currentnode(0)
+    , _btagcalibreader(BTagEntry::OP_RESHAPING, "central", {"up_jes", "down_jes", "up_hf","down_hf","up_lf","down_lf","up_hfstats1","down_hfstats1","up_hfstats2","down_hfstats2","up_lfstats1","down_lfstats1","up_lfstats2","down_lfstats2"})
+    , _rnt(&_rlm), currentnode(0)
 {
         // Skim switch
         if(_year.find("skim") != std::string::npos){
@@ -51,25 +51,25 @@ NanoAODAnalyzerrdframe::NanoAODAnalyzerrdframe(TTree *atree, std::string outfile
         }
         _isRun16 = _isRun16pre || _isRun16post;
 
-	// Data/mc switch
-	if(atree->GetBranch("genWeight") == nullptr){
-		_isData = true;
-		cout << "input file is data" <<endl;
-	}else{
-		_isData = false;
-		cout << "input file is MC" <<endl;
-	}
-	TObjArray *allbranches = atree->GetListOfBranches();
-	for (int i =0; i<allbranches->GetSize(); i++)
-	{
-		TBranch *abranch = dynamic_cast<TBranch *>(allbranches->At(i));
-		if (abranch!= nullptr){
-			cout << abranch->GetName() << ", ";
-			_originalvars.push_back(abranch->GetName());
-		}
-	}
+    // Data/mc switch
+    if(atree->GetBranch("genWeight") == nullptr){
+        _isData = true;
+        cout << "input file is data" <<endl;
+    }else{
+        _isData = false;
+        cout << "input file is MC" <<endl;
+    }
+    TObjArray *allbranches = atree->GetListOfBranches();
+    for (int i =0; i<allbranches->GetSize(); i++)
+    {
+        TBranch *abranch = dynamic_cast<TBranch *>(allbranches->At(i));
+        if (abranch!= nullptr){
+            cout << abranch->GetName() << ", ";
+            _originalvars.push_back(abranch->GetName());
+        }
+    }
         cout<<endl;
-        
+
         if(!_isSkim){
             loadScaleFactors();
         }
@@ -151,8 +151,8 @@ void NanoAODAnalyzerrdframe::loadScaleFactors()
 }
 
 NanoAODAnalyzerrdframe::~NanoAODAnalyzerrdframe() {
-	// smart pointers handle deletion
-	cout << "writing histograms" << endl;
+    // smart pointers handle deletion
+    cout << "writing histograms" << endl;
         for (auto afile:_outrootfilenames)
         {
                 unique_ptr<TFile> outf(TFile::Open(afile.c_str(), "UPDATE"));
@@ -167,9 +167,9 @@ NanoAODAnalyzerrdframe::~NanoAODAnalyzerrdframe() {
 
 bool NanoAODAnalyzerrdframe::isDefined(string v)
 {
-	auto result = std::find(_originalvars.begin(), _originalvars.end(), v);
-	if (result != _originalvars.end()) return true;
-	else return false;
+    auto result = std::find(_originalvars.begin(), _originalvars.end(), v);
+    if (result != _originalvars.end()) return true;
+    else return false;
 }
 
 void NanoAODAnalyzerrdframe::storeObject(const std::string& name, const std::string& mask, const std::map<std::string, std::string>& varMap)
@@ -246,28 +246,28 @@ float NanoAODAnalyzerrdframe::getTauSF(floats &pt, floats &eta, uchars &genid)
 
 void NanoAODAnalyzerrdframe::setTree(TTree *t, std::string outfilename)
 {
-	_rd = ROOT::RDataFrame(*t);
-	_rlm = RNode(_rd);
-	_outfilename = outfilename;
-	_hist1dinfovector.clear();
-	_th1dhistos.clear();
-	_varstostore.clear();
-	_hist1dinfovector.clear();
-	_selections.clear();
+    _rd = ROOT::RDataFrame(*t);
+    _rlm = RNode(_rd);
+    _outfilename = outfilename;
+    _hist1dinfovector.clear();
+    _th1dhistos.clear();
+    _varstostore.clear();
+    _hist1dinfovector.clear();
+    _selections.clear();
 
-	this->setupAnalysis();
+    this->setupAnalysis();
 }
 
 void NanoAODAnalyzerrdframe::setupAnalysis()
 {
-	/* Must sequentially define objects.
-	 *
-	 */
+    /* Must sequentially define objects.
+     *
+     */
 
-	if (_isData) _jsonOK = readjson();
-	// Event weight for data it's always one. For MC, it depends on the sign
+    if (_isData) _jsonOK = readjson();
+    // Event weight for data it's always one. For MC, it depends on the sign
 
-	_rlm = _rlm.Define("one", "1.0");
+    _rlm = _rlm.Define("one", "1.0");
         if (_isData) {
             if (isDefined("unitGenWeight")) _rlm = _rlm.Redefine("unitGenWeight", "one");
             else _rlm = _rlm.Define("unitGenWeight", "one");
@@ -299,10 +299,10 @@ void NanoAODAnalyzerrdframe::setupAnalysis()
             else _rlm = _rlm.Define("re_pugenWeight", "unitGenWeight * re_puWeight");
         }
 
-	// Object selection will be defined in sequence.
-	// Selected objects will be stored in new vectors.
-	selectElectrons();
-	selectMuons();
+    // Object selection will be defined in sequence.
+    // Selected objects will be stored in new vectors.
+    selectElectrons();
+    selectMuons();
         applyJetMETCorrections();
         //selectMET();
         selectJets();
@@ -313,90 +313,90 @@ void NanoAODAnalyzerrdframe::setupAnalysis()
             //matchGenReco();
             calculateEvWeight();
         }
-	defineMoreVars();
-	defineCuts();
-	bookHists();
-	setupCuts_and_Hists();
-	setupTree();
+    defineMoreVars();
+    defineCuts();
+    bookHists();
+    setupCuts_and_Hists();
+    setupTree();
 }
 
 bool NanoAODAnalyzerrdframe::readjson()
 {
-	auto isgoodjsonevent = [this](unsigned int runnumber, unsigned int lumisection)
-		{
-			auto key = std::to_string(runnumber);
+    auto isgoodjsonevent = [this](unsigned int runnumber, unsigned int lumisection)
+        {
+            auto key = std::to_string(runnumber);
 
-			bool goodeventflag = false;
+            bool goodeventflag = false;
 
-			if (jsonroot.isMember(key))
-			{
-				Json::Value runlumiblocks = jsonroot[key];
-				for (unsigned int i=0; i<runlumiblocks.size() && !goodeventflag; i++)
-				{
-					auto lumirange = runlumiblocks[i];
-					if (lumisection >= lumirange[0].asUInt() && lumisection <= lumirange[1].asUInt()) goodeventflag = true;
-				}
-				return goodeventflag;
-			}
-			else
-			{
-				//cout << "Run not in json " << runnumber << endl;
-				return false;
-			}
+            if (jsonroot.isMember(key))
+            {
+                Json::Value runlumiblocks = jsonroot[key];
+                for (unsigned int i=0; i<runlumiblocks.size() && !goodeventflag; i++)
+                {
+                    auto lumirange = runlumiblocks[i];
+                    if (lumisection >= lumirange[0].asUInt() && lumisection <= lumirange[1].asUInt()) goodeventflag = true;
+                }
+                return goodeventflag;
+            }
+            else
+            {
+                //cout << "Run not in json " << runnumber << endl;
+                return false;
+            }
 
-		};
+        };
 
-	if (_jsonfname != "")
-	{
-		std::ifstream jsoninfile;
-		jsoninfile.open(_jsonfname);
+    if (_jsonfname != "")
+    {
+        std::ifstream jsoninfile;
+        jsoninfile.open(_jsonfname);
 
-		if (jsoninfile.good())
-		{
-			jsoninfile >> jsonroot;
-			/*
-			auto runlumiblocks =  jsonroot["276775"];
-			for (auto i=0; i<runlumiblocks.size(); i++)
-			{
-				auto lumirange = runlumiblocks[i];
-				cout << "lumi range " << lumirange[0] << " " << lumirange[1] << endl;
-			}
-			*/
-			_rlm = _rlm.Define("goodjsonevent", isgoodjsonevent, {"run", "luminosityBlock"}).Filter("goodjsonevent");
-			_jsonOK = true;
-			return true;
-		}
-		else
-		{
-			cout << "Problem reading json file " << _jsonfname << endl;
-			return false;
-		}
-	}
-	else
-	{
-		cout << "no JSON file given" << endl;
-		return true;
-	}
+        if (jsoninfile.good())
+        {
+            jsoninfile >> jsonroot;
+            /*
+            auto runlumiblocks =  jsonroot["276775"];
+            for (auto i=0; i<runlumiblocks.size(); i++)
+            {
+                auto lumirange = runlumiblocks[i];
+                cout << "lumi range " << lumirange[0] << " " << lumirange[1] << endl;
+            }
+            */
+            _rlm = _rlm.Define("goodjsonevent", isgoodjsonevent, {"run", "luminosityBlock"}).Filter("goodjsonevent");
+            _jsonOK = true;
+            return true;
+        }
+        else
+        {
+            cout << "Problem reading json file " << _jsonfname << endl;
+            return false;
+        }
+    }
+    else
+    {
+        cout << "no JSON file given" << endl;
+        return true;
+    }
 }
 
 void NanoAODAnalyzerrdframe::setupJetMETCorrection(string globaltag, string jetalgo)
 {
-	if (globaltag != "")
-	{
-		cout << "Applying new JetMET corrections. GT: "+globaltag+" on jetAlgo: "+jetalgo << endl;
-		string basedirectory = "data/jme/";
+    if (globaltag != "")
+    {
+        cout << "Applying new JetMET corrections. GT: "+globaltag+" on jetAlgo: "+jetalgo << endl;
+        string basedirectory = "data/jme/";
 
-		string datamcflag = "";
-		if (_isData) datamcflag = "DATA";
-		else datamcflag = "MC";
+        string datamcflag = "";
+        if (_isData) datamcflag = "DATA";
+        else datamcflag = "MC";
 
-		// set file names that contain the parameters for corrections
-		string dbfilenamel1 = basedirectory+globaltag+"_"+datamcflag+"_L1FastJet_"+jetalgo+".txt";
-		string dbfilenamel2 = basedirectory+globaltag+"_"+datamcflag+"_L2Relative_"+jetalgo+".txt";
-		string dbfilenamel3 = basedirectory+globaltag+"_"+datamcflag+"_L3Absolute_"+jetalgo+".txt";
-		string dbfilenamel2l3 = basedirectory+globaltag+"_"+datamcflag+"_L2L3Residual_"+jetalgo+".txt";
+        // set file names that contain the parameters for corrections
+        string dbfilenamel1 = basedirectory+globaltag+"_"+datamcflag+"_L1FastJet_"+jetalgo+".txt";
+        string dbfilenamel2 = basedirectory+globaltag+"_"+datamcflag+"_L2Relative_"+jetalgo+".txt";
+        string dbfilenamel3 = basedirectory+globaltag+"_"+datamcflag+"_L3Absolute_"+jetalgo+".txt";
+        string dbfilenamel2l3 = basedirectory+globaltag+"_"+datamcflag+"_L2L3Residual_"+jetalgo+".txt";
 
-		JetCorrectorParameters *L1JetCorrPar = new JetCorrectorParameters(dbfilenamel1);
+        JetCorrectorParameters *L1JetCorrPar = new JetCorrectorParameters(dbfilenamel1);
 
                 if (!L1JetCorrPar->isValid())
                 {
@@ -422,24 +422,24 @@ void NanoAODAnalyzerrdframe::setupJetMETCorrection(string globaltag, string jeta
                     exit(1);
                 }
 
-		// to apply all the corrections, first collect them into a vector
-		std::vector<JetCorrectorParameters> jetc;
-		jetc.push_back(*L1JetCorrPar);
-		jetc.push_back(*L2JetCorrPar);
-		jetc.push_back(*L3JetCorrPar);
-		jetc.push_back(*L2L3JetCorrPar);
+        // to apply all the corrections, first collect them into a vector
+        std::vector<JetCorrectorParameters> jetc;
+        jetc.push_back(*L1JetCorrPar);
+        jetc.push_back(*L2JetCorrPar);
+        jetc.push_back(*L3JetCorrPar);
+        jetc.push_back(*L2L3JetCorrPar);
 
-		// apply the various corrections
-		_jetCorrector = std::make_unique<FactorizedJetCorrector>(jetc);
+        // apply the various corrections
+        _jetCorrector = std::make_unique<FactorizedJetCorrector>(jetc);
 
-		// object to calculate uncertainty
-		string dbfilenameunc = basedirectory+globaltag+"_"+datamcflag+"_Uncertainty_"+jetalgo+".txt";
-		_jetCorrectionUncertainty = std::make_unique<JetCorrectionUncertainty>(dbfilenameunc);
-	}
-	else
-	{
-		cout << "Not applying new JetMET corrections. Using NanoAOD as is." << endl;
-	}
+        // object to calculate uncertainty
+        string dbfilenameunc = basedirectory+globaltag+"_"+datamcflag+"_Uncertainty_"+jetalgo+".txt";
+        _jetCorrectionUncertainty = std::make_unique<JetCorrectionUncertainty>(dbfilenameunc);
+    }
+    else
+    {
+        cout << "Not applying new JetMET corrections. Using NanoAOD as is." << endl;
+    }
 }
 
 void NanoAODAnalyzerrdframe::selectElectrons()
@@ -460,7 +460,7 @@ void NanoAODAnalyzerrdframe::selectElectrons()
 void NanoAODAnalyzerrdframe::selectMuons()
 {
     _rlm = _rlm.Define("muoncuts", "Muon_pt>50.0 && abs(Muon_eta)<2.4 && Muon_tightId && Muon_pfRelIso04_all<0.15");
-    
+
     storeObject("muon", "muoncuts", {
         {"Sel_muonpt", "Muon_pt"},
         {"Sel_muoneta", "Muon_eta"},
@@ -487,87 +487,87 @@ void NanoAODAnalyzerrdframe::selectMET()
 // and https://github.com/cms-nanoAOD/nanoAOD-tools/blob/master/python/postprocessing/modules/jme/JetRecalibrator.py
 void NanoAODAnalyzerrdframe::applyJetMETCorrections()
 {
-	auto appcorrlambdaf = [this](floats jetpts, floats jetetas, floats jetAreas, floats jetrawf, float rho)->floats
-	{
-		floats corrfactors;
-		corrfactors.reserve(jetpts.size());
-		for (unsigned int i =0; i<jetpts.size(); i++)
-		{
-			float rawjetpt = jetpts[i]*(1.0-jetrawf[i]);
-			_jetCorrector->setJetPt(rawjetpt);
-			_jetCorrector->setJetEta(jetetas[i]);
-			_jetCorrector->setJetA(jetAreas[i]);
-			_jetCorrector->setRho(rho);
-			float corrfactor = _jetCorrector->getCorrection();
-			corrfactors.emplace_back(rawjetpt * corrfactor);
-		}
-		return corrfactors;
-	};
+    auto appcorrlambdaf = [this](floats jetpts, floats jetetas, floats jetAreas, floats jetrawf, float rho)->floats
+    {
+        floats corrfactors;
+        corrfactors.reserve(jetpts.size());
+        for (unsigned int i =0; i<jetpts.size(); i++)
+        {
+            float rawjetpt = jetpts[i]*(1.0-jetrawf[i]);
+            _jetCorrector->setJetPt(rawjetpt);
+            _jetCorrector->setJetEta(jetetas[i]);
+            _jetCorrector->setJetA(jetAreas[i]);
+            _jetCorrector->setRho(rho);
+            float corrfactor = _jetCorrector->getCorrection();
+            corrfactors.emplace_back(rawjetpt * corrfactor);
+        }
+        return corrfactors;
+    };
 
-	auto jecuncertaintylambdaf= [this](floats jetpts, floats jetetas, floats jetAreas, floats jetrawf, float rho)->floats
-		{
-			floats uncertainties;
-			uncertainties.reserve(jetpts.size());
-			for (unsigned int i =0; i<jetpts.size(); i++)
-			{
-				float rawjetpt = jetpts[i]*(1.0-jetrawf[i]);
-				_jetCorrector->setJetPt(rawjetpt);
-				_jetCorrector->setJetEta(jetetas[i]);
-				_jetCorrector->setJetA(jetAreas[i]);
-				_jetCorrector->setRho(rho);
-				float corrfactor = _jetCorrector->getCorrection();
-				_jetCorrectionUncertainty->setJetPt(corrfactor*rawjetpt);
-				_jetCorrectionUncertainty->setJetEta(jetetas[i]);
-				float unc = _jetCorrectionUncertainty->getUncertainty(true);
-				uncertainties.emplace_back(unc);
+    auto jecuncertaintylambdaf= [this](floats jetpts, floats jetetas, floats jetAreas, floats jetrawf, float rho)->floats
+        {
+            floats uncertainties;
+            uncertainties.reserve(jetpts.size());
+            for (unsigned int i =0; i<jetpts.size(); i++)
+            {
+                float rawjetpt = jetpts[i]*(1.0-jetrawf[i]);
+                _jetCorrector->setJetPt(rawjetpt);
+                _jetCorrector->setJetEta(jetetas[i]);
+                _jetCorrector->setJetA(jetAreas[i]);
+                _jetCorrector->setRho(rho);
+                float corrfactor = _jetCorrector->getCorrection();
+                _jetCorrectionUncertainty->setJetPt(corrfactor*rawjetpt);
+                _jetCorrectionUncertainty->setJetEta(jetetas[i]);
+                float unc = _jetCorrectionUncertainty->getUncertainty(true);
+                uncertainties.emplace_back(unc);
 
-			}
-			return uncertainties;
-		};
+            }
+            return uncertainties;
+        };
 
-	auto metcorrlambdaf = [](float met, float metphi, floats jetptsbefore, floats jetptsafter, floats jetphis)->float
-	{
-		auto metx = met * cos(metphi);
-		auto mety = met * sin(metphi);
-		for (unsigned int i=0; i<jetphis.size(); i++)
-		{
-			if (jetptsafter[i]>15.0)
-			{
-				metx -= (jetptsafter[i] - jetptsbefore[i])*cos(jetphis[i]);
-				mety -= (jetptsafter[i] - jetptsbefore[i])*sin(jetphis[i]);
-			}
-		}
-		return float(sqrt(metx*metx + mety*mety));
-	};
+    auto metcorrlambdaf = [](float met, float metphi, floats jetptsbefore, floats jetptsafter, floats jetphis)->float
+    {
+        auto metx = met * cos(metphi);
+        auto mety = met * sin(metphi);
+        for (unsigned int i=0; i<jetphis.size(); i++)
+        {
+            if (jetptsafter[i]>15.0)
+            {
+                metx -= (jetptsafter[i] - jetptsbefore[i])*cos(jetphis[i]);
+                mety -= (jetptsafter[i] - jetptsbefore[i])*sin(jetphis[i]);
+            }
+        }
+        return float(sqrt(metx*metx + mety*mety));
+    };
 
-	auto metphicorrlambdaf = [](float met, float metphi, floats jetptsbefore, floats jetptsafter, floats jetphis)->float
-	{
-		auto metx = met * cos(metphi);
-		auto mety = met * sin(metphi);
-		for (unsigned int i=0; i<jetphis.size(); i++)
-		{
-			if (jetptsafter[i]>15.0)
-			{
-				metx -= (jetptsafter[i] - jetptsbefore[i])*cos(jetphis[i]);
-				mety -= (jetptsafter[i] - jetptsbefore[i])*sin(jetphis[i]);
-			}
-		}
-		return float(atan2(mety, metx));
-	};
+    auto metphicorrlambdaf = [](float met, float metphi, floats jetptsbefore, floats jetptsafter, floats jetphis)->float
+    {
+        auto metx = met * cos(metphi);
+        auto mety = met * sin(metphi);
+        for (unsigned int i=0; i<jetphis.size(); i++)
+        {
+            if (jetptsafter[i]>15.0)
+            {
+                metx -= (jetptsafter[i] - jetptsbefore[i])*cos(jetphis[i]);
+                mety -= (jetptsafter[i] - jetptsbefore[i])*sin(jetphis[i]);
+            }
+        }
+        return float(atan2(mety, metx));
+    };
 
-	if (_jetCorrector != 0)
-	{
-		_rlm = _rlm.Define("Jet_pt_corr", appcorrlambdaf, {"Jet_pt", "Jet_eta", "Jet_area", "Jet_rawFactor", "fixedGridRhoFastjetAll"});
-		_rlm = _rlm.Define("Jet_pt_relerror", jecuncertaintylambdaf, {"Jet_pt", "Jet_eta", "Jet_area", "Jet_rawFactor", "fixedGridRhoFastjetAll"});
-		_rlm = _rlm.Define("Jet_pt_corr_up", "Jet_pt_corr*(1.0f + Jet_pt_relerror)");
-		_rlm = _rlm.Define("Jet_pt_corr_down", "Jet_pt_corr*(1.0f - Jet_pt_relerror)");
-		_rlm = _rlm.Define("MET_pt_corr", metcorrlambdaf, {"MET_pt", "MET_phi", "Jet_pt", "Jet_pt_corr", "Jet_phi"});
-		_rlm = _rlm.Define("MET_phi_corr", metphicorrlambdaf, {"MET_pt", "MET_phi", "Jet_pt", "Jet_pt_corr", "Jet_phi"});
-		_rlm = _rlm.Define("MET_pt_corr_up", metcorrlambdaf, {"MET_pt", "MET_phi", "Jet_pt", "Jet_pt_corr_up", "Jet_phi"});
-		_rlm = _rlm.Define("MET_phi_corr_up", metphicorrlambdaf, {"MET_pt", "MET_phi", "Jet_pt", "Jet_pt_corr_up", "Jet_phi"});
-		_rlm = _rlm.Define("MET_pt_corr_down", metcorrlambdaf, {"MET_pt", "MET_phi", "Jet_pt", "Jet_pt_corr_down", "Jet_phi"});
-		_rlm = _rlm.Define("MET_phi_corr_down", metphicorrlambdaf, {"MET_pt", "MET_phi", "Jet_pt", "Jet_pt_corr_down", "Jet_phi"});
-	}
+    if (_jetCorrector != 0)
+    {
+        _rlm = _rlm.Define("Jet_pt_corr", appcorrlambdaf, {"Jet_pt", "Jet_eta", "Jet_area", "Jet_rawFactor", "fixedGridRhoFastjetAll"});
+        _rlm = _rlm.Define("Jet_pt_relerror", jecuncertaintylambdaf, {"Jet_pt", "Jet_eta", "Jet_area", "Jet_rawFactor", "fixedGridRhoFastjetAll"});
+        _rlm = _rlm.Define("Jet_pt_corr_up", "Jet_pt_corr*(1.0f + Jet_pt_relerror)");
+        _rlm = _rlm.Define("Jet_pt_corr_down", "Jet_pt_corr*(1.0f - Jet_pt_relerror)");
+        _rlm = _rlm.Define("MET_pt_corr", metcorrlambdaf, {"MET_pt", "MET_phi", "Jet_pt", "Jet_pt_corr", "Jet_phi"});
+        _rlm = _rlm.Define("MET_phi_corr", metphicorrlambdaf, {"MET_pt", "MET_phi", "Jet_pt", "Jet_pt_corr", "Jet_phi"});
+        _rlm = _rlm.Define("MET_pt_corr_up", metcorrlambdaf, {"MET_pt", "MET_phi", "Jet_pt", "Jet_pt_corr_up", "Jet_phi"});
+        _rlm = _rlm.Define("MET_phi_corr_up", metphicorrlambdaf, {"MET_pt", "MET_phi", "Jet_pt", "Jet_pt_corr_up", "Jet_phi"});
+        _rlm = _rlm.Define("MET_pt_corr_down", metcorrlambdaf, {"MET_pt", "MET_phi", "Jet_pt", "Jet_pt_corr_down", "Jet_phi"});
+        _rlm = _rlm.Define("MET_phi_corr_down", metphicorrlambdaf, {"MET_pt", "MET_phi", "Jet_pt", "Jet_pt_corr_down", "Jet_phi"});
+    }
 }
 
 void NanoAODAnalyzerrdframe::selectJets()
@@ -705,7 +705,7 @@ void NanoAODAnalyzerrdframe::removeOverlaps()
         for(float b : btags) results.push_back(b > cutValue);
         return results;
     }, {"Sel2_jetbtag"});
-    
+
     storeObject("cleanbjets", "btagcuts", {
         {"Sel2_bjetpt", "Sel2_jetpt"},
         {"Sel2_bjeteta", "Sel2_jeteta"},
@@ -760,14 +760,14 @@ void NanoAODAnalyzerrdframe::matchGenReco()
 
 void NanoAODAnalyzerrdframe::selectFatJets()
 {
-	_rlm = _rlm.Define("fatjetcuts", "FatJet_pt>400.0 && abs(FatJet_eta)<2.4 && FatJet_tau1>0.0 && FatJet_tau2>0.0 && FatJet_tau3>0.0 && FatJet_tau3/FatJet_tau2<0.5")
-				.Define("Sel_fatjetpt", "FatJet_pt[fatjetcuts]")
-				.Define("Sel_fatjeteta", "FatJet_eta[fatjetcuts]")
-				.Define("Sel_fatjetphi", "FatJet_phi[fatjetcuts]")
-				.Define("Sel_fatjetmass", "FatJet_mass[fatjetcuts]")
-				.Define("nfatjetspass", "int(Sel_fatjetpt.size())")
-				//.Define("Sel_fatjetweight", "std::vector<double>(nfatjetspass, evWeight)")
-				.Define("Sel_fatjet4vecs", ::gen4vec, {"Sel_fatjetpt", "Sel_fatjeteta", "Sel_fatjetphi", "Sel_fatjetmass"});
+    _rlm = _rlm.Define("fatjetcuts", "FatJet_pt>400.0 && abs(FatJet_eta)<2.4 && FatJet_tau1>0.0 && FatJet_tau2>0.0 && FatJet_tau3>0.0 && FatJet_tau3/FatJet_tau2<0.5")
+                .Define("Sel_fatjetpt", "FatJet_pt[fatjetcuts]")
+                .Define("Sel_fatjeteta", "FatJet_eta[fatjetcuts]")
+                .Define("Sel_fatjetphi", "FatJet_phi[fatjetcuts]")
+                .Define("Sel_fatjetmass", "FatJet_mass[fatjetcuts]")
+                .Define("nfatjetspass", "int(Sel_fatjetpt.size())")
+                //.Define("Sel_fatjetweight", "std::vector<double>(nfatjetspass, evWeight)")
+                .Define("Sel_fatjet4vecs", ::gen4vec, {"Sel_fatjetpt", "Sel_fatjeteta", "Sel_fatjetphi", "Sel_fatjetmass"});
 }
 
 void NanoAODAnalyzerrdframe::calculateEvWeight()
@@ -792,205 +792,205 @@ void NanoAODAnalyzerrdframe::calculateEvWeight()
 /*
 bool NanoAODAnalyzerrdframe::helper_1DHistCreator(std::string hname, std::string title, const int nbins, const double xlow, const double xhi, std::string rdfvar, std::string evWeight)
 {
-	RDF1DHist histojets = _rlm.Histo1D({hname.c_str(), title.c_str(), nbins, xlow, xhi}, rdfvar, evWeight); // Fill with weight given by evWeight
-	_th1dhistos[hname] = histojets;
+    RDF1DHist histojets = _rlm.Histo1D({hname.c_str(), title.c_str(), nbins, xlow, xhi}, rdfvar, evWeight); // Fill with weight given by evWeight
+    _th1dhistos[hname] = histojets;
 }
 */
 
 void NanoAODAnalyzerrdframe::helper_1DHistCreator(std::string hname, std::string title, const int nbins, const double xlow, const double xhi, std::string rdfvar, std::string evWeight, RNode *anode)
 {
-	RDF1DHist histojets = anode->Histo1D({hname.c_str(), title.c_str(), nbins, xlow, xhi}, rdfvar, evWeight); // Fill with weight given by evWeight
-	_th1dhistos[hname] = histojets;
+    RDF1DHist histojets = anode->Histo1D({hname.c_str(), title.c_str(), nbins, xlow, xhi}, rdfvar, evWeight); // Fill with weight given by evWeight
+    _th1dhistos[hname] = histojets;
 }
 ;
 
 // Automatically loop to create
 void NanoAODAnalyzerrdframe::setupCuts_and_Hists()
 {
-	cout << "setting up definitions, cuts, and histograms" <<endl;
+    cout << "setting up definitions, cuts, and histograms" <<endl;
 
-	for ( auto &c : _varinfovector)
-	{
-		if (c.mincutstep.length()==0) _rlm = _rlm.Define(c.varname, c.vardefinition);
-	}
+    for ( auto &c : _varinfovector)
+    {
+        if (c.mincutstep.length()==0) _rlm = _rlm.Define(c.varname, c.vardefinition);
+    }
 
-	for (auto &x : _hist1dinfovector)
-	{
-		std::string hpost = "_nocut";
+    for (auto &x : _hist1dinfovector)
+    {
+        std::string hpost = "_nocut";
 
-		if (x.mincutstep.length()==0)
-		{
-			helper_1DHistCreator(std::string(x.hmodel.fName)+hpost,  std::string(x.hmodel.fTitle)+hpost, x.hmodel.fNbinsX, x.hmodel.fXLow, x.hmodel.fXUp, x.varname, x.weightname, &_rlm);
-		}
-	}
+        if (x.mincutstep.length()==0)
+        {
+            helper_1DHistCreator(std::string(x.hmodel.fName)+hpost,  std::string(x.hmodel.fTitle)+hpost, x.hmodel.fNbinsX, x.hmodel.fXLow, x.hmodel.fXUp, x.varname, x.weightname, &_rlm);
+        }
+    }
 
-	_rnt.setRNode(&_rlm);
+    _rnt.setRNode(&_rlm);
 
-	for (auto acut : _cutinfovector)
-	{
-		std::string cutname = "cut"+ acut.idx;
-		std::string hpost = "_"+cutname;
-		RNode *r = _rnt.getParent(acut.idx)->getRNode();
-		auto rnext = new RNode(r->Define(cutname, acut.cutdefinition));
-		*rnext = rnext->Filter(cutname);
+    for (auto acut : _cutinfovector)
+    {
+        std::string cutname = "cut"+ acut.idx;
+        std::string hpost = "_"+cutname;
+        RNode *r = _rnt.getParent(acut.idx)->getRNode();
+        auto rnext = new RNode(r->Define(cutname, acut.cutdefinition));
+        *rnext = rnext->Filter(cutname);
 
-		for ( auto &c : _varinfovector)
-		{
-			if (acut.idx.compare(c.mincutstep)==0) *rnext = rnext->Define(c.varname, c.vardefinition);
-		}
-		for (auto &x : _hist1dinfovector)
-		{
-			if (acut.idx.compare(0, x.mincutstep.length(), x.mincutstep)==0)
-			{
-				helper_1DHistCreator(std::string(x.hmodel.fName)+hpost,  std::string(x.hmodel.fTitle)+hpost, x.hmodel.fNbinsX, x.hmodel.fXLow, x.hmodel.fXUp, x.varname, x.weightname, rnext);
-			}
-		}
-		_rnt.addDaughter(rnext, acut.idx);
+        for ( auto &c : _varinfovector)
+        {
+            if (acut.idx.compare(c.mincutstep)==0) *rnext = rnext->Define(c.varname, c.vardefinition);
+        }
+        for (auto &x : _hist1dinfovector)
+        {
+            if (acut.idx.compare(0, x.mincutstep.length(), x.mincutstep)==0)
+            {
+                helper_1DHistCreator(std::string(x.hmodel.fName)+hpost,  std::string(x.hmodel.fTitle)+hpost, x.hmodel.fNbinsX, x.hmodel.fXLow, x.hmodel.fXUp, x.varname, x.weightname, rnext);
+            }
+        }
+        _rnt.addDaughter(rnext, acut.idx);
 
-		/*
-		_rlm = _rlm.Define(cutname, acut.cutdefinition);
-		_rlm = _rlm.Filter(cutname);
+        /*
+        _rlm = _rlm.Define(cutname, acut.cutdefinition);
+        _rlm = _rlm.Filter(cutname);
 
-		for ( auto &c : _varinfovector)
-		{
-			if (acut.idx.compare(c.mincutstep)==0) _rlm = _rlm.Define(c.varname, c.vardefinition);
-		}
-		for (auto &x : _hist1dinfovector)
-		{
-			if (acut.idx.compare(0, x.mincutstep.length(), x.mincutstep)==0)
-			{
-				helper_1DHistCreator(std::string(x.hmodel.fName)+hpost,  std::string(x.hmodel.fTitle)+hpost, x.hmodel.fNbinsX, x.hmodel.fXLow, x.hmodel.fXUp, x.varname, x.weightname);
-			}
-		}
-		_rnt.addDaughter(&_rlm, acut.idx);
-		*/
-	}
+        for ( auto &c : _varinfovector)
+        {
+            if (acut.idx.compare(c.mincutstep)==0) _rlm = _rlm.Define(c.varname, c.vardefinition);
+        }
+        for (auto &x : _hist1dinfovector)
+        {
+            if (acut.idx.compare(0, x.mincutstep.length(), x.mincutstep)==0)
+            {
+                helper_1DHistCreator(std::string(x.hmodel.fName)+hpost,  std::string(x.hmodel.fTitle)+hpost, x.hmodel.fNbinsX, x.hmodel.fXLow, x.hmodel.fXUp, x.varname, x.weightname);
+            }
+        }
+        _rnt.addDaughter(&_rlm, acut.idx);
+        */
+    }
 }
 
 void NanoAODAnalyzerrdframe::add1DHist(TH1DModel histdef, std::string variable, std::string weight,string mincutstep)
 {
-	_hist1dinfovector.push_back({histdef, variable, weight, mincutstep});
+    _hist1dinfovector.push_back({histdef, variable, weight, mincutstep});
 }
 
 
 void NanoAODAnalyzerrdframe::drawHists(RNode t)
 {
-	cout << "processing" <<endl;
-	t.Count();
+    cout << "processing" <<endl;
+    t.Count();
 }
 
 void NanoAODAnalyzerrdframe::addVar(varinfo v)
 {
-	_varinfovector.push_back(v);
+    _varinfovector.push_back(v);
 }
 
 void NanoAODAnalyzerrdframe::addVartoStore(string varname)
 {
-	// varname is assumed to be a regular expression.
-	// e.g. if varname is "Muon_eta" then "Muon_eta" will be stored
-	// if varname=="Muon_.*", then any branch name that starts with "Muon_" string will
-	// be saved
-	_varstostore.push_back(varname);
-	/*
-	std::regex b(varname);
-	bool foundmatch = false;
-	for (auto a: _rlm.GetColumnNames())
-	{
-		if (std::regex_match(a, b)) {
-			_varstostore.push_back(a);
-			foundmatch = true;
-		}
-	}
-	*/
+    // varname is assumed to be a regular expression.
+    // e.g. if varname is "Muon_eta" then "Muon_eta" will be stored
+    // if varname=="Muon_.*", then any branch name that starts with "Muon_" string will
+    // be saved
+    _varstostore.push_back(varname);
+    /*
+    std::regex b(varname);
+    bool foundmatch = false;
+    for (auto a: _rlm.GetColumnNames())
+    {
+        if (std::regex_match(a, b)) {
+            _varstostore.push_back(a);
+            foundmatch = true;
+        }
+    }
+    */
 
 }
 
 void NanoAODAnalyzerrdframe::setupTree()
 {
-	vector<RNodeTree *> rntends;
-	_rnt.getRNodeLeafs(rntends);
-	for (auto arnt: rntends)
-	{
-		RNode *arnode = arnt->getRNode();
-		string nodename = arnt->getIndex();
-		vector<string> varforthistree;
-		std::map<string, int> varused;
+    vector<RNodeTree *> rntends;
+    _rnt.getRNodeLeafs(rntends);
+    for (auto arnt: rntends)
+    {
+        RNode *arnode = arnt->getRNode();
+        string nodename = arnt->getIndex();
+        vector<string> varforthistree;
+        std::map<string, int> varused;
 
-		for (auto varname: _varstostore)
-		{
-			bool foundmatch = false;
-			std::regex b(varname);
-			for (auto a: arnode->GetColumnNames())
-			{
-				if (std::regex_match(a, b) && varused[a]==0)
-				{
-					varforthistree.push_back(a);
-					varused[a]++;
-					foundmatch = true;
-				}
-			}
-			if (!foundmatch)
-			{
-				cout << varname << " not found at "<< nodename << endl;
-			}
+        for (auto varname: _varstostore)
+        {
+            bool foundmatch = false;
+            std::regex b(varname);
+            for (auto a: arnode->GetColumnNames())
+            {
+                if (std::regex_match(a, b) && varused[a]==0)
+                {
+                    varforthistree.push_back(a);
+                    varused[a]++;
+                    foundmatch = true;
+                }
+            }
+            if (!foundmatch)
+            {
+                cout << varname << " not found at "<< nodename << endl;
+            }
 
-		}
-		_varstostorepertree[nodename]  = varforthistree;
-	}
+        }
+        _varstostorepertree[nodename]  = varforthistree;
+    }
 
 }
 
 void NanoAODAnalyzerrdframe::addCuts(string cut, string idx)
 {
-	_cutinfovector.push_back({cut, idx});
+    _cutinfovector.push_back({cut, idx});
 }
 
 
 void NanoAODAnalyzerrdframe::run(bool saveAll, string outtreename)
 {
-	/*
-	if (saveAll) {
-		_rlm.Snapshot(outtreename, _outfilename);
-	}
-	else {
-		// use the following if you want to store only a few variables
-		_rlm.Snapshot(outtreename, _outfilename, _varstostore);
-	}
-	*/
+    /*
+    if (saveAll) {
+        _rlm.Snapshot(outtreename, _outfilename);
+    }
+    else {
+        // use the following if you want to store only a few variables
+        _rlm.Snapshot(outtreename, _outfilename, _varstostore);
+    }
+    */
 
-	vector<RNodeTree *> rntends;
-	_rnt.getRNodeLeafs(rntends);
-	_rnt.Print();
+    vector<RNodeTree *> rntends;
+    _rnt.getRNodeLeafs(rntends);
+    _rnt.Print();
         cout << rntends.size() << endl;
-	// on master, regex_replace doesn't work somehow
-	//std::regex rootextension("\\.root");
+    // on master, regex_replace doesn't work somehow
+    //std::regex rootextension("\\.root");
 
-	for (auto arnt: rntends)
-	{
-		string nodename = arnt->getIndex();
-		//string outname = std::regex_replace(_outfilename, rootextension, "_"+nodename+".root");
-		string outname = _outfilename;
-		// if producing many root files due to branched selection criteria,  each root file will get a different name
-		if (rntends.size()>1) outname.replace(outname.find(".root"), 5, "_"+nodename+".root");
-		_outrootfilenames.push_back(outname);
-		RNode *arnode = arnt->getRNode();
+    for (auto arnt: rntends)
+    {
+        string nodename = arnt->getIndex();
+        //string outname = std::regex_replace(_outfilename, rootextension, "_"+nodename+".root");
+        string outname = _outfilename;
+        // if producing many root files due to branched selection criteria,  each root file will get a different name
+        if (rntends.size()>1) outname.replace(outname.find(".root"), 5, "_"+nodename+".root");
+        _outrootfilenames.push_back(outname);
+        RNode *arnode = arnt->getRNode();
                 cout << arnt->getIndex();
-		//cout << ROOT::RDF::SaveGraph(_rlm) << endl;
-		if (saveAll) {
-			arnode->Snapshot(outtreename, outname);
-		}
-		else {
-			// use the following if you want to store only a few variables
-			//arnode->Snapshot(outtreename, outname, _varstostore);
-			cout << " writing branches" << endl;
-			for (auto bname: _varstostorepertree[nodename])
-			{
-				cout << bname << ", ";
-			}
+        //cout << ROOT::RDF::SaveGraph(_rlm) << endl;
+        if (saveAll) {
+            arnode->Snapshot(outtreename, outname);
+        }
+        else {
+            // use the following if you want to store only a few variables
+            //arnode->Snapshot(outtreename, outname, _varstostore);
+            cout << " writing branches" << endl;
+            for (auto bname: _varstostorepertree[nodename])
+            {
+                cout << bname << ", ";
+            }
                         cout<<endl;
-			arnode->Snapshot(outtreename, outname, _varstostorepertree[nodename]);
-		}
-	}
+            arnode->Snapshot(outtreename, outname, _varstostorepertree[nodename]);
+        }
+    }
 
 
 

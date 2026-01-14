@@ -11,7 +11,7 @@
 
 mcdir=/Users/subin/projects/HEPanalyzer/skimmed
 
-./processnanoaod.py -A -Y 16post -S norm --globaltag Summer19UL16_V7 ${mcdir}/GluGluHToTauTau_M125_13TeV ./GluGluHToTauTau_M125_13TeV.root &> ./GluGluHToTauTau_M125_13TeV_16post.out 
+./processnanoaod.py -A -Y 16post -S norm --globaltag Summer19UL16_V7 ${mcdir}/GluGluHToTauTau_M125_13TeV ./GluGluHToTauTau_M125_13TeV.root &> ./GluGluHToTauTau_M125_13TeV_16post.out
 
 # 16pre
 # ./processnanoaod.py -A -Y 16pre -S ${sys} --globaltag Summer19UL16APV_V7 ${mc16pre}/DYJetsToLL_M-10to50 ${target}/DYJetsToLL_M-10to50_16pre_${sys}.root &> ${target}/DYJetsToLL_M-10to50_16pre_${sys}.out &

@@ -11,7 +11,7 @@ class AnalysisProcessor(BaseProcessor):
     def process_all_in_one(self, outputroot):
         """Processes all files and merges them into a single output ROOT file."""
         rootfiles = self.get_root_files(self.indir)
-        
+
         if not rootfiles:
             print("No files to process.")
             return
@@ -19,7 +19,7 @@ class AnalysisProcessor(BaseProcessor):
         t = ROOT.TChain(self.intreename)
         for afile in rootfiles:
             t.Add(str(afile))
-            
+
         self.load_libraries()
         aproc = ROOT.LQtopAnalyzer(t, outputroot, self.year, self.syst, self.json, self.globaltag, self.split)
         aproc.setupAnalysis()
@@ -42,7 +42,7 @@ class AnalysisProcessor(BaseProcessor):
                 else:
                     counterhistogramsum.Add(counterhistogram)
             intf.Close()
-            
+
         if counterhistogramsum:
             print("Updating with counter histogram")
             outf = ROOT.TFile.Open(outputroot, "UPDATE")

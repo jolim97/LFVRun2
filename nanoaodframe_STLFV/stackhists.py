@@ -25,7 +25,7 @@ class Stackhists:
         self.mccounterhistfiles = []
         self.mcfilecounterhistlist = []
         self.datarootfiles = []
-        
+
         self.integrlumi = integrlumi
         # bounding box location for the legends
         self.legend_x1=0.19
@@ -70,7 +70,7 @@ class Stackhists:
         """
 
         # calculate scaling factors for MC
-        # look for 
+        # look for
         for afile, cfile, xsec, id in zip(self.mcfilelist, self.mcfilecounterhistlist, self.xseclist, range(len(self.xseclist))):
             atfile = ROOT.TFile(afile)
             if cfile=="":
@@ -81,7 +81,7 @@ class Stackhists:
             posthist = ctfile.Get("hnevents_cut0000")
             if ahist == None and (prehist == None or posthist == None):
                 print("counter histogram doesn\'t exist, will proceed with histintegaral=1. Be sure to put 1/histintegral in the scalefactor!")
-                self.sflist[id] *= xsec * self.integrlumi 
+                self.sflist[id] *= xsec * self.integrlumi
                 self.resflist[id] *= 1.0
             else:
                 histintegral = ahist.Integral()
@@ -122,7 +122,7 @@ class Stackhists:
 
     def addChannel(self, rootfile, label, colorindex, patternindex=0, isMC=True, xsec=1.0, scalefactor=1.0, counterhistogramroot=""):
         if os.path.isfile(rootfile):
-            
+
             if isMC:
                 self.mcfilelist.append(rootfile)
                 self.mcfilecounterhistlist.append(counterhistogramroot)
@@ -208,7 +208,7 @@ class Stackhists:
 
     def createStacks(self, histname, xtitle, ytitle, mode, option="", isLogy=False, ymin=-1111, ymax=-1111, binlist=[], blind=[], subplot='R'):
         # now stack
-        
+
         hs = ROOT.THStack()
         tl = ROOT.TLegend(self.legend_x1, self.legend_y1, self.legend_x2, self.legend_y2)
         tl.SetNColumns(3)
@@ -218,7 +218,7 @@ class Stackhists:
         histgroup = dict()
         labellist = []
 
-        # adding signal contribution 
+        # adding signal contribution
         signalhistlist = []
         sighistgroup = {}
         mchistsum = None
@@ -368,7 +368,7 @@ class Stackhists:
         if not self.datafilelist:
             c1_top.SetBottomMargin(0.13)
         c1_top.SetRightMargin(0.1)
-        
+
         # log y scale
         if isLogy:
             c1_top.SetLogy(isLogy)
@@ -383,7 +383,7 @@ class Stackhists:
         xaxis.SetTitleSize(0.05)
         xaxis.SetTitleOffset(1.2)
         #xaxis.SetMaxDigits(4)
-        
+
         sig_max = -1
         for sighist in signalhistlist:
             if sig_max<sighist.GetMaximum():
@@ -405,7 +405,7 @@ class Stackhists:
         else:
             hs.SetMaximum(total_max*1.65)
 
-        #if signalhist is not None:        
+        #if signalhist is not None:
         #    signalhist.SetLineWidth(3)
         #    signalhist.Draw("same Hist")
 
@@ -421,7 +421,7 @@ class Stackhists:
         yaxis.SetTitle(ytitle)
         yaxis.SetNdivisions(6,5,0)
         yaxis.SetMaxDigits(3)
-        
+
         if not isLogy:
             ROOT.TGaxis.SetExponentOffset(-0.08,0.01,"y")
 

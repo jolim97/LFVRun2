@@ -1,12 +1,12 @@
-// V0.0           :            Thrust finder utility translated from 
-//                             Java routines written by G.Bower. 
+// V0.0           :            Thrust finder utility translated from
+//                             Java routines written by G.Bower.
 // V0.2 Jul 07/99 : M.Iwasaki  Change Mod to Mag function in TVector3
 //                             so as to use root 2.2.x
-// V0.3 Sep 23/99 : M.Iwasaki  Fix setEvent memory leak, 
-//                             apply nessesary modifications in Thrust, Major, 
+// V0.3 Sep 23/99 : M.Iwasaki  Fix setEvent memory leak,
+//                             apply nessesary modifications in Thrust, Major,
 //                             Minor axis, and Thrust, and add ~EventSape().
 // V0.4 May 12/00 : M.Iwasaki  Make necessary modifications.
-//                                        
+//
 #include "EventShape.h"
 #include <iostream>
 
@@ -27,11 +27,11 @@ EventShape::~EventShape(){
 
 // Input the particle 3(4)-vector list
 // e: 3-vector  TVector3       ..(px,py,pz) or
-//    4-vector  TLorentzVector ..(px,py,pz,E) 
-// Even input the TLorentzVector, we don't use Energy 
-// 
+//    4-vector  TLorentzVector ..(px,py,pz,E)
+// Even input the TLorentzVector, we don't use Energy
+//
 void EventShape::setPartList(TObjArray* e)
-{	
+{
   //To make this look like normal physics notation the
   //zeroth element of each array, mom[i][0], will be ignored
   //and operations will be on elements 1,2,3...
@@ -53,17 +53,17 @@ void EventShape::setPartList(TObjArray* e)
 
   for(Int_t elem=0;elem<numElements;elem++) {
     TObject* o = e->At(elem);
-    
-    if (np >= m_maxpart) { 
-	printf("Too many particles input to EventShape");
-	return;
+
+    if (np >= m_maxpart) {
+    printf("Too many particles input to EventShape");
+    return;
     }
 
     TString nam(o->IsA()->GetName());
     if (nam.Contains("TVector3")) {
       TVector3 v(((TVector3 *) o)->X(),
-		 ((TVector3 *) o)->Y(),
-		 ((TVector3 *) o)->Z());
+         ((TVector3 *) o)->Y(),
+         ((TVector3 *) o)->Z());
       mom(np,1) = v.X();
       mom(np,2) = v.Y();
       mom(np,3) = v.Z();
@@ -71,8 +71,8 @@ void EventShape::setPartList(TObjArray* e)
     }
     else if (nam.Contains("TLorentzVector")) {
       TVector3 v(((TLorentzVector *) o)->X(),
-		 ((TLorentzVector *) o)->Y(),
-		 ((TLorentzVector *) o)->Z());
+         ((TLorentzVector *) o)->Y(),
+         ((TLorentzVector *) o)->Z());
       mom(np,1) = v.X();
       mom(np,2) = v.Y();
       mom(np,3) = v.Z();
@@ -104,30 +104,30 @@ void EventShape::setPartList(TObjArray* e)
       phi = ulAngle(m_dAxes(1,1), m_dAxes(1,2));
       ludbrb( &mom, 0, -phi, 0., 0., 0. );
       for ( Int_t i = 0; i < 3; i++ ) {
-	for ( Int_t j = 1; j < 4; j++ ) {
-	  temp(i,j) = m_dAxes(i+1,j);
-	}
-	temp(i,4) = 0;
+    for ( Int_t j = 1; j < 4; j++ ) {
+      temp(i,j) = m_dAxes(i+1,j);
+    }
+    temp(i,4) = 0;
       }
       ludbrb(&temp,0.,-phi,0.,0.,0.);
       for ( Int_t ib = 0; ib < 3; ib++ ) {
-	for ( Int_t j = 1; j < 4; j++ ) {
-	  m_dAxes(ib+1,j) = temp(ib,j);
-	}
+    for ( Int_t j = 1; j < 4; j++ ) {
+      m_dAxes(ib+1,j) = temp(ib,j);
+    }
       }
       the = ulAngle( m_dAxes(1,3), m_dAxes(1,1) );
       ludbrb( &mom, -the, 0., 0., 0., 0. );
       for ( Int_t ic = 0; ic < 3; ic++ ) {
-	for ( Int_t j = 1; j < 4; j++ ) {
-	  temp(ic,j) = m_dAxes(ic+1,j);
-	}
-	temp(ic,4) = 0;
+    for ( Int_t j = 1; j < 4; j++ ) {
+      temp(ic,j) = m_dAxes(ic+1,j);
+    }
+    temp(ic,4) = 0;
       }
       ludbrb(&temp,-the,0.,0.,0.,0.);
-      for ( Int_t id = 0; id < 3; id++ ) {	
-	for ( Int_t j = 1; j < 4; j++ ) {
-	  m_dAxes(id+1,j) = temp(id,j);
-	}
+      for ( Int_t id = 0; id < 3; id++ ) {
+    for ( Int_t j = 1; j < 4; j++ ) {
+      m_dAxes(id+1,j) = temp(id,j);
+    }
       }
     }
     for ( Int_t ifas = 0; ifas < m_iFast + 1 ; ifas++ ) {
@@ -138,22 +138,22 @@ void EventShape::setPartList(TObjArray* e)
     // fast[m_iFast] is just a workspace.
     for ( Int_t i = 0; i < np; i++ ) {
       if ( pass == 2 ) {
-	mom(i,4) = TMath::Sqrt( mom(i,1)*mom(i,1) 
-			      + mom(i,2)*mom(i,2) ); 
+    mom(i,4) = TMath::Sqrt( mom(i,1)*mom(i,1)
+                  + mom(i,2)*mom(i,2) );
       }
       for ( Int_t ifas = m_iFast - 1; ifas > -1; ifas-- ) {
-	if ( mom(i,4) > fast(ifas,4) ) {
-	  for ( Int_t j = 1; j < 6; j++ ) {
-	    fast(ifas+1,j) = fast(ifas,j);
-	    if ( ifas == 0 ) fast(ifas,j) = mom(i,j);	    
-	  }
-	}
-	else {
-	  for ( Int_t j = 1; j < 6; j++ ) {
-	    fast(ifas+1,j) = mom(i,j);
-	  }
-	  break;
-	}
+    if ( mom(i,4) > fast(ifas,4) ) {
+      for ( Int_t j = 1; j < 6; j++ ) {
+        fast(ifas+1,j) = fast(ifas,j);
+        if ( ifas == 0 ) fast(ifas,j) = mom(i,j);
+      }
+    }
+    else {
+      for ( Int_t j = 1; j < 6; j++ ) {
+        fast(ifas+1,j) = mom(i,j);
+      }
+      break;
+    }
       }
     }
     // Find axis with highest thrust (case 1)/ highest major (case 2).
@@ -163,87 +163,87 @@ void EventShape::setPartList(TObjArray* e)
     Int_t p = TMath::Min( m_iFast, np ) - 1;
     // Don't trust Math.pow to give right answer always.
     // Want nc = 2**p.
-    Int_t nc = iPow(2,p); 
+    Int_t nc = iPow(2,p);
     for ( Int_t n = 0; n < nc; n++ ) {
       for ( Int_t j = 1; j < 4; j++ ) {
-	tdi[j] = 0.;
+    tdi[j] = 0.;
       }
       for ( Int_t i = 0; i < TMath::Min(m_iFast,n); i++ ) {
-	sgn = fast(i,5);
-	if (iPow(2,(i+1))*((n+iPow(2,i))/iPow(2,(i+1))) >= i+1){
-	  sgn = -sgn;
-	}
-	for ( Int_t j = 1; j < 5-pass; j++ ) {
-	  tdi[j] = tdi[j] + sgn*fast(i,j);
-	}
+    sgn = fast(i,5);
+    if (iPow(2,(i+1))*((n+iPow(2,i))/iPow(2,(i+1))) >= i+1){
+      sgn = -sgn;
+    }
+    for ( Int_t j = 1; j < 5-pass; j++ ) {
+      tdi[j] = tdi[j] + sgn*fast(i,j);
+    }
       }
       tds = tdi[1]*tdi[1] + tdi[2]*tdi[2] + tdi[3]*tdi[3];
       for ( Int_t iw = TMath::Min(n,9); iw > -1; iw--) {
-	if( tds > work(iw,4) ) {
-	  for ( Int_t j = 1; j < 5; j++ ) {
-	    work(iw+1,j) = work(iw,j);
-	    if ( iw == 0 ) {
-	      if ( j < 4 ) {
-		work(iw,j) = tdi[j];
-	      }
-	      else {
-		work(iw,j) = tds;
-	      }
-	    }
-	  }
-	}
-	else {
-	  for ( Int_t j = 1; j < 4; j++ ) {
-	    work(iw+1,j) = tdi[j];
-	  }
-	  work(iw+1,4) = tds;
-	}
+    if( tds > work(iw,4) ) {
+      for ( Int_t j = 1; j < 5; j++ ) {
+        work(iw+1,j) = work(iw,j);
+        if ( iw == 0 ) {
+          if ( j < 4 ) {
+        work(iw,j) = tdi[j];
+          }
+          else {
+        work(iw,j) = tds;
+          }
+        }
+      }
+    }
+    else {
+      for ( Int_t j = 1; j < 4; j++ ) {
+        work(iw+1,j) = tdi[j];
+      }
+      work(iw+1,4) = tds;
+    }
       }
     }
     // Iterate direction of axis until stable maximum.
     m_dThrust[pass] = 0;
     thp = -99999.;
     Int_t nagree = 0;
-    for ( Int_t iw = 0; 
-	  iw < TMath::Min(nc,10) && nagree < m_iGood; iw++ ){
+    for ( Int_t iw = 0;
+      iw < TMath::Min(nc,10) && nagree < m_iGood; iw++ ){
       thp = 0.;
       thps = -99999.;
       while ( thp > thps + m_dConv ) {
-	thps = thp;
-	for ( Int_t j = 1; j < 4; j++ ) {
-	  if ( thp <= 1E-10 ) {
-	    tdi[j] = work(iw,j);
-	  }
-	  else {
-	    tdi[j] = tpr[j];
-	    tpr[j] = 0;
-	  }
-	}
-	for ( Int_t i = 0; i < np; i++ ) {
-	  sgn = sign(mom(i,5), 
-		     tdi[1]*mom(i,1) + 
-		     tdi[2]*mom(i,2) + 
-		     tdi[3]*mom(i,3));
-	  for ( Int_t j = 1; j < 5 - pass; j++ ){
-	    tpr[j] = tpr[j] + sgn*mom(i,j);
-	  }
-	}
-	thp = TMath::Sqrt(tpr[1]*tpr[1] 
-			  + tpr[2]*tpr[2] 
-			  + tpr[3]*tpr[3])/tmax;
+    thps = thp;
+    for ( Int_t j = 1; j < 4; j++ ) {
+      if ( thp <= 1E-10 ) {
+        tdi[j] = work(iw,j);
+      }
+      else {
+        tdi[j] = tpr[j];
+        tpr[j] = 0;
+      }
+    }
+    for ( Int_t i = 0; i < np; i++ ) {
+      sgn = sign(mom(i,5),
+             tdi[1]*mom(i,1) +
+             tdi[2]*mom(i,2) +
+             tdi[3]*mom(i,3));
+      for ( Int_t j = 1; j < 5 - pass; j++ ){
+        tpr[j] = tpr[j] + sgn*mom(i,j);
+      }
+    }
+    thp = TMath::Sqrt(tpr[1]*tpr[1]
+              + tpr[2]*tpr[2]
+              + tpr[3]*tpr[3])/tmax;
       }
       // Save good axis. Try new initial axis until enough
       // tries agree.
       if ( thp < m_dThrust[pass] - m_dConv ) {
-	break;
+    break;
       }
       if ( thp > m_dThrust[pass] + m_dConv ) {
-	nagree = 0;
-	sgn = iPow( -1, (Int_t)TMath::Nint(m_random.Rndm()) );
-	for ( Int_t j = 1; j < 4; j++ ) {
-	  m_dAxes(pass,j) = sgn*tpr[j]/(tmax*thp);
-	}
-	m_dThrust[pass] = thp;
+    nagree = 0;
+    sgn = iPow( -1, (Int_t)TMath::Nint(m_random.Rndm()) );
+    for ( Int_t j = 1; j < 4; j++ ) {
+      m_dAxes(pass,j) = sgn*tpr[j]/(tmax*thp);
+    }
+    m_dThrust[pass] = thp;
       }
       nagree = nagree + 1;
     }
@@ -255,8 +255,8 @@ void EventShape::setPartList(TObjArray* e)
   m_dAxes(3,3) = 0.;
   thp = 0.;
   for ( Int_t i = 0; i < np; i++ ) {
-    thp += mom(i,5)*TMath::Abs(m_dAxes(3,1)*mom(i,1) + 
-			       m_dAxes(3,2)*mom(i,2));
+    thp += mom(i,5)*TMath::Abs(m_dAxes(3,1)*mom(i,1) +
+                   m_dAxes(3,2)*mom(i,2));
   }
   m_dThrust[3] = thp/tmax;
   // Rotate back to original coordinate system.
@@ -273,24 +273,24 @@ void EventShape::setPartList(TObjArray* e)
     }
   }
   m_dOblateness = m_dThrust[2] - m_dThrust[3];
-  
+
   // calculate sphericity
   m_NormMomTensor = 0.0;
   for (int ip=0; ip<np; ip++){
-	  for (int irow=0; irow<3; irow++)
-	  {
-		  for (int icol=0; icol<3; icol++)
-		  {
-			  m_NormMomTensor(irow, icol) += mom(ip, irow+1) * mom(ip, icol+1);
-		  }
-	  }
+      for (int irow=0; irow<3; irow++)
+      {
+          for (int icol=0; icol<3; icol++)
+          {
+              m_NormMomTensor(irow, icol) += mom(ip, irow+1) * mom(ip, icol+1);
+          }
+      }
   }
   m_NormMomTensor.EigenVectors(Q);
 }
 //______________________________________________________________
-	
+
 // Setting and getting parameters.
-	
+
 void EventShape::setThMomPower(Double_t tp)
 {
   // Error if sp not positive.
@@ -351,12 +351,12 @@ Double_t EventShape::oblateness() {
 
 double EventShape::get_Q(int i)
 {
-	if (i>=1 && i<=3) return Q(3-i);
-	else
-	{
-		std::cerr << "integer out of bounds: " << i << std::endl;
-		exit(-1);
-	}
+    if (i>=1 && i<=3) return Q(3-i);
+    else
+    {
+        std::cerr << "integer out of bounds: " << i << std::endl;
+        exit(-1);
+    }
 }
 
 //______________________________________________________________
@@ -367,7 +367,7 @@ Double_t EventShape::ulAngle(Double_t x, Double_t y)
   Double_t ulangl = 0;
   Double_t r = TMath::Sqrt(x*x + y*y);
   if ( r < 1.0E-20 ) {
-    return ulangl; 
+    return ulangl;
   }
   if ( TMath::Abs(x)/r < 0.8 ) {
     ulangl = sign(TMath::ACos(x/r),y);
@@ -395,12 +395,12 @@ Double_t EventShape::sign(Double_t a, Double_t b) {
 }
 //______________________________________________________________
 
-void EventShape::ludbrb(TMatrix* mom, 
-			Double_t the, 
-			Double_t phi, 
-			Double_t bx, 
-			Double_t by,
-			Double_t bz)
+void EventShape::ludbrb(TMatrix* mom,
+            Double_t the,
+            Double_t phi,
+            Double_t bx,
+            Double_t by,
+            Double_t bz)
 {
   // Ignore "zeroth" elements in rot,pr,dp.
   // Trying to use physics-like notation.
@@ -420,46 +420,46 @@ void EventShape::ludbrb(TMatrix* mom,
       rot(3,2) = 0.0;
       rot(3,3) = TMath::Cos(the);
       for ( Int_t i = 0; i < np; i++ )
-	{
-	  for ( Int_t j = 1; j < 4; j++ )
-	    {
-	      pr[j] = (*mom)(i,j);
-	      (*mom)(i,j) = 0;
-	    }
-	  for ( Int_t jb = 1; jb < 4; jb++)
-	    {
-	      for ( Int_t k = 1; k < 4; k++)
-		{
-		  (*mom)(i,jb) = (*mom)(i,jb) + rot(jb,k)*pr[k];
-		}
-	    }
-	}
+    {
+      for ( Int_t j = 1; j < 4; j++ )
+        {
+          pr[j] = (*mom)(i,j);
+          (*mom)(i,j) = 0;
+        }
+      for ( Int_t jb = 1; jb < 4; jb++)
+        {
+          for ( Int_t k = 1; k < 4; k++)
+        {
+          (*mom)(i,jb) = (*mom)(i,jb) + rot(jb,k)*pr[k];
+        }
+        }
+    }
       Double_t beta = TMath::Sqrt( bx*bx + by*by + bz*bz );
       if ( beta*beta > 1.0E-20 )
-	{
-	  if ( beta >  0.99999999 )
-	    {
-			 //send message: boost too large, resetting to <~1.0.
-	      bx = bx*(0.99999999/beta);
-	      by = by*(0.99999999/beta);
-	      bz = bz*(0.99999999/beta);
-	      beta =   0.99999999;
-	    }
-	  Double_t gamma = 1.0/TMath::Sqrt(1.0 - beta*beta);
-	  for ( Int_t i = 0; i < np; i++ )
-	    {
-	      for ( Int_t j = 1; j < 5; j++ )
-		{
-		  dp[j] = (*mom)(i,j);
-		}
-	      Double_t bp = bx*dp[1] + by*dp[2] + bz*dp[3];
-	      Double_t gbp = gamma*(gamma*bp/(1.0 + gamma) + dp[4]);
-	      (*mom)(i,1) = dp[1] + gbp*bx;
-	      (*mom)(i,2) = dp[2] + gbp*by;
-	      (*mom)(i,3) = dp[3] + gbp*bz;
-	      (*mom)(i,4) = gamma*(dp[4] + bp);
-	    }
-	}
+    {
+      if ( beta >  0.99999999 )
+        {
+             //send message: boost too large, resetting to <~1.0.
+          bx = bx*(0.99999999/beta);
+          by = by*(0.99999999/beta);
+          bz = bz*(0.99999999/beta);
+          beta =   0.99999999;
+        }
+      Double_t gamma = 1.0/TMath::Sqrt(1.0 - beta*beta);
+      for ( Int_t i = 0; i < np; i++ )
+        {
+          for ( Int_t j = 1; j < 5; j++ )
+        {
+          dp[j] = (*mom)(i,j);
+        }
+          Double_t bp = bx*dp[1] + by*dp[2] + bz*dp[3];
+          Double_t gbp = gamma*(gamma*bp/(1.0 + gamma) + dp[4]);
+          (*mom)(i,1) = dp[1] + gbp*bx;
+          (*mom)(i,2) = dp[2] + gbp*by;
+          (*mom)(i,3) = dp[3] + gbp*bz;
+          (*mom)(i,4) = gamma*(dp[4] + bp);
+        }
+    }
     }
   return;
 }

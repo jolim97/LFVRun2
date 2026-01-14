@@ -17,9 +17,9 @@ LQtopAnalyzer::LQtopAnalyzer(TTree *t, std::string outfilename, std::string year
 // Define your cuts here
 void LQtopAnalyzer::defineCuts()
 {
-	// Cuts to be applied in order
-	// These will be passed to Filter method of RDF
-	// check for good json event is defined earlier
+    // Cuts to be applied in order
+    // These will be passed to Filter method of RDF
+    // check for good json event is defined earlier
         addCuts("nmuonpass == 1 && nvetoelepass == 0 && nvetomuons == 0","0");
         addCuts("ncleantaupass == 1", "00");
         addCuts("mutau_mass > 150 && mutau_charge < 0", "000");
@@ -33,13 +33,13 @@ void LQtopAnalyzer::defineCuts()
 template <typename T>
 void LQtopAnalyzer::defineVar(std::string varname, T function,  const RDFDetail::ColumnNames_t &columns)
 {
-	NanoAODAnalyzerrdframe::defineVar(varname, function, columns);
+    NanoAODAnalyzerrdframe::defineVar(varname, function, columns);
 }
 */
 
 void LQtopAnalyzer::defineMoreVars()
 {
-	// define your higher level variables here
+    // define your higher level variables here
         defineVar("muonvec",::select_leadingvec,{"muon4vecs"});
         defineVar("tauvec",::select_leadingvec,{"cleantau4vecs"});
         defineVar("mutau_mass",::calculate_invMass,{"muonvec","tauvec"});
@@ -52,7 +52,7 @@ void LQtopAnalyzer::defineMoreVars()
         addVar({"Sel_muon1eta", "Sel_muoneta[0]", ""});
         addVar({"Sel_muon1mass", "Sel_muonmass[0]", ""});
         addVar({"Sel_muon1charge", "Sel_muoncharge[0]", ""});
-	
+
         addVar({"Sel_tau1pt", "Sel_taupt[0]", ""});
         addVar({"Sel_tau1eta", "Sel_taueta[0]", ""});
         addVar({"Sel_tau1mass", "Sel_taumass[0]", ""});
@@ -102,14 +102,14 @@ void LQtopAnalyzer::defineMoreVars()
         addVar({"evWeight", "re_pugenWeight * btagWeight_DeepFlavBrecalc * evWeight_leptonSF"});
 
         // define variables that you want to store
-	addVartoStore("run");
-	addVartoStore("luminosityBlock");
-	addVartoStore("event");
-	addVartoStore("evWeight.*");
+    addVartoStore("run");
+    addVartoStore("luminosityBlock");
+    addVartoStore("event");
+    addVartoStore("evWeight.*");
         addVartoStore("re_.*");
         addVartoStore("nmuonpass");
-	addVartoStore("ncleanjetspass");
-	addVartoStore("ncleanbjetspass");
+    addVartoStore("ncleanjetspass");
+    addVartoStore("ncleanbjetspass");
         addVartoStore("ncleantaupass");
         addVartoStore("Sys.*");
         addVartoStore("Sel_muon1.*");
@@ -125,37 +125,37 @@ void LQtopAnalyzer::defineMoreVars()
 
 void LQtopAnalyzer::bookHists()
 {
-	// _hist1dinfovector contains the information of histogram definitions (as TH1DModel)
-	// the variable to be used for filling
-	// and the minimum cutstep for which the histogram should be filled
-	//
-	// The braces are used to initalize the struct
+    // _hist1dinfovector contains the information of histogram definitions (as TH1DModel)
+    // the variable to be used for filling
+    // and the minimum cutstep for which the histogram should be filled
+    //
+    // The braces are used to initalize the struct
         // Pre-set binnings for histograms
-	// TH1D
+    // TH1D
         add1DHist( {"hnevents", "Number of Events", 2, -0.5, 1.5}, "one", "evWeight", "");
         add1DHist( {"hnevents_pglep", "Number of Events", 2, -0.5, 1.5}, "one", "evWeight_pglep", "");
-	//add1DHist( {"hnvtx_raw", "Number of Primary Vertex", 200, 0.0, 200.0}, "PV_npvsGood", "one", "");
-	//add1DHist( {"hnvtx", "Number of Primary Vertex", 200, 0.0, 200.0}, "PV_npvsGood", "evWeight", "");
+    //add1DHist( {"hnvtx_raw", "Number of Primary Vertex", 200, 0.0, 200.0}, "PV_npvsGood", "one", "");
+    //add1DHist( {"hnvtx", "Number of Primary Vertex", 200, 0.0, 200.0}, "PV_npvsGood", "evWeight", "");
 
         //=================== PUGEN * Lepton SF ===================
-	add1DHist( {"h1metpt", "MET pt", 20, 0, 400}, "Sys_METpt", "evWeight_pglep", "0");
-	add1DHist( {"h1sumet", "Sum ET", 50, 0.0, 5000.0}, "MET_sumEt", "evWeight_pglep", "0");
-	add1DHist( {"h1metphi", "MET phi", 20, -4.0, 4.0}, "Sys_METphi", "evWeight_pglep", "0");
+    add1DHist( {"h1metpt", "MET pt", 20, 0, 400}, "Sys_METpt", "evWeight_pglep", "0");
+    add1DHist( {"h1sumet", "Sum ET", 50, 0.0, 5000.0}, "MET_sumEt", "evWeight_pglep", "0");
+    add1DHist( {"h1metphi", "MET phi", 20, -4.0, 4.0}, "Sys_METphi", "evWeight_pglep", "0");
 
 //        add1DHist( {"h1npvdof", "Number of PV of DoF", 50, 0.0, 50.0}, "PV_ndof", "evWeight_pglep", "0");
 //        add1DHist( {"h1npvs", "Number of PVs", 100, 0.0, 100.0}, "PV_npvs", "evWeight_pglep", "0");
 //        add1DHist( {"h1npvsgood", "Number of good PVs", 100, 0.0, 100.0}, "PV_npvsGood", "evWeight_pglep", "0");
 
-	add1DHist( {"h1nmuonpass", "Passing muoncuts", 5, 0.0, 5.0}, "nmuonpass", "evWeight_pglep", "0");
-	add1DHist( {"h1ncleantaupass", "Passing taucuts", 5, 0.0, 5.0}, "ncleantaupass", "evWeight_pglep", "0");
-	add1DHist( {"h1ncleanjetspass", "Passing jetcuts", 10, 0.0, 10.0}, "ncleanjetspass", "evWeight_pglep", "0");
+    add1DHist( {"h1nmuonpass", "Passing muoncuts", 5, 0.0, 5.0}, "nmuonpass", "evWeight_pglep", "0");
+    add1DHist( {"h1ncleantaupass", "Passing taucuts", 5, 0.0, 5.0}, "ncleantaupass", "evWeight_pglep", "0");
+    add1DHist( {"h1ncleanjetspass", "Passing jetcuts", 10, 0.0, 10.0}, "ncleanjetspass", "evWeight_pglep", "0");
         add1DHist( {"h1ncleanbjetspass", "Passing bjetcuts", 5, 0.0, 5.0}, "ncleanbjetspass", "evWeight_pglep", "0");
 
         add1DHist( {"h1muon1pt", "Muon pt", 20, 0, 400}, "Sel_muon1pt", "evWeight_pglep", "0");
         add1DHist( {"h1muon1eta", "Muon eta", 18, -2.7, 2.7}, "Sel_muon1eta", "evWeight_pglep", "0");
         add1DHist( {"h1muon1mass", "Muon mass", 20, 0, 100}, "Sel_muon1mass", "evWeight_pglep", "0");
         add1DHist( {"h1muMETmt", "Muon met mt", 20, 0, 200}, "muMET_mt", "evWeight_pglep", "0");
-    
+
         add1DHist( {"h1tau1pt", "Tau pt", 20, 0, 400}, "Sel_tau1pt", "evWeight_pglep", "00");
         add1DHist( {"h1tau1eta", "Tau eta", 18, -2.7, 2.7}, "Sel_tau1eta", "evWeight_pglep", "00");
         add1DHist( {"h1tau1mass", "Tau mass", 20, 0, 100}, "Sel_tau1mass", "evWeight_pglep", "00");
@@ -186,20 +186,20 @@ void LQtopAnalyzer::bookHists()
         add1DHist( {"h1jet3btag","btag discr of third jet", 20, 0, 1.0}, "Sel2_jet3btag", "evWeight_pglep", "0000");
 
         //=================== Fully weighted ===================
-	add1DHist( {"hmetpt", "MET pt", 20, 0, 400}, "Sys_METpt", "evWeight", "00000");
-	add1DHist( {"hsumet", "Sum ET", 50, 0.0, 5000.0}, "MET_sumEt", "evWeight", "00000");
-	add1DHist( {"hmetphi", "MET phi", 20, -4.0, 4.0}, "Sys_METphi", "evWeight", "00000");
+    add1DHist( {"hmetpt", "MET pt", 20, 0, 400}, "Sys_METpt", "evWeight", "00000");
+    add1DHist( {"hsumet", "Sum ET", 50, 0.0, 5000.0}, "MET_sumEt", "evWeight", "00000");
+    add1DHist( {"hmetphi", "MET phi", 20, -4.0, 4.0}, "Sys_METphi", "evWeight", "00000");
 
-	add1DHist( {"hnmuonpass", "Passing muoncuts", 5, 0.0, 5.0}, "nmuonpass", "evWeight", "00000");
-	add1DHist( {"hncleantaupass", "Passing taucuts", 5, 0.0, 5.0}, "ncleantaupass", "evWeight", "00000");
-	add1DHist( {"hncleanjetspass", "Passing jetcuts", 10, 0.0, 10.0}, "ncleanjetspass", "evWeight", "00000");
+    add1DHist( {"hnmuonpass", "Passing muoncuts", 5, 0.0, 5.0}, "nmuonpass", "evWeight", "00000");
+    add1DHist( {"hncleantaupass", "Passing taucuts", 5, 0.0, 5.0}, "ncleantaupass", "evWeight", "00000");
+    add1DHist( {"hncleanjetspass", "Passing jetcuts", 10, 0.0, 10.0}, "ncleanjetspass", "evWeight", "00000");
         add1DHist( {"hncleanbjetspass", "Passing bjetcuts", 5, 0.0, 5.0}, "ncleanbjetspass", "evWeight", "0000");
 
         add1DHist( {"hmuon1pt", "Muon pt", 20, 0, 400}, "Sel_muon1pt", "evWeight", "00000");
         add1DHist( {"hmuon1eta", "Muon eta", 18, -2.7, 2.7}, "Sel_muon1eta", "evWeight", "00000");
         add1DHist( {"hmuon1mass", "Muon mass", 20, 0, 100}, "Sel_muon1mass", "evWeight", "00000");
         add1DHist( {"hmuMETmt", "Muon met mt", 20, 0, 200}, "muMET_mt", "evWeight", "00000");
-    
+
         add1DHist( {"htau1pt", "Tau pt", 20, 0, 400}, "Sel_tau1pt", "evWeight", "00000");
         add1DHist( {"htau1eta", "Tau eta", 18, -2.7, 2.7}, "Sel_tau1eta", "evWeight", "00000");
         add1DHist( {"htau1mass", "Tau mass", 20, 0, 100}, "Sel_tau1mass", "evWeight", "00000");
@@ -228,7 +228,7 @@ void LQtopAnalyzer::bookHists()
         add1DHist( {"hjet1btag","btag discr of leading jet", 20, 0, 1.0}, "Sel2_jet1btag", "evWeight", "00000");
         add1DHist( {"hjet2btag","btag discr of sub-leading jet", 20, 0, 1.0}, "Sel2_jet2btag", "evWeight", "00000");
         add1DHist( {"hjet3btag","btag discr of third jet", 20, 0, 1.0}, "Sel2_jet3btag", "evWeight", "00000");
-        
+
         add1DHist( {"hchi2", "Minimum chi2 for hadronic W", 20, 0, 1000}, "chi2", "evWeight","00000");
         add1DHist( {"hchi2_SMTop_mass", "chi2 SM Top mass", 20, 0, 400}, "chi2_SMTop_mass", "evWeight","00000");
         add1DHist( {"hchi2_SMW_mass", "chi2 SM W mass", 20, 0, 400}, "chi2_SMW_mass", "evWeight","00000");

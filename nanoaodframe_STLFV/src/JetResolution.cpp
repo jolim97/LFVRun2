@@ -69,11 +69,11 @@ JetResolution::~JetResolution()
 void JetResolution::initialize(const string& fileName,bool doGaussian)
 {
   size_t pos;
-  
+
   name_ = fileName;
   pos = name_.find_last_of('.'); name_ = name_.substr(0,pos);
   pos = name_.find_last_of('/'); name_ = name_.substr(pos+1);
-  
+
   JetCorrectorParameters resolutionPars(fileName,"resolution");
   string fncname = "fResolution_" + name_;
   string formula = resolutionPars.definitions().formula();
@@ -82,12 +82,12 @@ void JetResolution::initialize(const string& fileName,bool doGaussian)
   else if (formula=="GaussAlpha1Alpha2") resolutionFnc_=new TF1(fncname.c_str(),fnc_gaussalpha1alpha2,-5.,5.,5);
   else if (formula=="GaussAlpha")        resolutionFnc_=new TF1(fncname.c_str(),fnc_gaussalpha,-5.,5.,4);
   else                                   resolutionFnc_=new TF1(fncname.c_str(),formula.c_str(),0.,5.);
-  
+
   resolutionFnc_->SetNpx(200);
   resolutionFnc_->SetParName(0,"N");
   resolutionFnc_->SetParameter(0,1.0);
   unsigned nPar(1);
-  
+
   string tmp = resolutionPars.definitions().level();
   pos = tmp.find(':');
   while (!tmp.empty()) {
@@ -96,19 +96,19 @@ void JetResolution::initialize(const string& fileName,bool doGaussian)
       parameters_.push_back(new JetCorrectorParameters(fileName,paramAsStr));
       formula = parameters_.back()->definitions().formula();
       parameterFncs_.push_back(new TF1(("f"+paramAsStr+"_"+name()).c_str(),formula.c_str(),
-				       parameters_.back()->record(0).parameters()[0],
-				       parameters_.back()->record(0).parameters()[1]));
+                       parameters_.back()->record(0).parameters()[0],
+                       parameters_.back()->record(0).parameters()[1]));
       resolutionFnc_->SetParName(nPar,parameters_.back()->definitions().level().c_str());
       nPar++;
     }
     tmp = (pos==string::npos) ? "" : tmp.substr(pos+1);
     pos = tmp.find(':');
   }
-  
+
   assert(nPar==(unsigned)resolutionFnc_->GetNpar());
   assert(!doGaussian||nPar==3);
 }
-  
+
 
 //______________________________________________________________________________
 TF1* JetResolution::resolutionEtaPt(float eta, float pt) const
@@ -121,7 +121,7 @@ TF1* JetResolution::resolutionEtaPt(float eta, float pt) const
 
 //______________________________________________________________________________
 TF1* JetResolution::resolution(const vector<float>& x,
-			       const vector<float>& y) const
+                   const vector<float>& y) const
 {
   unsigned N(y.size());
   for (unsigned iPar=0;iPar<parameters_.size();iPar++) {
@@ -135,7 +135,7 @@ TF1* JetResolution::resolution(const vector<float>& x,
     for (unsigned i=0;i<N;i++)
       yy[i] = (y[i] < pars[2*i]) ? pars[2*i] : (y[i] > pars[2*i+1]) ? pars[2*i+1] : y[i];
     resolutionFnc_->SetParameter(iPar+1,
-				 parameterFncs_[iPar]->Eval(yy[0],yy[1],yy[2],yy[3]));
+                 parameterFncs_[iPar]->Eval(yy[0],yy[1],yy[2],yy[3]));
   }
   return resolutionFnc_;
 }
@@ -158,7 +158,7 @@ TF1* JetResolution::parameter(const string& parameterName,const vector<float>& x
     if (fncname.find("f"+parameterName)==0) {
       stringstream ssname; ssname<<parameterFncs_[i]->GetName();
       for (unsigned ii=0;ii<x.size();ii++)
-	ssname<<"_"<<parameters_[i]->definitions().binVar(ii)<<x[ii];
+    ssname<<"_"<<parameters_[i]->definitions().binVar(ii)<<x[ii];
       result = (TF1*)parameterFncs_[i]->Clone();
       result->SetName(ssname.str().c_str());
       int N = parameters_[i]->definitions().nParVar();
@@ -166,13 +166,13 @@ TF1* JetResolution::parameter(const string& parameterName,const vector<float>& x
       assert(bin>=0);
       assert(bin<(int)parameters_[i]->size());
       const std::vector<float>& pars = parameters_[i]->record(bin).parameters();
-      for (unsigned ii=2*N;ii<pars.size();ii++) result->SetParameter(ii-2*N,pars[ii]); 
+      for (unsigned ii=2*N;ii<pars.size();ii++) result->SetParameter(ii-2*N,pars[ii]);
     }
   }
-  
+
   if (0==result) cerr<<"JetResolution::parameter() ERROR: no parameter "
-		     <<parameterName<<" found."<<endl;
-  
+             <<parameterName<<" found."<<endl;
+
   return result;
 }
 
@@ -192,23 +192,23 @@ double JetResolution::parameterEtaEval(const std::string& parameterName, float e
     }
 
   if (!func) std::cerr << "ParameterNotFound " << "JetResolution::parameterEtaEval(): no parameter \""
-				  << parameterName << "\" found" << std::endl;
+                  << parameterName << "\" found" << std::endl;
 
   std::vector<float> etas; etas.push_back(eta);
   int bin = params->binIndex(etas);
 
   if ( !(0 <= bin && bin < (int)params->size() ) )
     std::cerr << "ParameterNotFound " << "JetResolution::parameterEtaEval(): bin out of range: "
-				       << bin << std::endl;
+                       << bin << std::endl;
 
   const std::vector<float>& pars = params->record(bin).parameters();
 
   int N = params->definitions().nParVar();
   for (unsigned ii = 2*N; ii < pars.size(); ++ii)
     {
-      func->SetParameter(ii-2*N, pars[ii]); 
+      func->SetParameter(ii-2*N, pars[ii]);
     }
-  
+
   return func->Eval(pt);
 }
 
@@ -228,7 +228,7 @@ double fnc_dscb(double*xx,double*pp)
   double p1  = pp[4];
   double a2  = pp[5];
   double p2  = pp[6];
-  
+
   double u   = (x-mu)/sig;
   double A1  = TMath::Power(p1/TMath::Abs(a1),p1)*TMath::Exp(-a1*a1/2);
   double A2  = TMath::Power(p2/TMath::Abs(a2),p2)*TMath::Exp(-a2*a2/2);

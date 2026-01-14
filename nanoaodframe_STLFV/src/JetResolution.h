@@ -19,7 +19,7 @@ public:
   JetResolution();
   JetResolution(const std::string& fileName,bool doGaussian=false);
   virtual ~JetResolution();
-  
+
 
   double parameterEtaEval(const std::string& parameterName,float eta, float pt);
 
@@ -28,18 +28,18 @@ public:
   //
 public:
   void initialize(const std::string& fileName,bool doGaussian=false);
-  
+
   const std::string& name() const { return name_; }
-  
+
   TF1* resolutionEtaPt(float eta,float pt) const;
   TF1* resolution(const std::vector<float>&x, const std::vector<float>&y) const;
-  
+
   TF1* parameterEta(const std::string& parameterName,float eta);
   TF1* parameter(const std::string& parameterName,const std::vector<float>&x);
-  
+
   const JetCorrectorParameters& parameters(int i) const { return *(parameters_[i]); }
-  
-  
+
+
   //
   // data members
   //
@@ -48,7 +48,7 @@ private:
   mutable TF1*                         resolutionFnc_;
   std::vector<TF1*>                    parameterFncs_;
   std::vector<JetCorrectorParameters*> parameters_;
-  
+
 };
 
 

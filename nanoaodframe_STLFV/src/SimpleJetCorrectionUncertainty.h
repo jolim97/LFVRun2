@@ -5,7 +5,7 @@
 #include <vector>
 class JetCorrectorParameters;
 
-class SimpleJetCorrectionUncertainty 
+class SimpleJetCorrectionUncertainty
 {
  public:
   SimpleJetCorrectionUncertainty();

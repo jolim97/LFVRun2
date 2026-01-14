@@ -6,7 +6,7 @@
 class SimpleJetCorrectionUncertainty;
 class JetCorrectorParameters;
 
-class JetCorrectionUncertainty 
+class JetCorrectionUncertainty
 {
   public:
     JetCorrectionUncertainty();
@@ -16,10 +16,10 @@ class JetCorrectionUncertainty
 
     void setParameters  (const std::string& fDataFile);
     void setJetEta      (float fEta);
-    void setJetPt       (float fPt); 
+    void setJetPt       (float fPt);
     void setJetE        (float fE);
     void setJetPhi      (float fE);
-    void setJetEMF      (float fEMF); 
+    void setJetEMF      (float fEMF);
     void setLepPx       (float fLepPx);
     void setLepPy       (float fLepPy);
     void setLepPz       (float fLepPz);
@@ -36,7 +36,7 @@ class JetCorrectionUncertainty
   float mJetEta;
   float mJetPt;
   float mJetPhi;
-  float mJetEMF; 
+  float mJetEMF;
   float mLepPx;
   float mLepPy;
   float mLepPz;
@@ -45,7 +45,7 @@ class JetCorrectionUncertainty
   bool  mIsJetPtset;
   bool  mIsJetPhiset;
   bool  mIsJetEtaset;
-  bool  mIsJetEMFset; 
+  bool  mIsJetEMFset;
   bool  mIsLepPxset;
   bool  mIsLepPyset;
   bool  mIsLepPzset;

@@ -19,32 +19,32 @@ using namespace ROOT::RDF;
 class RNodeTree
 {
 public:
-	RNodeTree(RNode *rn);
-	~RNodeTree();
-	RNodeTree *addDaughter(RNode *rn, string asidx);
-	RNodeTree *getParent(string asidx);
+    RNodeTree(RNode *rn);
+    ~RNodeTree();
+    RNodeTree *addDaughter(RNode *rn, string asidx);
+    RNodeTree *getParent(string asidx);
 
-	// to get RNode of cut step d, in a linear chain
-	RNodeTree *getRNodeTree(int d);
-	// to get RNode of specific cut, if you have selections
-	// that branch off at different stages, you must use this
-	RNodeTree *getRNodeTree(string idx);
-	RNode *getRNode();
-	RNode *getRNode(int d);
-	RNode *getRNode(string idx);
-	void setRNode(RNode *rn);
-	string getIndex();
-	bool isLeaf();
-	int getDaughtersize();
-	void getRNodeLeafs(vector<RNodeTree *> &rntv);
-	void Print();
+    // to get RNode of cut step d, in a linear chain
+    RNodeTree *getRNodeTree(int d);
+    // to get RNode of specific cut, if you have selections
+    // that branch off at different stages, you must use this
+    RNodeTree *getRNodeTree(string idx);
+    RNode *getRNode();
+    RNode *getRNode(int d);
+    RNode *getRNode(string idx);
+    void setRNode(RNode *rn);
+    string getIndex();
+    bool isLeaf();
+    int getDaughtersize();
+    void getRNodeLeafs(vector<RNodeTree *> &rntv);
+    void Print();
 
 private:
-	void setParent(RNodeTree *rnt);
-	RNode *thisnode;
-	RNodeTree *parenttree;
-	string _idx;
-	vector<RNodeTree *> daughters;
+    void setParent(RNodeTree *rnt);
+    RNode *thisnode;
+    RNodeTree *parenttree;
+    string _idx;
+    vector<RNodeTree *> daughters;
 };
 
 

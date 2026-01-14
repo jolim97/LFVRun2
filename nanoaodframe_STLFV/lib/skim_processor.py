@@ -44,13 +44,13 @@ queue
             # For KISTI xrootd
             xrootd_url = "root://cms-t2-se01.sdfarm.kr:1096/" + str(afile)
             outfname = self.outdir / (afile.stem + "_analyzed.root")
-            
+
             cmd = f"./{self.script} --year={self.year} --syst={self.syst} --json={self.json} --globaltag={self.globaltag} {xrootd_url} {outfname} {self.intreename} {self.outtreename}"
-            
+
             script_filename = f'sub_{afile.stem}.sh'
             with open(script_filename, 'w') as f:
                 f.write(self.batch_script(cmd))
-            
+
             os.chmod(script_filename, 0o755)
             (log_dir / script_filename).write_text(Path(script_filename).read_text())
             os.remove(script_filename)
@@ -58,7 +58,7 @@ queue
             job_filename = f'job_{afile.stem}.sub'
             with open(job_filename, 'w') as f:
                 f.write(self.condor_script(script_filename, str(self.indir), str(self.outdir), afile.stem))
-            
+
             (log_dir / job_filename).write_text(Path(job_filename).read_text())
             os.remove(job_filename)
 

@@ -9,7 +9,7 @@
 
 class JetCorrectorParameters;
 
-class SimpleJetCorrector 
+class SimpleJetCorrector
 {
  public:
   //-------- Constructors --------------
@@ -20,8 +20,8 @@ class SimpleJetCorrector
   ~SimpleJetCorrector();
   //-------- Member functions -----------
   void   setInterpolation(bool fInterpolation) {mDoInterpolation = fInterpolation;}
-  float  correction(const std::vector<float>& fX,const std::vector<float>& fY) const;  
-  const  JetCorrectorParameters& parameters() const {return *mParameters;} 
+  float  correction(const std::vector<float>& fX,const std::vector<float>& fY) const;
+  const  JetCorrectorParameters& parameters() const {return *mParameters;}
 
  private:
   //-------- Member functions -----------
@@ -32,7 +32,7 @@ class SimpleJetCorrector
   unsigned findInvertVar();
   //-------- Member variables -----------
   bool                    mDoInterpolation;
-  unsigned                mInvertVar; 
+  unsigned                mInvertVar;
   TFormula*               mFunc;
   JetCorrectorParameters* mParameters;
 };

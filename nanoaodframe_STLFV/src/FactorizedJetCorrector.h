@@ -1,4 +1,4 @@
-// This is the header file "FactorizedJetCorrector.h". This is the interface for the 
+// This is the header file "FactorizedJetCorrector.h". This is the interface for the
 // class FactorizedJetCorrector.
 // Author: Konstantinos Kousouris, Philipp Schieferdecker
 // Email:  kkousour@fnal.gov, philipp.schieferdecker@cern.ch
@@ -22,12 +22,12 @@ class FactorizedJetCorrector
     FactorizedJetCorrector(const std::string& fLevels, const std::string& fTags, const std::string& fOptions="");
     FactorizedJetCorrector(const std::vector<JetCorrectorParameters>& fParameters);
     ~FactorizedJetCorrector();
-    void setNPV		(int   fNPV);
+    void setNPV     (int   fNPV);
     void setJetEta      (float fEta);
-    void setJetPt       (float fPt); 
+    void setJetPt       (float fPt);
     void setJetE        (float fE);
     void setJetPhi      (float fE);
-    void setJetEMF      (float fEMF); 
+    void setJetEMF      (float fEMF);
     void setJetA        (float fA);
     void setRho         (float fRho);
     void setJPTrawP4    (const TLorentzVector& fJPTrawP4);
@@ -38,10 +38,10 @@ class FactorizedJetCorrector
     void setAddLepToJet (bool fAddLepToJet);
     float getCorrection();
     std::vector<float> getSubCorrections();
-    
-       
+
+
   private:
-  //---- Member Functions ----  
+  //---- Member Functions ----
     FactorizedJetCorrector(const FactorizedJetCorrector&);
     FactorizedJetCorrector& operator= (const FactorizedJetCorrector&);
     float getLepPt()    const;
@@ -60,13 +60,13 @@ class FactorizedJetCorrector
     float mJetEta;
     float mJetPt;
     float mJetPhi;
-    float mJetEMF; 
+    float mJetEMF;
     float mJetA;
     float mRho;
     float mJPTrawE;
     float mJPTrawEt;
     float mJPTrawPt;
-    float mJPTrawEta; 
+    float mJPTrawEta;
     float mJPTrawOff;
     float mLepPx;
     float mLepPy;
@@ -77,7 +77,7 @@ class FactorizedJetCorrector
     bool  mIsJetPtset;
     bool  mIsJetPhiset;
     bool  mIsJetEtaset;
-    bool  mIsJetEMFset; 
+    bool  mIsJetEMFset;
     bool  mIsJetAset;
     bool  mIsRhoset;
     bool  mIsJPTrawP4set;
@@ -87,7 +87,7 @@ class FactorizedJetCorrector
     bool  mIsLepPzset;
     bool  mIsAddLepToJetset;
     std::vector<LevelTypes> mLevels;
-    std::vector<std::vector<VarTypes> > mParTypes,mBinTypes; 
+    std::vector<std::vector<VarTypes> > mParTypes,mBinTypes;
     std::vector<SimpleJetCorrector*> mCorrectors;
 };
 #endif

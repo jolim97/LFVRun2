@@ -77,7 +77,7 @@ class TauESTool {
 
         TauESTool(const std::string& year, const std::string& id="DeepTau2017v2p1VSjet");
         ~TauESTool() { }
-        
+
         float getTES(double pt, int dm, int genmatch, const std::string& unc="");
 };
 
@@ -100,7 +100,7 @@ class TauFESTool {
 
         TauFESTool(const std::string& year, const std::string& id="DeepTau2017v2p1VSe");
         ~TauFESTool() { }
-        
+
         float getFES(double eta, int dm, int genmatch, const std::string& unc="");
 };
 #endif // TauIDSFTool_h

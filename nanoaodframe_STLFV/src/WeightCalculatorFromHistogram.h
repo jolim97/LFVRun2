@@ -15,10 +15,10 @@ class WeightCalculatorFromHistogram {
   // get the weight from the bin content of the ratio hist/targethist
   WeightCalculatorFromHistogram(TH1 *hist, TH1* targethist, bool norm=true, bool fixLargeWeights=true, bool verbose=false);
   ~WeightCalculatorFromHistogram() {}
-  
+
   float getWeight(float x, float y=0) const;
   float getWeightErr(float x, float y=0) const;
-  
+
  private:
   std::vector<double> loadVals(TH1 *hist, bool norm=true);
   TH1* ratio(TH1 *hist, TH1* targethist, bool fixLargeWgts);

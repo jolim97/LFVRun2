@@ -13,41 +13,41 @@
 #include <iostream>
 #include <stdexcept>
 
-class JetCorrectorParameters 
+class JetCorrectorParameters
 {
   //---------------- JetCorrectorParameters class ----------------
   //-- Encapsulates all the information of the parametrization ---
   public:
     //---------------- Definitions class ---------------------------
     //-- Global iformation about the parametrization is kept here --
-    class Definitions 
+    class Definitions
     {
       public:
-        //-------- Constructors -------------- 
+        //-------- Constructors --------------
         Definitions() {}
-        Definitions(const std::vector<std::string>& fBinVar, const std::vector<std::string>& fParVar, const std::string& fFormula, bool fIsResponse); 
-        Definitions(const std::string& fLine); 
+        Definitions(const std::vector<std::string>& fBinVar, const std::vector<std::string>& fParVar, const std::string& fFormula, bool fIsResponse);
+        Definitions(const std::string& fLine);
         //-------- Member functions ----------
         unsigned nBinVar()                  const {return mBinVar.size(); }
         unsigned nParVar()                  const {return mParVar.size(); }
         std::vector<std::string> parVar()   const {return mParVar;        }
-        std::vector<std::string> binVar()   const {return mBinVar;        } 
+        std::vector<std::string> binVar()   const {return mBinVar;        }
         std::string parVar(unsigned fIndex) const {return mParVar[fIndex];}
-        std::string binVar(unsigned fIndex) const {return mBinVar[fIndex];} 
+        std::string binVar(unsigned fIndex) const {return mBinVar[fIndex];}
         std::string formula()               const {return mFormula;       }
         std::string level()                 const {return mLevel;         }
         bool isResponse()                   const {return mIsResponse;    }
       private:
         //-------- Member variables ----------
-        bool                     mIsResponse; 
-        std::string              mLevel; 
+        bool                     mIsResponse;
+        std::string              mLevel;
         std::string              mFormula;
         std::vector<std::string> mParVar;
         std::vector<std::string> mBinVar;
     };
     //---------------- Record class --------------------------------
-    //-- Each Record holds the properties of a bin ----------------- 
-    class Record 
+    //-- Each Record holds the properties of a bin -----------------
+    class Record
     {
       public:
         //-------- Constructors --------------
@@ -69,12 +69,12 @@ class JetCorrectorParameters
         std::vector<float> mMax;
         std::vector<float> mParameters;
     };
-     
+
     //-------- Constructors --------------
     JetCorrectorParameters() { valid_ = false;}
     JetCorrectorParameters(const std::string& fFile, const std::string& fSection = "");
     JetCorrectorParameters(const JetCorrectorParameters::Definitions& fDefinitions,
-			 const std::vector<JetCorrectorParameters::Record>& fRecords) 
+             const std::vector<JetCorrectorParameters::Record>& fRecords)
       : mDefinitions(fDefinitions),mRecords(fRecords) { valid_ = true;}
     //-------- Member functions ----------
     const Record& record(unsigned fBin)                          const {return mRecords[fBin]; }
@@ -105,44 +105,44 @@ class JetCorrectorParametersCollection {
   //       enum value is in order of appearance when people thought of them.
  public:
   enum Level_t { L1Offset=0,
-		 L1JPTOffset=7,
+         L1JPTOffset=7,
                  L1FastJet = 10,
-		 L2Relative=1,
-		 L3Absolute=2,
-		 L2L3Residual=8,
-		 L4EMF=3,
-		 L5Flavor=4,
-		 L6UE=5,
-		 L7Parton=6,
-		 Uncertainty=9,
-		 UncertaintyAbsolute=11, 
-		 UncertaintyHighPtExtra=12, 
-		 UncertaintySinglePionECAL=13, 
-		 UncertaintySinglePionHCAL=27, 
-		 UncertaintyFlavor=14, 
-		 UncertaintyTime=15,
-		 UncertaintyRelativeJEREC1=16, 
-		 UncertaintyRelativeJEREC2=17, 
-		 UncertaintyRelativeJERHF=18,
-		 UncertaintyRelativePtEC1=28,
-		 UncertaintyRelativePtEC2=29,
-		 UncertaintyRelativePtHF=30,
-		 UncertaintyRelativeStatEC2=19, 
-		 UncertaintyRelativeStatHF=20, 
-		 UncertaintyRelativeFSR=21,
-		 UncertaintyRelativeSample=31,
-		 UncertaintyPileUpDataMC=22, 
-		 UncertaintyPileUpOOT=23, 
-		 UncertaintyPileUpPtBB=24,
-		 UncertaintyPileUpPtEC=32, 
-		 UncertaintyPileUpPtHF=33, 
-		 UncertaintyPileUpBias=25, 
-		 UncertaintyPileUpJetRate=26,
-		 UncertaintyAux1=34,
-		 UncertaintyAux2=35,
-		 UncertaintyAux3=36,
-		 UncertaintyAux4=37,
-		 N_LEVELS=38
+         L2Relative=1,
+         L3Absolute=2,
+         L2L3Residual=8,
+         L4EMF=3,
+         L5Flavor=4,
+         L6UE=5,
+         L7Parton=6,
+         Uncertainty=9,
+         UncertaintyAbsolute=11,
+         UncertaintyHighPtExtra=12,
+         UncertaintySinglePionECAL=13,
+         UncertaintySinglePionHCAL=27,
+         UncertaintyFlavor=14,
+         UncertaintyTime=15,
+         UncertaintyRelativeJEREC1=16,
+         UncertaintyRelativeJEREC2=17,
+         UncertaintyRelativeJERHF=18,
+         UncertaintyRelativePtEC1=28,
+         UncertaintyRelativePtEC2=29,
+         UncertaintyRelativePtHF=30,
+         UncertaintyRelativeStatEC2=19,
+         UncertaintyRelativeStatHF=20,
+         UncertaintyRelativeFSR=21,
+         UncertaintyRelativeSample=31,
+         UncertaintyPileUpDataMC=22,
+         UncertaintyPileUpOOT=23,
+         UncertaintyPileUpPtBB=24,
+         UncertaintyPileUpPtEC=32,
+         UncertaintyPileUpPtHF=33,
+         UncertaintyPileUpBias=25,
+         UncertaintyPileUpJetRate=26,
+         UncertaintyAux1=34,
+         UncertaintyAux2=35,
+         UncertaintyAux3=36,
+         UncertaintyAux4=37,
+         N_LEVELS=38
   };
 
 
@@ -158,30 +158,30 @@ class JetCorrectorParametersCollection {
   // Constructor... initialize all three vectors to zero
   JetCorrectorParametersCollection() { corrections_.clear(); correctionsL5_.clear(); correctionsL7_.clear(); }
 
-  // Add a JetCorrectorParameter object, possibly with flavor. 
+  // Add a JetCorrectorParameter object, possibly with flavor.
   void push_back( key_type i, value_type const & j, label_type const & flav = "" );
 
   // Access the JetCorrectorParameter via the key k.
   // key_type is hashed to deal with the three collections
   JetCorrectorParameters const & operator[]( key_type k ) const;
 
-  // Access the JetCorrectorParameter via a string. 
-  // Will find the hashed value for the label, and call via that 
-  // operator. 
+  // Access the JetCorrectorParameter via a string.
+  // Will find the hashed value for the label, and call via that
+  // operator.
   JetCorrectorParameters const & operator[]( std::string const & label ) const {
     return operator[]( findKey(label) );
   }
 
   // Get a list of valid keys. These will contain hashed keys
-  // that are aware of all three collections. 
+  // that are aware of all three collections.
   void validKeys(std::vector<key_type> & keys ) const;
 
 
 
-  // Helper method to find all of the sections in a given 
+  // Helper method to find all of the sections in a given
   // parameters file
   static void getSections( std::string inputFile,
-			   std::vector<std::string> & outputs );
+               std::vector<std::string> & outputs );
 
   // Find the L5 bin for hashing
   static key_type getL5Bin( std::string const & flav );
@@ -200,13 +200,13 @@ class JetCorrectorParametersCollection {
 
   static std::string findL5Flavor( key_type k ){
     if ( k == L5Flavor ) return labels_[L5Flavor];
-    else 
+    else
       return l5Flavors_[k / 100 - 1];
-  }  
+  }
 
   static std::string findL7Parton( key_type k ){
     if ( k == L7Parton ) return labels_[L7Parton];
-    else 
+    else
       return l7Partons_[k / 1000 - 1];
   }
 

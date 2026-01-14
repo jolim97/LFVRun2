@@ -17,9 +17,9 @@ SkimEvents::SkimEvents(TTree *t, std::string outfilename, std::string year, std:
 // Define your cuts here
 void SkimEvents::defineCuts()
 {
-	// Cuts to be applied in order
-	// These will be passed to Filter method of RDF
-	// check for good json event is defined earlier
+    // Cuts to be applied in order
+    // These will be passed to Filter method of RDF
+    // check for good json event is defined earlier
         if(_year.find("wjet") != std::string::npos){
                 addCuts("LHE_HT < 100","0");
                 if(_year.find("16") != std::string::npos){
@@ -29,7 +29,7 @@ void SkimEvents::defineCuts()
                 }else if(_year.find("18") != std::string::npos){
                         addCuts("Flag_filter && HLT_IsoMu24 && nmuonpass == 1","00");
                 }
-        }else{ 
+        }else{
                 // if(_year.find("16") != std::string::npos){
                 //         addCuts("Flag_filter && (HLT_IsoMu24 || HLT_IsoTkMu24) && nmuonpass == 1","0");
                 // }else if(_year.find("17") != std::string::npos){
@@ -127,11 +127,11 @@ void SkimEvents::defineMoreVars()
 
 void SkimEvents::bookHists()
 {
-	// _hist1dinfovector contains the information of histogram definitions (as TH1DModel)
-	// the variable to be used for filling
-	// and the minimum cutstep for which the histogram should be filled
-	//
-	// The braces are used to initalize the struct
-	// TH1D
+    // _hist1dinfovector contains the information of histogram definitions (as TH1DModel)
+    // the variable to be used for filling
+    // and the minimum cutstep for which the histogram should be filled
+    //
+    // The braces are used to initalize the struct
+    // TH1D
         add1DHist( {"hcounter", "Event counter", 2, -0.5, 1.5}, "one", "unitGenWeight", "");
 }

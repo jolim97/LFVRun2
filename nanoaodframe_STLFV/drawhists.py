@@ -202,7 +202,7 @@ s.addHistogram("h1muon1eta_cut0000", "#eta of Muon", "Entries", drawmode=stackhi
 s.addHistogram("hmuon1eta_cut00000", "#eta of Muon", "Entries", drawmode=stackhists.STACKED, drawoption="hist", isLogy=logstyle, ymin=0.1)
 
 s.addHistogram("h1muMETmt_cut0", "m_{T} (GeV)", "Entries", drawmode=stackhists.STACKED, drawoption="hist", isLogy=logstyle, ymin=0.1)
-s.addHistogram("h1muMETmt_cut00", "m_{T} (GeV)", "Entries", drawmode=stackhists.STACKED, drawoption="hist", isLogy=logstyle, ymin=0.1) 
+s.addHistogram("h1muMETmt_cut00", "m_{T} (GeV)", "Entries", drawmode=stackhists.STACKED, drawoption="hist", isLogy=logstyle, ymin=0.1)
 s.addHistogram("h1muMETmt_cut000", "m_{T} (GeV)", "Entries", drawmode=stackhists.STACKED, drawoption="hist", isLogy=logstyle, ymin=0.1)
 s.addHistogram("h1muMETmt_cut0000", "m_{T} (GeV)", "Entries", drawmode=stackhists.STACKED, drawoption="hist", isLogy=logstyle, ymin=0.1)
 s.addHistogram("hmuMETmt_cut00000", "m_{T} (GeV)", "Entries", drawmode=stackhists.STACKED, drawoption="hist", isLogy=logstyle, ymin=0.1)
@@ -271,4 +271,4 @@ if ratio : subplot="R"
 elif significance : subplot="S"
 
 s.draw(subplot)
- 
+

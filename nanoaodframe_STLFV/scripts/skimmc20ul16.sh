@@ -19,7 +19,7 @@ logdir=${tgdir}/log
 mkdir -p ${tgdir}
 mkdir -p ${logdir}
 
-./skimnanoaod.py -F --split 10 -Y skim16post ${mcdir}/GluGluHToTauTau_M125_13TeV ${tgdir}/GluGluHToTauTau_M125_13TeV &> ${logdir}/GluGluHToTauTau_M125_13TeV_skim16post.out 
+./skimnanoaod.py -F --split 10 -Y skim16post ${mcdir}/GluGluHToTauTau_M125_13TeV ${tgdir}/GluGluHToTauTau_M125_13TeV &> ${logdir}/GluGluHToTauTau_M125_13TeV_skim16post.out
 # 16pre
 #./skimnanoaod.py -F --split ${njobs} -Y skim16pre ${mcdir20ul16pre}/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8 ${tgdir16pre}/DYJetsToLL_M-10to50 &> ${logdir}/DYJetsToLL_M-10to50_skim16pre.out
 #./skimnanoaod.py -F --split ${njobs} -Y skim16pre ${mcdir20ul16pre}/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8 ${tgdir16pre}/DYJetsToLL_M-50_amcatnlo  &> ${logdir}/DYJetsToLL_M-50_amcatnlo_skim16pre.out

@@ -38,4 +38,4 @@ if __name__=='__main__':
     aproc = ROOT.LQtopAnalyzer(t, outfile, options.year, options.syst, options.json, options.globaltag)
     aproc.setupAnalysis()
     aproc.run(options.saveallbranches, outtreename)
-    
+

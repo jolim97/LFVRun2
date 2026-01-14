@@ -16,7 +16,7 @@ for run in runs:
         mcrootfile = "PileupMC_UL16.root"
     else:
         mcrootfile = "PileupMC_UL"+run+".root"
-    
+
     if run == "16pre":
         CMS_lumi.lumi_13TeV = "19.5 fb^{-1}"
     if run == "16post":
@@ -51,7 +51,7 @@ for run in runs:
     h_pu_plus.Scale(1/h_pu_plus.Integral())
     h_pu_minus.Scale(1/h_pu_minus.Integral())
     h_pu_mc.Scale(1/h_pu_mc.Integral())
-    
+
     m = max([h_pu.GetMaximum(),h_pu_plus.GetMaximum(),h_pu_minus.GetMaximum(),h_pu_mc.GetMaximum()])
     h_pu.SetMaximum(m*1.2)
 
@@ -72,7 +72,7 @@ for run in runs:
     h_pu.GetXaxis().SetTitleSize(0.05)
     h_pu.GetYaxis().SetTitle("Probability")
     h_pu.GetYaxis().SetTitleSize(0.05)
-    
+
     leg = TLegend(0.6,0.6,0.9,0.85)
     gStyle.SetLegendTextSize(0.03)
     leg.SetBorderSize(0)
@@ -81,13 +81,13 @@ for run in runs:
     leg.AddEntry(h_pu_minus,"Pileup Data down")
     leg.AddEntry(h_pu_mc,"Pileup MC")
     leg.Draw()
-    
+
     CMS_lumi.extraText = "Work in Progress"
     CMS_lumi.CMS_lumi(c1, 4, 0)
     c1.cd()
     c1.Update()
     c1.RedrawAxis()
-     
+
     c1.Print("h_pileup"+run+".pdf")
     c1.Close()
     fdata.Close()

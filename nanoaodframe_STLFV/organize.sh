@@ -11,7 +11,7 @@ else
     sys=$2
     original_pwd=$(pwd)
     cd ${pname}
-    
+
     # Remove Log files.
     rm -rf *.out
     for i in 18 16post 16pre 17; do

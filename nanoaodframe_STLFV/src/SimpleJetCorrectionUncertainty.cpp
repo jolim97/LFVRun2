@@ -6,27 +6,27 @@
 #include <string>
 
 /////////////////////////////////////////////////////////////////////////
-SimpleJetCorrectionUncertainty::SimpleJetCorrectionUncertainty () 
+SimpleJetCorrectionUncertainty::SimpleJetCorrectionUncertainty ()
 {
   mParameters = new JetCorrectorParameters();
 }
 /////////////////////////////////////////////////////////////////////////
-SimpleJetCorrectionUncertainty::SimpleJetCorrectionUncertainty(const std::string& fDataFile)  
+SimpleJetCorrectionUncertainty::SimpleJetCorrectionUncertainty(const std::string& fDataFile)
 {
   mParameters = new JetCorrectorParameters(fDataFile);
 }
 /////////////////////////////////////////////////////////////////////////
-SimpleJetCorrectionUncertainty::SimpleJetCorrectionUncertainty(const JetCorrectorParameters& fParameters)  
+SimpleJetCorrectionUncertainty::SimpleJetCorrectionUncertainty(const JetCorrectorParameters& fParameters)
 {
   mParameters = new JetCorrectorParameters(fParameters);
 }
 /////////////////////////////////////////////////////////////////////////
-SimpleJetCorrectionUncertainty::~SimpleJetCorrectionUncertainty () 
+SimpleJetCorrectionUncertainty::~SimpleJetCorrectionUncertainty ()
 {
   delete mParameters;
 }
 /////////////////////////////////////////////////////////////////////////
-float SimpleJetCorrectionUncertainty::uncertainty(const std::vector<float>& fX, float fY, bool fDirection) const 
+float SimpleJetCorrectionUncertainty::uncertainty(const std::vector<float>& fX, float fY, bool fDirection) const
 {
   float result = 1.;
   int bin = mParameters->binIndex(fX);
@@ -52,9 +52,9 @@ float SimpleJetCorrectionUncertainty::uncertainty(const std::vector<float>& fX, 
   return result;
 }
 /////////////////////////////////////////////////////////////////////////
-float SimpleJetCorrectionUncertainty::uncertaintyBin(unsigned fBin, float fY, bool fDirection) const 
+float SimpleJetCorrectionUncertainty::uncertaintyBin(unsigned fBin, float fY, bool fDirection) const
 {
-  if (fBin >= mParameters->size()) 
+  if (fBin >= mParameters->size())
   {
       std::stringstream sserr;
       sserr<<"SimpleJetCorrectionUncertainty"<<" ERROR: "<< " wrong bin: "<<fBin<<": only "<<mParameters->size()<<" are available" << std::endl;
@@ -77,21 +77,21 @@ float SimpleJetCorrectionUncertainty::uncertaintyBin(unsigned fBin, float fY, bo
       if (fDirection)// true = UP
         value.push_back(p[ind+1]);
       else // false = DOWN
-        value.push_back(p[ind+2]); 
+        value.push_back(p[ind+2]);
     }
   if (fY <= yGrid[0])
-    result = value[0];  
+    result = value[0];
   else if (fY >= yGrid[N-1])
-    result = value[N-1]; 
+    result = value[N-1];
   else
     {
-      int bin = findBin(yGrid,fY); 
+      int bin = findBin(yGrid,fY);
       float vx[2],vy[2];
       for(int i=0;i<2;i++)
         {
-          vx[i] = yGrid[bin+i]; 
+          vx[i] = yGrid[bin+i];
           vy[i] = value[bin+i];
-        } 
+        }
       result = linearInterpolation(fY,vx,vy);
     }
   return result;
@@ -112,8 +112,8 @@ float SimpleJetCorrectionUncertainty::linearInterpolation(float fZ, const float 
           sserr<<"SimpleJetCorrectionUncertainty"<<" ERROR: "<< " interpolation error" << std::endl;
           throw std::runtime_error(sserr.str());
       }
-    } 
-  else   
+    }
+  else
     {
       float a = (fY[1]-fY[0])/(fX[1]-fX[0]);
       float b = (fY[0]*fX[1]-fY[1]*fX[0])/(fX[1]-fX[0]);
@@ -134,7 +134,7 @@ int SimpleJetCorrectionUncertainty::findBin(const std::vector<float>& v, float x
      if (x>=v[i] && x<v[i+1])
        return i;
    }
-  return 0; 
+  return 0;
 }
 
 

@@ -23,23 +23,23 @@ steps = 5
 Xsec_dict = {"DYJetsToLL_M-10to50" : 18610.00,
         "DYJetsToLL_M-50_amcatnlo" : 6077.22,
         #"DYJetsToLL_M-50_madgraph" : 6077.22,
-        "WJetsToLNu_madgraphMLM" : 61526.7, 
+        "WJetsToLNu_madgraphMLM" : 61526.7,
         "WJetsToLNu_inclHT100" : 59373.3,
         "WJetsToLNu_HT-0To100" : 59373.3,
-        "WJetsToLNu_HT-100To200" : 1345 * 0.993, 
-        "WJetsToLNu_HT-200To400" : 359.7 * 1.002, 
-        "WJetsToLNu_HT-400To600" : 48.91 * 1.009, 
-        "WJetsToLNu_HT-600To800" : 12.05 * 1.120, 
-        "WJetsToLNu_HT-800To1200" : 5.501 * 1.202, 
-        "WJetsToLNu_HT-1200To2500" : 1.329 * 1.332, 
-        "WJetsToLNu_HT-2500ToInf" : 0.03216 * 4.200, 
-        "ST_t-channel_top" : 136.02, 
-        "ST_t-channel_antitop" : 80.95, 
-        "ST_tW_top" : 35.85, 
-        "ST_tW_antitop" : 35.85, 
-        "TTTo2L2Nu" : 88.29, 
-        "TTToHadronic" : 377.96, 
-        "TTToSemiLeptonic" : 365.34, 
+        "WJetsToLNu_HT-100To200" : 1345 * 0.993,
+        "WJetsToLNu_HT-200To400" : 359.7 * 1.002,
+        "WJetsToLNu_HT-400To600" : 48.91 * 1.009,
+        "WJetsToLNu_HT-600To800" : 12.05 * 1.120,
+        "WJetsToLNu_HT-800To1200" : 5.501 * 1.202,
+        "WJetsToLNu_HT-1200To2500" : 1.329 * 1.332,
+        "WJetsToLNu_HT-2500ToInf" : 0.03216 * 4.200,
+        "ST_t-channel_top" : 136.02,
+        "ST_t-channel_antitop" : 80.95,
+        "ST_tW_top" : 35.85,
+        "ST_tW_antitop" : 35.85,
+        "TTTo2L2Nu" : 88.29,
+        "TTToHadronic" : 377.96,
+        "TTToSemiLeptonic" : 365.34,
         "ST_LFV_TCMuTau_Scalar" : 7.40 * 1E-03,
         "ST_LFV_TCMuTau_Vector" : 36.8 * 1E-03,
         "ST_LFV_TCMuTau_Tensor" : 178.4 * 1E-03,
@@ -55,10 +55,10 @@ Xsec_dict = {"DYJetsToLL_M-10to50" : 18610.00,
         "WW" : 118.7,
         "WZ" : 47.13,
         "ZZ" : 16.523,
-        "TTWJetsToLNu" : 0.2043, 
-        "TTWJetsToQQ" : 0.4062, 
-        "TTZToLLNuNu" : 0.2529, 
-        "TTZToQQ" : 0.5297, 
+        "TTWJetsToLNu" : 0.2043,
+        "TTWJetsToQQ" : 0.4062,
+        "TTZToLLNuNu" : 0.2529,
+        "TTZToQQ" : 0.5297,
         "QCD_Pt-15To20" : 1273190000 * 0.003 ,
         "QCD_Pt-20To30" : 558528000 * 0.0053 ,
         "QCD_Pt-30To50" : 139803000 * 0.01182 ,
@@ -151,7 +151,7 @@ def run(run):
         tmp_proc = []
         tmp_proc.append(norm_nevts)
         tmp_proc.append(norm_squarestaterr)
-        
+
         if "ST_LFV_TC" in rname:
             if "Scalar" in rname:
                 LFV_STc_s = np.add(LFV_STc_s, tmp_proc).tolist()
@@ -227,7 +227,7 @@ def run(run):
         acc = np.array([j/LFV[i][0][0] for j in LFV[i][0]])
         acc.resize(2,steps+1)
         tmpCutflow.append(acc.tolist())
-    
+
     nsig = len(LFV)
     nbkg = len(tmpCutflow) - 3*nsig - 2
     return tmpCutflow, nsig, nbkg
@@ -371,7 +371,7 @@ for run, cutflow in zip(run2s, formattedcutflows):
     elif run=="Run18":
         lumi = 59.8 # fb^(-1)
     elif run=="Run2":
-        lumi = 138 # fb^(-1) 
+        lumi = 138 # fb^(-1)
     x=texScript(run,cutflow)
     print(x)
 

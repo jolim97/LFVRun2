@@ -16,15 +16,15 @@
 
 FourVectorVec gen4vec(floats &pt, floats &eta, floats &phi, floats &mass)
 {
-	const int nsize = pt.size();
-	FourVectorVec fourvecs;
-	fourvecs.reserve(nsize);
-	for (auto i=0; i<nsize; i++)
-	{
-		fourvecs.emplace_back(pt[i], eta[i], phi[i], fabs(mass[i]));
-	}
+    const int nsize = pt.size();
+    FourVectorVec fourvecs;
+    fourvecs.reserve(nsize);
+    for (auto i=0; i<nsize; i++)
+    {
+        fourvecs.emplace_back(pt[i], eta[i], phi[i], fabs(mass[i]));
+    }
 
-	return fourvecs;
+    return fourvecs;
 }
 
 FourVectorVec genmet4vec(float met_pt, float met_phi)
@@ -42,68 +42,68 @@ FourVectorVec genmet4vec(float met_pt, float met_phi)
 
 floats weightv(floats &x, float evWeight)
 {
-	const int nsize = x.size();
-	floats weightvector(nsize, evWeight);
-	return weightvector;
+    const int nsize = x.size();
+    floats weightvector(nsize, evWeight);
+    return weightvector;
 }
 
 floats sphericity(FourVectorVec &p)
 {
-	TMatrixDSym NormMomTensor(3);
+    TMatrixDSym NormMomTensor(3);
 
-	NormMomTensor = 0.0;
-	double p2sum = 0.0;
-	for (auto x: p)
-	{
-		p2sum += x.P2();
-		double mom[3] = {x.Px(), x.Py(), x.Pz()};
-		for (int irow=0; irow<3; irow++)
-		{
-			for (int icol=irow; icol<3; icol++)
-			{
-				NormMomTensor(irow, icol) += mom[irow] * mom[icol];
-			}
-		}
-	}
-	NormMomTensor *= (1.0/p2sum);
-	TVectorT<double> Qrev;
-	NormMomTensor.EigenVectors(Qrev);
-	floats Q(3);
-	for (auto i=0; i<3; i++) Q[i] = Qrev[2-i];
+    NormMomTensor = 0.0;
+    double p2sum = 0.0;
+    for (auto x: p)
+    {
+        p2sum += x.P2();
+        double mom[3] = {x.Px(), x.Py(), x.Pz()};
+        for (int irow=0; irow<3; irow++)
+        {
+            for (int icol=irow; icol<3; icol++)
+            {
+                NormMomTensor(irow, icol) += mom[irow] * mom[icol];
+            }
+        }
+    }
+    NormMomTensor *= (1.0/p2sum);
+    TVectorT<double> Qrev;
+    NormMomTensor.EigenVectors(Qrev);
+    floats Q(3);
+    for (auto i=0; i<3; i++) Q[i] = Qrev[2-i];
 
-	return Q;
+    return Q;
 }
 
 
 double foxwolframmoment(int l, FourVectorVec &p, int minj, int maxj)
 {   // PRD 87, 073014 (2013)
-	double answer = 0.0;
+    double answer = 0.0;
 
-	double ptsum=0.0;
+    double ptsum=0.0;
 
-	if (maxj==-1) // process everything
-	{
-		maxj = p.size();
-	}
-	//for (auto x: p)
-	for (auto i=minj; i<maxj; i++)
-	{
-		auto x = p[i];
-		ptsum += x.Pt();
-		//for (auto y: p)
-		for (auto j=minj; j<maxj; j++)
-		{
-			auto y = p[j];
-			double wij = x.Pt() * y.Pt();
-			double cosdOmega = x.Vect().Dot(y.Vect()) / (x.P() * y.P());
-			if (cosdOmega>1.0) cosdOmega=1.0;
-			if (cosdOmega<-1.0) cosdOmega=-1.0;
-			answer += wij * ROOT::Math::legendre(l, cosdOmega);
-		}
-	}
-	answer /= ptsum*ptsum;
-	if (fabs(answer)>1.0) std::cout << "FW>1 " << answer << std::endl;
-	return answer;
+    if (maxj==-1) // process everything
+    {
+        maxj = p.size();
+    }
+    //for (auto x: p)
+    for (auto i=minj; i<maxj; i++)
+    {
+        auto x = p[i];
+        ptsum += x.Pt();
+        //for (auto y: p)
+        for (auto j=minj; j<maxj; j++)
+        {
+            auto y = p[j];
+            double wij = x.Pt() * y.Pt();
+            double cosdOmega = x.Vect().Dot(y.Vect()) / (x.P() * y.P());
+            if (cosdOmega>1.0) cosdOmega=1.0;
+            if (cosdOmega<-1.0) cosdOmega=-1.0;
+            answer += wij * ROOT::Math::legendre(l, cosdOmega);
+        }
+    }
+    answer /= ptsum*ptsum;
+    if (fabs(answer)>1.0) std::cout << "FW>1 " << answer << std::endl;
+    return answer;
 }
 
 
@@ -121,7 +121,7 @@ ints good_idx(ints good)
 
 floats chi2(float smtop_mass, float smw_mass, float lfvtop_mass, float MT_SM, float MW, float WT_SM, float WW, float MT_LFV, float WT_LFV)
 {
-	floats out;
+    floats out;
         // The values are now passed as arguments
 
         // Resolution applied values
@@ -130,24 +130,24 @@ floats chi2(float smtop_mass, float smw_mass, float lfvtop_mass, float MT_SM, fl
 //        const float MW = 80.8;
 //        const float WT_LFV = 17.8;
 //        const float WT_SM = 21.3;
-//        const float WW = 11.71;	
+//        const float WW = 11.71;
 
         float chi2_SMTop = pow((MT_SM-smtop_mass)/WT_SM, 2);
         float chi2_SMW = pow((MW-smw_mass)/WW, 2);
         float chi2_LFVTop = pow((MT_LFV-lfvtop_mass)/WT_LFV, 2);
         float chi2 = chi2_SMTop + chi2_SMW + chi2_LFVTop;
 
-	out.emplace_back(chi2);
-	out.emplace_back(chi2_SMTop);
-	out.emplace_back(chi2_SMW);
-	out.emplace_back(chi2_LFVTop);
-	
-	return out;
+    out.emplace_back(chi2);
+    out.emplace_back(chi2_SMTop);
+    out.emplace_back(chi2_SMW);
+    out.emplace_back(chi2_LFVTop);
+
+    return out;
 }
 
 
 floats top_reconstruction_whad(FourVectorVec &jets, FourVectorVec &bjets, FourVectorVec &muons, FourVectorVec &taus, float MT, float MW, float WT, float WW){
-        
+
         floats out;
 
         float SMW_mass, SMtop_mass;
@@ -158,7 +158,7 @@ floats top_reconstruction_whad(FourVectorVec &jets, FourVectorVec &bjets, FourVe
         float X_min_SMtop = std::numeric_limits<float>::max();
         float wj1_idx=-1, wj2_idx=-1;
         // The values are now passed as arguments
-        
+
         // Jets from W-1
         for(unsigned int j1 = 0; j1<jets.size(); j1++){
             if(jets[j1].Pt() == bjets[0].Pt()) continue;
@@ -372,7 +372,7 @@ ints dRmatching_binary( int origin_i,float maxdR,  floats origin_pt, floats orig
     target = gen4vec(target_pt, target_eta, target_phi, target_mass);
 
     for( int i=0; i<target.size(); i++){
-        tempdR = ROOT::Math::VectorUtil::DeltaR(origin[origin_i],target[i]); 
+        tempdR = ROOT::Math::VectorUtil::DeltaR(origin[origin_i],target[i]);
         if( tempdR < dR ){
             target_i = i;
             dR = tempdR;

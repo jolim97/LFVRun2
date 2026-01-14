@@ -404,7 +404,7 @@ private:
   std::pair<float, float> min_max_pt(BTagEntry::JetFlavor jf,
                                      float eta,
                                      float discr) const;
- 
+
   std::pair<float, float> min_max_eta(BTagEntry::JetFlavor jf,
                                      float discr) const;
 
@@ -528,11 +528,11 @@ double BTagCalibrationReader::BTagCalibrationReaderImpl::eval_auto_bounds(
   auto sf_bounds_eta = min_max_eta(jf, discr);
   bool eta_is_out_of_bounds = false;
 
-  if (sf_bounds_eta.first < 0) sf_bounds_eta.first = -sf_bounds_eta.second;   
+  if (sf_bounds_eta.first < 0) sf_bounds_eta.first = -sf_bounds_eta.second;
   if (eta <= sf_bounds_eta.first || eta > sf_bounds_eta.second ) {
     eta_is_out_of_bounds = true;
   }
-   
+
   if (eta_is_out_of_bounds) {
     return 1.;
   }
